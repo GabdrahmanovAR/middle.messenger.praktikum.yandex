@@ -1,0 +1,41 @@
+.field {
+  position: relative;
+  margin: 0;
+  padding: 1rem 0 0;
+  width: 100%;
+
+  &__input {
+    width: 100%;
+    border: 0;
+    border-bottom: 2px solid var(--border-color-light);
+    outline: 0;
+    font-size: 1rem;
+    color: var(--text-color-main);
+    padding: 0.4375rem 0;
+    background: transparent;
+    transition: border-color 0.2s;
+
+    &::placeholder {
+      color: transparent;
+    }
+
+    &:focus, &:valid {
+      border-color: var(--border-color-active);
+
+      + .field__label {
+        font-size: 0.8rem;
+        cursor: text;
+        top: 0;
+      }
+    }
+  }
+
+  &__label {
+    position: absolute;
+    top: 20px;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: var(--text-color-label);
+  }
+}

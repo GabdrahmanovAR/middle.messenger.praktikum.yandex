@@ -1,0 +1,44 @@
+.login-card {
+  display: flex;
+  flex-direction: column;
+
+  height: 75%;
+  max-height: 500px;
+  width: 40%;
+  max-width: 400px;
+
+  border-radius: 10px;
+  padding: 2rem;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+  &__title {
+    text-align: center;
+    font-size: 1.75rem;
+    font-weight: 600;
+    padding: 1rem 0 2rem 0;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  &__field-group {
+    :not(:last-child) {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    :not(:last-child) {
+      margin-bottom: 1rem;
+    }
+  }
+}
