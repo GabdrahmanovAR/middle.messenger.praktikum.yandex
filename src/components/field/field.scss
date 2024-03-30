@@ -1,7 +1,7 @@
 .field {
   position: relative;
   margin: 0;
-  padding: 1rem 0 0;
+  padding: 0.75rem 0 0;
   width: 100%;
 
   &__input {
@@ -25,7 +25,7 @@
       + .field__label {
         font-size: 0.8rem;
         cursor: text;
-        top: 0;
+        top: 2px;
       }
     }
   }

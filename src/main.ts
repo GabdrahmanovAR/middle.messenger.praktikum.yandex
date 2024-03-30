@@ -6,7 +6,7 @@ import { NavigatePage } from './assets/constants/common';
 
 const pages: Record<string, unknown[]> = {
   [NavigatePage.LOGIN]: [Pages.LoginPage],
-  // list: [Pages.ListPage],
+  [NavigatePage.REGISTER]: [Pages.RegistrationPage],
   [NavigatePage.NAV]: [Pages.NavigatePage],
 };
 
