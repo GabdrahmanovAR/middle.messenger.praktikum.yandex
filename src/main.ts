@@ -8,6 +8,8 @@ const pages: Record<string, unknown[]> = {
   [NavigatePage.LOGIN]: [Pages.LoginPage],
   [NavigatePage.REGISTER]: [Pages.RegistrationPage],
   [NavigatePage.NAV]: [Pages.NavigatePage],
+  [NavigatePage.ERROR]: [Pages.ErrorPage],
+  [NavigatePage.NOT_FOUND]: [Pages.NotFoundPage],
 };
 
 Object.entries(Components).forEach(([name, component]: [string, string]) => {

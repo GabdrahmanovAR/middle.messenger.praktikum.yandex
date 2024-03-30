@@ -1,0 +1,5 @@
+.page-list {
+  :not(:last-child) {
+    margin-bottom: 1rem;
+  }
+}
