@@ -1,0 +1,16 @@
+.chat-container {
+  display: flex;
+}
+
+.sidebar {
+  width: 25rem;
+  border-right: 1px solid var(--border-color-light);
+
+  &__search {
+    padding: 0.5rem;
+  }
+}
+
+.chat-content {
+  flex-grow: 1;
+}

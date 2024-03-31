@@ -3,11 +3,13 @@ import Handlebars from 'handlebars';
 import * as Components from './components';
 import * as Pages from './pages';
 import { NavigatePage } from './assets/constants/common';
+import { list } from './components/chat-list/chat-list';
 
 const pages: Record<string, unknown[]> = {
   [NavigatePage.LOGIN]: [Pages.LoginPage],
   [NavigatePage.REGISTER]: [Pages.RegistrationPage],
   [NavigatePage.NAV]: [Pages.NavigatePage],
+  [NavigatePage.CHAT]: [Pages.ChatPage, { list }],
   [NavigatePage.ERROR]: [Pages.ErrorPage],
   [NavigatePage.NOT_FOUND]: [Pages.NotFoundPage],
 };
@@ -20,6 +22,7 @@ function navigate(page: string) {
   const [source, context] = pages[page];
   const container = document.getElementById('app')!;
   const templateDelegate: HandlebarsTemplateDelegate = Handlebars.compile(source);
+  console.log(context);
   container.innerHTML = templateDelegate(context);
 }
 

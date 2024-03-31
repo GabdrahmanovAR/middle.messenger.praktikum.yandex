@@ -1,0 +1,77 @@
+@mixin textHidden($lineClamp) {
+  -webkit-line-clamp: $lineClamp;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.chat-card {
+  display: flex;
+  padding: 0.25rem 0.5rem;
+  width: 100%;
+  cursor: pointer;
+  position: relative;
+
+  &__avatar {
+    padding: 0.25rem;
+  }
+
+  &__img {
+    &_default {
+      width: 4rem;
+      height: 4rem;
+      border-radius: 50%;
+      background-color: var(--background-color-light);
+    }
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+    padding: 0.25rem;
+  }
+
+  &__name {
+    font-weight: bold;
+    @include textHidden(1);
+  }
+
+  &__message {
+    color: var(--text-color-label);
+    @include textHidden(2);
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem;
+  }
+
+  &__date {
+    color: var(--text-color-label);
+    font-size: 0.8rem;
+  }
+
+  &__notification {
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: var(--main-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &_active {
+    background-color: var(--light-active-color);
+  }
+
+  &:not(.chat-card_active):hover {
+    background-color: var(--light-hover-color);
+  }
+}
