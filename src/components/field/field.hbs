@@ -1,4 +1,21 @@
 <div class="field">
-  <input type="{{ type }}" class="field__input" placeholder="{{ label }}" id='name' required />
-  <label for="name" class="field__label">{{ label }}</label>
+  <input
+    type="{{type}}"
+    {{#if name}}
+    name="{{name}}"
+    {{/if}}
+    class="field__input"
+    placeholder="{{label}}"
+    {{#if required}}
+    required
+    {{/if}}
+  />
+  <label for="name" class="field__label">{{label}}</label>
+  <div class="field__validation">
+    {{#if error}}
+      {{error}}
+    {{else}}
+      Необходимо заполнить поле
+    {{/if}}
+  </div>
 </div>

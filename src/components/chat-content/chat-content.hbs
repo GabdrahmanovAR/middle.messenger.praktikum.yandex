@@ -1,0 +1,27 @@
+<div class="chat-page">
+  <div class="chat-page__header">
+    <div class="chat-page__avatar">
+      <img src="{{info.avatar}}" alt="avatar" />
+    </div>
+    <div class="chat-page__user-name">{{info.name}}</div>
+    <div class="chat-page__utils">
+      {{> Button theme="outlined" icon="/src/assets/icons/properties.svg"}}
+    </div>
+  </div>
+
+  <div class="chat-page__chat">
+    {{> ChatBubbles}}
+  </div>
+
+  <div class="chat-input">
+    <div class="chat-input__settings">
+      {{> Button theme="outlined" icon="/src/assets/icons/chat-pin.svg"}}
+    </div>
+    <div class="chat-input__input">
+      {{> InputText placeholder="Сообщение" rounded=true}}
+    </div>
+    <div class="chat-input__send-button">
+      {{> Button theme="primary" icon="/src/assets/icons/arrow-right-white.svg" circle=true}}
+    </div>
+  </div>
+</div>

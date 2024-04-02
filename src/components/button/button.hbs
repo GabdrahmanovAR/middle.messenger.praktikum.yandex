@@ -1,3 +1,13 @@
-<button class="button button__{{type}}">
-  {{ label }}
+<button 
+  type="{{type}}" 
+  class="button{{#if theme}} button__{{theme}}{{else}} button__primary{{/if}}{{#if outlined}} button__outlined{{/if}}{{#if circle}} button__circle{{/if}}"
+>
+  {{#if label}}
+    <span class="button__label">{{label}}</span>
+  {{/if}}
+  {{#if icon}}
+    <div class="button__icon">
+      <img src="{{icon}}" alt="icon" />
+    </div>
+  {{/if}}
 </button>

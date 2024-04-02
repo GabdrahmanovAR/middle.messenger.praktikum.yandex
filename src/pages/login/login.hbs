@@ -4,12 +4,12 @@
 
     <form action="" class="form-container login-card__form">
       <div class="field-group">
-        {{> Field label="Логин" type="input" }}
-        {{> Field label="Пароль" type="password" }}
+        {{> Field label="Логин" type="input" required=true name="login" }}
+        {{> Field label="Пароль" type="password" required=true name="password" }}
       </div>
       <div class="buttons-group">
-        {{> Button label="Войти" type="primary" }}
-        {{> Button label="Нет аккаунта?" type="link" }}
+        {{> Button label="Войти" type="submit" }}
+        {{> Button label="Нет аккаунта?" theme="link" }}
       </div>
     </form>
   </div>

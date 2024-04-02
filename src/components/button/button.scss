@@ -1,54 +1,143 @@
+@mixin arrow($deg) {
+  .button__arrow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: matrix(0, 1, -1, 0, 0, -2);
+    cursor: pointer;
+  }
+
+  .button__arrow span {
+    display: block;
+    width: 0.65rem;
+    height: 0.65rem;
+    border-bottom: 2px solid var(--text-color-label);
+    border-right: 2px solid var(--text-color-label);
+    transform: rotate($deg);
+    margin: -0.25rem;
+  }
+}
+
+@mixin link($mainColor, $hoverColor, $activeColor, $direction: "") {
+  padding: 0;
+  background-color: transparent;
+
+  width: max-content;
+  height: max-content;
+
+  .button__label {
+    color: $mainColor;
+
+    &:active {
+      color: $activeColor;
+    }
+  }
+
+  &:hover {
+    .button__label {
+      color: $hoverColor;
+    }
+    .button__arrow span {
+      border-color: $hoverColor;
+    }
+  }
+
+  @if $direction == "left" {
+    @include arrow(45deg);
+  } @else if $direction == "right" {
+    @include arrow(-135deg);
+  }
+}
+
+@mixin buttonTheme($mainColor, $hoverColor, $activeColor) {
+  background-color: $mainColor;
+
+  &:not(:disabled):hover {
+    background-color: $hoverColor;
+  }
+  &:hover:active {
+    background-color: $activeColor;
+  }
+}
+
 .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   border-radius: 8px;
   padding: 0.75rem;
   cursor: pointer;
   width: 100%;
+  height: 2.75rem;
+  max-height: 2.75rem;
   position: relative;
 
-  &__primary {
-    background-color: var(--main-color);
+  &__label {
     color: white;
+    padding: 0 0.5rem;
+  }
 
-    &:not(:disabled):hover {
-      background-color: var(--main-color-hover);
-    }
-    &:hover:active {
-      background-color: var(--main-color-active);
-    }
+  &__primary {
+    @include buttonTheme(
+      var(--main-color), 
+      var(--main-color-hover), 
+      var(--main-color-active)
+    );
+  }
+
+  &__outlined {
+    @include buttonTheme(
+      var(--background-color-white), 
+      var(--background-color-light), 
+      var(--background-color-light-grey)
+    );
   }
 
   &__link {
-    padding: 0;
-    background-color: transparent;
-    color: var(--main-color);
-    width: max-content;
-
-    &:hover {
-      color: var(--main-color-hover);
-    }
-    &:active {
-      color: var(--main-color-active);
-    }
+    @include link(
+      var(--main-color),
+      var(--main-color-hover),
+      var(--main-color-active)
+    );
   }
 
-  // &::after {
-  //   position: absolute;
-  //   content: "";
-  //   display: block;
-  //   left: 0;
-  //   top: 0;
-  //   width: 100%;
-  //   height: 100%;
-  //   border-radius: 8px;
-  //   opacity: 0;
-  //   transition: all 500ms ease-in-out;
-  //   box-shadow: 0 0 6px 6px var(--main-color-hover);
-  // }
+  &__link-arrow-right {
+    @include link(
+      var(--text-color-label),
+      var(--main-color-hover),
+      var(--main-color-active),
+      "right"
+    );
+  }
 
-  // &:active::after {
-  //   box-shadow: 0 0 0 0 var(--main-color-hover);
-  //   opacity: 1;
-  //   transition: 0s ease-in-out;
-  // }
+  &__link-arrow-left {
+    @include link(
+      var(--text-color-label),
+      var(--main-color-hover),
+      var(--main-color-active),
+      "left"
+    );
+  }
+
+  &__icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    min-width: 0.5rem;
+    min-height: 0.5rem;
+  }
+
+  &__circle {
+    width: 100%;
+    height: 100%;
+    max-width: 3rem;
+    max-height: 3rem;
+    border-radius: 50%;
+  }
+
 }
+

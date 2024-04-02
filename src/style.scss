@@ -1,21 +1,24 @@
-@import './assets/css/normalize.css';
-@import './assets/fonts/fonts.scss';
+@import "./assets/css/normalize.css";
+@import "./assets/fonts/fonts.scss";
 
 :root {
-  --main-color: #3B82F6;
+  --main-color: #3b82f6;
   --main-color-hover: #2563eb;
   --main-color-active: #5787ed;
-  --border-color-light: #EAEAEA;
+  --border-color-light: #eaeaea;
   --border-color-active: var(--main-color);
   --text-color-main: #333333;
   --text-color-label: #999999;
-  --background-color-white: #fff;
-  --background-color-light: #EFEFEF;
 
-  --light-active-color: #E4EDFD;
+  --background-color-white: #fff;
+  --background-color-light: #efefef;
+  --background-color-light-grey: #e6e3e3;
+
+  --light-active-color: #e4edfd;
   --light-hover-color: #f6f9ff;
 
   --text-size-standart: 14px;
+  --header-height: 4rem;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -59,13 +62,17 @@ a {
   text-decoration: none;
 }
 
-input[type=text]:focus {
+// TODO убрать общий стиль
+input[type="text"]:focus {
   border: 1px solid var(--border-color-active);
   outline: none;
 }
 
 .container {
-  height: inherit;
+  height: 100%;
+  width: 100%;
+  min-height: 100%;
+  max-height: 100%;
   overflow: hidden;
 }
 

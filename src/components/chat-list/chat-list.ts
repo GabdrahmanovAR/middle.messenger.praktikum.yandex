@@ -1,5 +1,6 @@
 interface IList {
   name?: string;
+  avatar?: string;
   message?: string;
   date?: string;
   count?: string;
@@ -11,7 +12,7 @@ export const list: IList[] = [
     message: 'Какое-то длинное сообщение с активного чата, который кто-то написал',
     date: '15:42',
     count: '4',
-    active: true,
+    avatar: 'src/assets/img/avatar2.jpg',
   },
   {
     name: 'Vasya',
@@ -22,7 +23,7 @@ export const list: IList[] = [
     name: 'Semen',
     message: 'Какое-то длинное сообщение с активного чата, который кто-то написал',
     date: '18:44',
-    count: '1',
+    count: '111',
   },
   {
     name: 'Albert',
@@ -35,6 +36,8 @@ export const list: IList[] = [
     name: 'Vasya',
     message: 'Какое-то длинное сообщение с активного чата, который кто-то написал',
     date: '10:11',
+    active: true,
+    avatar: 'src/assets/img/avatar1.jpg',
   },
   {
     name: 'Semen',
@@ -97,3 +100,5 @@ export const list: IList[] = [
     count: '1',
   },
 ];
+
+export const chatInfo: IList = list[4];
