@@ -1,0 +1,25 @@
+.message {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  user-select: text;
+  margin-bottom: 1rem;
+
+  &__content-wrapper {
+    padding: 0.75rem;
+    background-color: var(--background-color-light);
+    border-radius: 12px;
+    border-top-left-radius: 0;
+    max-width: 29rem;
+  }
+
+  .own > &__content-wrapper {
+    border-top-right-radius: 0;
+    border-top-left-radius: 12px;
+    background-color: var(--light-active-color);
+  }
+}
+
+.own {
+  justify-content: flex-end;
+}

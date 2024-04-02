@@ -5,3 +5,5 @@ export { ChatCard } from './chat-card';
 export { ChatList } from './chat-list';
 export { InputText } from './input-text';
 export { ChatContent } from './chat-content';
+export { MessageList } from './message-list';
+export { Message } from './message';

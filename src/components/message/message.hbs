@@ -1,0 +1,17 @@
+<div class="message{{#if own}} own{{/if}}">
+  <div class="message__content-wrapper">
+    <div class="message__content">
+      <div class="message__text-content">
+        {{message}}
+        <span class="message__info">
+          <span class="message__time">22:02</span>
+          {{#if own}}
+            <div class="message__status">
+              <i class="icon{{#if send}} icon-message-send{{/if}}{{#if delivered}} icon-message-delivered{{/if}}{{#if read}} icon-message-read{{/if}}"></i>
+            </div>
+          {{/if}}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
