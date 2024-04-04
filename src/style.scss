@@ -9,6 +9,12 @@
   --border-color-active: var(--main-color);
   --text-color-main: #333333;
   --text-color-label: #999999;
+  --text-color-crimson: crimson;
+  --text-color-crimson-hover: rgb(180, 15, 48);
+  --text-color-crimson-active: rgb(224, 66, 98);
+
+  --font-weight-500: 500;
+  --font-weight-600: 600;
 
   --background-color-white: #fff;
   --background-color-light: #efefef;
@@ -34,7 +40,7 @@
 }
 
 html * {
-  font-family: "Roboto", sans-serif;
+  font-family: "Roboto-black", sans-serif;
 }
 
 label,
@@ -97,7 +103,7 @@ input[type="text"]:focus {
 .form-title {
   text-align: center;
   font-size: 1.75rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-600);
   padding: 1rem 0 2rem 0;
 }
 

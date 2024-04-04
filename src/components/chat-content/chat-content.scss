@@ -29,9 +29,10 @@
   &__user-name {
     display: inherit;
     align-items: center;
-    padding: 1rem;
+    padding: 0 1rem;
     height: 100%;
     width: 100%;
+    font-weight: var(--font-weight-600);
   }
 
   &__chat {
@@ -54,6 +55,7 @@
   }
 
   &__send-button {
-    aspect-ratio: 1;
+    width: 2rem;
+    height: 2rem;
   }
 }

@@ -75,7 +75,6 @@
 
   &__label {
     color: white;
-    padding: 0 0.5rem;
   }
 
   &__primary {
@@ -83,6 +82,14 @@
       var(--main-color), 
       var(--main-color-hover), 
       var(--main-color-active)
+    );
+  }
+
+  &__red {
+    @include buttonTheme(
+      var(--text-color-crimson),
+      var(--text-color-crimson-hover),
+      var(--text-color-crimson-active)
     );
   }
 
@@ -132,11 +139,18 @@
   }
 
   &__circle {
-    width: 100%;
     height: 100%;
+    width: 100%;
     max-width: 3rem;
     max-height: 3rem;
     border-radius: 50%;
+    padding: 0;
+    min-width: 1rem;
+    min-height: 1rem;
+  }
+
+  &__label + &__icon {
+    padding-left: 0.5rem;
   }
 
 }

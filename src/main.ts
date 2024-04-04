@@ -5,13 +5,17 @@ import Handlebars from 'handlebars';
 import * as Components from './components';
 import * as Pages from './pages';
 import { NavigatePage } from './assets/constants/common';
+
 import { list, chatInfo } from './components/chat-list/chat-list';
+import { changePassword, userData } from './pages/profile/profile';
 
 const pages: Record<string, unknown[]> = {
   [NavigatePage.LOGIN]: [Pages.LoginPage],
   [NavigatePage.REGISTER]: [Pages.RegistrationPage],
   [NavigatePage.NAV]: [Pages.NavigatePage],
   [NavigatePage.CHAT]: [Pages.ChatPage, { list, chatInfo }],
+  [NavigatePage.PROFILE]: [Pages.ProfilePage, { name: 'Иван', formData: userData }],
+  [NavigatePage.PROFILE_PASS]: [Pages.ProfilePassPage, { formData: changePassword, edit: true }],
   [NavigatePage.ERROR]: [Pages.ErrorPage],
   [NavigatePage.NOT_FOUND]: [Pages.NotFoundPage],
 };

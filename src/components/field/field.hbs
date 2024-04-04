@@ -1,11 +1,17 @@
 <div class="field">
   <input
     type="{{type}}"
+
     {{#if name}}
     name="{{name}}"
     {{/if}}
+
     class="field__input"
+
+    {{#if label}}
     placeholder="{{label}}"
+    {{/if}}
+
     {{#if required}}
     required
     {{/if}}

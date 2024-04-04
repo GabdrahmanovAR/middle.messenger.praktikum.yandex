@@ -1,0 +1,50 @@
+#avatar-upload {
+  display: none;
+}
+
+.file-input-container {
+  display: inline-block;
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+
+  &:hover .file-input-label {
+    background-color: rgba(0, 0, 0, 0.35);
+    position: relative;
+    z-index: 1;
+  }
+  &:hover .file-input-title {
+    opacity: 1;
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.file-input-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.file-input-label {
+  display: block;
+  width: 10rem;
+  height: 10rem;
+  background-color: var(--background-color-light);
+  border-radius: 50%;
+  text-align: center;
+  line-height: 150px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.file-input-title {
+  opacity: 0;
+  transition: opacity 0.3s;
+
+  span {
+    font-size: 0.875rem;
+    color: white;
+  }
+}

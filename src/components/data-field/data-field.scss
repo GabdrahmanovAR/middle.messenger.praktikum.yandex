@@ -1,0 +1,25 @@
+.data-field {
+  width: max-content;
+
+  &__input {
+    border: 0;
+    outline: 0;
+    font-size: 1rem;
+    color: var(--text-color-main);
+    background: transparent;
+
+    &_right {
+      text-align: right;
+    }
+
+    &_left {
+      text-align: left;
+    }
+
+    &:read-only {
+      color: var(--text-color-label);
+      user-select: none;
+      pointer-events: none;
+    }
+  }
+}
