@@ -1,4 +1,4 @@
-interface IList {
+interface IChatList {
   name?: string;
   avatar?: string;
   message?: string;
@@ -6,7 +6,7 @@ interface IList {
   count?: string;
   active?: boolean;
 }
-export const list: IList[] = [
+export const chatList: IChatList[] = [
   {
     name: 'Albert',
     message: 'Какое-то длинное сообщение с активного чата, который кто-то написал',
@@ -65,4 +65,4 @@ export const list: IList[] = [
   },
 ];
 
-export const chatInfo: IList = list[4];
+export const chatInfo: IChatList = chatList[4];

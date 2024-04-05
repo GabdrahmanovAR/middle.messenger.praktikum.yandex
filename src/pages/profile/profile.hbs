@@ -5,44 +5,40 @@
     </div>
   </div>
   <div class="profile-content container center">
-    <div class="profile-form">
-      <!-- TODO аватар тоже должен быть в форме -->
+    <form action="" class="profile-form">
       <div class="profile-form__avatar">
         {{> InputFile label="Поменять аватар" avatar=true}}
-      <span class="profile-form__user-name">{{name}}</span>
+        <span class="profile-form__user-name">{{name}}</span>
       </div>
 
-      <div class="profile-form__user-data">
-        <form action="">
-          {{#each formData}}
-            <div class="profile-form__item{{#if @last}} profile-form__item_last{{/if}}">
-              <span class="profile-form__label">{{this.label}}</span>
-              {{> DataField }}
-            </div>
-          {{/each}}
-        </form>
+      <div class="profile-from__fields">
+        {{#each formData}}
+        <div class="profile-form__item{{#if @last}} profile-form__item_last{{/if}}">
+          <span class="profile-form__label">{{this.label}}</span>
+          {{> DataField }}
+        </div>
+        {{/each}}
       </div>
 
       <div class="profile-form__buttons">
         {{#if edit}}
-          <div class="profile-form__item profile-form__item_single">
-            <div class="profile-form__save">
-              {{> Button label="Сохранить" }}
-            </div>
+        <div class="profile-form__item profile-form__item_single">
+          <div class="profile-form__save">
+            {{> Button label="Сохранить" }}
           </div>
+        </div>
         {{else}}
-          <div class="profile-form__item">
-            {{> Button label="Изменить данные" theme="link" }}
-          </div>
-          <div class="profile-form__item">
-            {{> Button label="Изменить пароль" theme="link" }}
-          </div>
-          <div class="profile-form__item profile-form__item_last">
-            {{> Button type="red" label="Выйти" theme="link" }}
-          </div>
+        <div class="profile-form__item">
+          {{> Button label="Изменить данные" theme="link" }}
+        </div>
+        <div class="profile-form__item">
+          {{> Button label="Изменить пароль" theme="link" }}
+        </div>
+        <div class="profile-form__item profile-form__item_last">
+          {{> Button type="red" label="Выйти" theme="link" }}
+        </div>
         {{/if}}
       </div>
-    </div>
+    </form>
   </div>
 </div>
-

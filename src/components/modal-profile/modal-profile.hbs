@@ -1,9 +1,11 @@
 <div class="container center modal-container">
   <div class="profile-window">
     <div class="profile-window__header">
-      <span class="profile-window__title">
+      <span class="profile-window__title{{#if error}}profile-window__title_error{{/if}}">
         {{#if error}}
           Ошибка, попробуйте еще раз
+        {{else if success}}
+          Файл загружен
         {{else}}
           {{title}}
         {{/if}}

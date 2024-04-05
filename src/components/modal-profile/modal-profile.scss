@@ -17,6 +17,10 @@
   &__title {
     font-weight: var(--font-weight-600);
     font-size: 1.25rem;
+
+    &_error {
+      color: var(--text-color-crimson);
+    }
   }
 
   &__form {

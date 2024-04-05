@@ -7,11 +7,11 @@
       {{> InputText placeholder="Поиск" center=true icon="/src/assets/icons/search.svg"}}
     </div>
     <div class="sidebar__list">
-      {{> ChatList list=list }}
+      {{> ChatList chatList=chatList }}
     </div>
   </div>
 
-  <div class="chat-content">
-    {{> ChatContent info=chatInfo }}
+  <div class="chat-section">
+    {{> ChatContent info=chatInfo messages=messages }}
   </div>
 </div>
