@@ -6,8 +6,9 @@
   </div>
   <div class="profile-content container center">
     <div class="profile-form">
+      <!-- TODO аватар тоже должен быть в форме -->
       <div class="profile-form__avatar">
-        {{> Avatar}}
+        {{> InputFile label="Поменять аватар" avatar=true}}
       <span class="profile-form__user-name">{{name}}</span>
       </div>
 

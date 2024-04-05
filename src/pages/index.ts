@@ -6,3 +6,5 @@ export { NotFoundPage } from './notfound';
 export { ChatPage } from './chat';
 export { ProfilePage } from './profile';
 export { ProfilePassPage } from './profile-pass';
+export { ProfileAvatarEditPage } from './profile-avatar-edit';
+export { ProfileUserEditPage } from './profile-user-edit';

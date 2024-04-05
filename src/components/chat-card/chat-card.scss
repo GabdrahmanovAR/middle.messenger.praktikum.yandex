@@ -1,14 +1,14 @@
-@mixin avatar() {
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-}
-
-@mixin textHidden($lineClamp) {
+@mixin textWithDots($lineClamp) {
   -webkit-line-clamp: $lineClamp;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+@mixin avatar() {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
 }
 
 .chat-card {
@@ -45,12 +45,12 @@
 
   &__name {
     font-weight: bold;
-    @include textHidden(1);
+    @include textWithDots(1);
   }
 
   &__message {
     color: var(--text-color-label);
-    @include textHidden(2);
+    @include textWithDots(2);
   }
 
   &__info {

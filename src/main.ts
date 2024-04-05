@@ -18,6 +18,8 @@ const pages: Record<string, unknown[]> = {
   [NavigatePage.PROFILE_PASS]: [Pages.ProfilePassPage, { formData: changePassword, edit: true }],
   [NavigatePage.ERROR]: [Pages.ErrorPage],
   [NavigatePage.NOT_FOUND]: [Pages.NotFoundPage],
+  [NavigatePage.PROFILE_AVATAR_EDIT]: [Pages.ProfileAvatarEditPage],
+  [NavigatePage.PROFILE_USER_EDIT]: [Pages.ProfileUserEditPage],
 };
 
 Object.entries(Components).forEach(([name, component]: [string, string]) => {

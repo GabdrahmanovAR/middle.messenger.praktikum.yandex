@@ -1,6 +1,11 @@
 .input-container {
   position: relative;
   width: 100%;
+
+  input[type="text"]:focus {
+    border: 1px solid var(--border-color-active);
+    outline: none;
+  }
 }
 
 .input-icon {

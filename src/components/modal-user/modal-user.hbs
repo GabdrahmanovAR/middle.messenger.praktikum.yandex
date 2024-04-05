@@ -1,0 +1,22 @@
+<div class="container center modal-container">
+  <div class="user-window">
+    <div class="user-window__header">
+      <span class="user-window__title">
+        {{title}}
+      </span>
+    </div>
+    <form action="" class="user-window__form">
+      <div class="user-window__form-content">
+        {{> Field type="text" label="Логин"}}
+      </div>
+      <div class="user-window__footer">
+        {{#if add}}
+          {{> Button type="submit" label="Добавить"}}
+        {{/if}}
+        {{#if delete}}
+          {{> Button type="submit" label="Удалить"}}
+        {{/if}}
+      </div>
+    </form>
+  </div>
+</div>

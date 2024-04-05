@@ -6,6 +6,7 @@
   --main-color-hover: #2563eb;
   --main-color-active: #5787ed;
   --border-color-light: #eaeaea;
+  --border-color-grey: #999999;
   --border-color-active: var(--main-color);
   --text-color-main: #333333;
   --text-color-label: #999999;
@@ -70,18 +71,19 @@ a {
   text-decoration: none;
 }
 
-// TODO убрать общий стиль
-input[type="text"]:focus {
-  border: 1px solid var(--border-color-active);
-  outline: none;
-}
-
 .container {
   height: 100%;
   width: 100%;
   min-height: 100%;
   max-height: 100%;
   overflow: hidden;
+}
+
+.modal-container {
+  position: relative;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
 }
 
 .center {

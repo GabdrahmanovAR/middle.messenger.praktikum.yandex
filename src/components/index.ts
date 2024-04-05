@@ -7,5 +7,7 @@ export { InputText } from './input-text';
 export { ChatContent } from './chat-content';
 export { MessageList } from './message-list';
 export { Message } from './message';
-export { Avatar } from './avatar';
+export { InputFile } from './input-file';
 export { DataField } from './data-field';
+export { ModalProfile } from './modal-profile';
+export { ModalUser } from './modal-user';
