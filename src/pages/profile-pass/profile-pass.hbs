@@ -1,7 +1,7 @@
 <div class="profile-container container">
   <div class="profile-back">
     <div class="profile-back__button-container">
-      {{> Button theme="primary" icon="/src/assets/icons/arrow-left-white.svg" circle=true}}
+      {{> Button isRound=true icon="/src/assets/icons/arrow-left-white.svg" }}
     </div>
   </div>
   <div class="profile-content container center">
@@ -24,18 +24,18 @@
         {{#if edit}}
         <div class="profile-form__item profile-form__item_single">
           <div class="profile-form__save">
-            {{> Button label="Сохранить" }}
+            {{> Button label="Сохранить" isRectangle=true }}
           </div>
         </div>
         {{else}}
         <div class="profile-form__item">
-          {{> Button label="Изменить данные" theme="link" }}
+          {{> Button label="Изменить данные" isLink=true }}
         </div>
         <div class="profile-form__item">
-          {{> Button label="Изменить пароль" theme="link" }}
+          {{> Button label="Изменить пароль" isLink=true }}
         </div>
         <div class="profile-form__item profile-form__item_last">
-          {{> Button type="red" label="Выйти" theme="link" }}
+          {{> Button type="red" label="Выйти" isLink=true theme="danger" }}
         </div>
         {{/if}}
       </div>

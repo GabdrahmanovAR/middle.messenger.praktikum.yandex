@@ -49,6 +49,10 @@
   padding: 1rem 0;
   margin: 0 1.25rem;
 
+  &__settings {
+    margin-right: 0.5rem;
+  }
+
   &__input {
     flex-grow: 1;
     padding-right: 1rem;

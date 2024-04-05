@@ -5,10 +5,15 @@
   --main-color: #3b82f6;
   --main-color-hover: #2563eb;
   --main-color-active: #5787ed;
+  --second-color: #999999;
+  --second-color-hover: #808080;
+  --second-color-active: #a1a1a1;
+
   --border-color-light: #eaeaea;
   --border-color-grey: #999999;
   --border-color-active: var(--main-color);
   --text-color-main: #333333;
+  --text-color-light: #fff;
   --text-color-label: #999999;
   --text-color-crimson: crimson;
   --text-color-crimson-hover: rgb(180, 15, 48);
@@ -69,6 +74,12 @@ body {
 
 a {
   text-decoration: none;
+}
+
+.icon {
+  padding: 0 0.5rem;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .container {
