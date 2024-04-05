@@ -9,4 +9,5 @@ export enum NavigatePage {
   NOT_FOUND = 'notfound',
   PROFILE_AVATAR_EDIT = 'profile-avatar-edit',
   PROFILE_USER_EDIT = 'profile-user-edit',
+  DROPDOWN = 'dropdown',
 }

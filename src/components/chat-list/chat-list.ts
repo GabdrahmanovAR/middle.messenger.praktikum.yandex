@@ -12,7 +12,7 @@ export const list: IList[] = [
     message: 'Какое-то длинное сообщение с активного чата, который кто-то написал',
     date: '15:42',
     count: '4',
-    avatar: 'src/assets/img/avatar2.jpg',
+    avatar: '/src/assets/img/avatar2.jpg',
   },
   {
     name: 'Vasya',
@@ -37,7 +37,7 @@ export const list: IList[] = [
     message: 'Какое-то длинное сообщение с активного чата, который кто-то написал',
     date: '10:11',
     active: true,
-    avatar: 'src/assets/img/avatar1.jpg',
+    avatar: '/src/assets/img/avatar1.jpg',
   },
   {
     name: 'Semen',

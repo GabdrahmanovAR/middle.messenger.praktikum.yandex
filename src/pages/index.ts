@@ -8,3 +8,4 @@ export { ProfilePage } from './profile';
 export { ProfilePassPage } from './profile-pass';
 export { ProfileAvatarEditPage } from './profile-avatar-edit';
 export { ProfileUserEditPage } from './profile-user-edit';
+export { DropDownPage } from './dropdown';

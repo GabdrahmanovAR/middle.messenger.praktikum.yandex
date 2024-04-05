@@ -8,6 +8,7 @@ import { NavigatePage } from './assets/constants/common';
 
 import { list, chatInfo } from './components/chat-list/chat-list';
 import { changePassword, userData } from './pages/profile/profile';
+import { dropDownlist, dropDownlist2 } from './components/dropdown-list/dropdown-list';
 
 const pages: Record<string, unknown[]> = {
   [NavigatePage.LOGIN]: [Pages.LoginPage],
@@ -20,6 +21,7 @@ const pages: Record<string, unknown[]> = {
   [NavigatePage.NOT_FOUND]: [Pages.NotFoundPage],
   [NavigatePage.PROFILE_AVATAR_EDIT]: [Pages.ProfileAvatarEditPage],
   [NavigatePage.PROFILE_USER_EDIT]: [Pages.ProfileUserEditPage],
+  [NavigatePage.DROPDOWN]: [Pages.DropDownPage, { dropdowns: [{ list: dropDownlist }, { list: dropDownlist2 }] }],
 };
 
 Object.entries(Components).forEach(([name, component]: [string, string]) => {
