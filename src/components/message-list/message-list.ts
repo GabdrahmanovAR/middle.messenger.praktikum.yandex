@@ -55,7 +55,7 @@ export const messages: IMessages[] = [
       {
         group: [
           { message: exampleMessage, date: '22:12' },
-          { image: '/src/assets/img/camera.png', date: '22:13' },
+          { image: '/assets/img/camera.png', date: '22:13' },
         ],
       },
     ],
