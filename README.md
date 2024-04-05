@@ -9,13 +9,13 @@
 
 ```sh
 npm i
-npm run dev
+npm run start
 ```
 
 Продуктив-версии приложения. Сборка происходит в папку dist.
 
 ```sh
-npm run start
+npm run build
 ```
 
 ## Деплой
