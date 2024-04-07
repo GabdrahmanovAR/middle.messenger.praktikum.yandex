@@ -1,0 +1,18 @@
+<div class="message-list">
+  {{#each messages}}
+    <div class="message-list__date-group">
+      <div class="sticky-date">
+        <span class="sticky-date__text-date">{{this.date}}</span>
+      </div>
+
+      {{#each this.messageGroup}}
+        <div class="message-list__message-group">
+          {{#each this.group}}
+            {{> Message }}
+          {{/each}}
+        </div>
+      {{/each}}
+
+    </div>
+  {{/each}}
+</div>

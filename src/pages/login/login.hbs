@@ -1,0 +1,16 @@
+<div class="container center">
+  <div class="card login-card">
+    <div class="form-title">Вход</div>
+
+    <form action="" class="form-container login-card__form">
+      <div class="field-group">
+        {{> Field label="Логин" type="input" required=true name="login" }}
+        {{> Field label="Пароль" type="password" required=true name="password" }}
+      </div>
+      <div class="buttons-group">
+        {{> Button label="Войти" isRectangle=true type="submit" }}
+        {{> Button label="Нет аккаунта?" isLink=true }}
+      </div>
+    </form>
+  </div>
+</div>

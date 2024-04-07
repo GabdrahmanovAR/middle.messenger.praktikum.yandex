@@ -1,0 +1,124 @@
+@mixin buttonTheme($mainColor, $hoverColor, $activeColor, $isLink: false) {
+  @if $isLink {
+    color: $mainColor;
+  } @else {
+    background-color: $mainColor;
+  }
+
+  &:not(:disabled):hover {
+    @if $isLink {
+      color: $hoverColor;
+    } @else {
+      background-color: $hoverColor;
+    }
+  }
+
+  &:hover:active {
+    @if $isLink {
+      color: $activeColor;
+    } @else {
+      background-color: $activeColor;
+    }
+  }
+}
+
+.icon.right {
+  margin-left: 5px;
+}
+
+.icon.left {
+  margin-right: 5px;
+}
+
+.button {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+
+  &_primary {
+    @include buttonTheme(
+      var(--main-color),
+      var(--main-color-hover),
+      var(--main-color-active)
+    );
+  }
+  &_second {
+    @include buttonTheme(
+      var(--second-color),
+      var(--second-color-hover),
+      var(--second-color-active)
+    );
+  }
+  &_danger {
+    @include buttonTheme(
+      var(--text-color-crimson),
+      var(--text-color-crimson-hover),
+      var(--text-color-crimson-active)
+    );
+  }
+  &_text {
+    @include buttonTheme(
+      var(transparent),
+      var(--background-color-light-grey),
+      var(--background-color-light)
+    );
+  }
+}
+
+.rectangle-button {
+  border-radius: 8px;
+  padding: 0.75rem;
+  width: 100%;
+  height: 2.75rem;
+  max-height: 2.75rem;
+  color: var(--text-color-light);
+}
+
+.link-button {
+  color: initial;
+
+  &_primary {
+    @include buttonTheme(
+      var(--main-color),
+      var(--main-color-hover),
+      var(--main-color-active),
+      $isLink: true,
+    );
+  }
+  &_second {
+    @include buttonTheme(
+      var(--second-color),
+      var(--second-color-hover),
+      var(--second-color-active),
+      $isLink: true,
+    );
+  }
+  &_danger {
+    @include buttonTheme(
+      var(--text-color-crimson),
+      var(--text-color-crimson-hover),
+      var(--text-color-crimson-active),
+      $isLink: true,
+    );
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.round-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1rem;
+  min-height: 1rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  color: var(--text-color-light);
+
+  img.icon {
+    margin: 0;
+  }
+}

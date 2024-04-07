@@ -1,0 +1,10 @@
+.login-card {
+  height: 75%;
+  max-height: 31.25rem;
+  width: 40%;
+  max-width: 25rem;
+
+  &__form {
+    justify-content: space-between;
+  }
+}

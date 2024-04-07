@@ -1,0 +1,10 @@
+.register-card {
+  height: 90%;
+  max-height: 43.75rem;
+  width: 40%;
+  max-width: 25rem;
+
+  &__form {
+    justify-content: space-between;
+  }
+}

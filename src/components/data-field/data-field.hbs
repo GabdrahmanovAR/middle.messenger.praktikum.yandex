@@ -1,0 +1,17 @@
+<div class="data-field">
+  <input
+    type="{{type}}"
+
+    {{#if name}}
+    name="{{name}}"
+    {{/if}}
+
+    class="data-field__input{{#if direction}} data-field__input_{{direction}}{{/if}}"
+    placeholder=""
+    value="{{value}}"
+
+    {{#unless edit}}
+    readonly
+    {{/unless}}
+  />
+</div>

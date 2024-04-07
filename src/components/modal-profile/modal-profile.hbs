@@ -1,0 +1,26 @@
+<div class="container center modal-container">
+  <div class="profile-window">
+    <div class="profile-window__header">
+      <span class="profile-window__title{{#if error}}profile-window__title_error{{/if}}">
+        {{#if error}}
+          Ошибка, попробуйте еще раз
+        {{else if success}}
+          Файл загружен
+        {{else}}
+          {{title}}
+        {{/if}}
+      </span>
+    </div>
+    <form action="" class="profile-window__form">
+      <div class="profile-window__form-content">
+        {{> InputFile label="Выберите файл на компьютере" type="image/*"}}
+      </div>
+      <div class="profile-window__footer">
+        {{> Button type="submit" label="Поменять" isRectangle=true}}
+        <div class="profile-window__validation">
+          Нужно выбрать файл
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

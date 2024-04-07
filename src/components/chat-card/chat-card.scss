@@ -1,0 +1,95 @@
+@mixin textWithDots($lineClamp) {
+  -webkit-line-clamp: $lineClamp;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@mixin avatar() {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+}
+
+.chat-card {
+  display: flex;
+  padding: 0.25rem 0.5rem;
+  width: 100%;
+  cursor: pointer;
+  position: relative;
+
+  &__avatar {
+    padding: 0.25rem;
+  }
+
+  &__img {
+    
+    img {
+      @include avatar();
+      object-fit: cover;
+    }
+
+    &_default {
+      @include avatar();
+      background-color: var(--background-color-light);
+    }
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+    padding: 0.25rem;
+  }
+
+  &__name {
+    font-weight: bold;
+    @include textWithDots(1);
+  }
+
+  &__message {
+    color: var(--text-color-label);
+    @include textWithDots(2);
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem;
+  }
+
+  &__date {
+    color: var(--text-color-label);
+    font-size: 0.8rem;
+  }
+
+  &__badge {
+    --size: 1.375rem;
+    --padding: 0.4375rem;
+
+    border-radius: calc(var(--size) / 2);
+    font-size: 0.875rem;
+    text-align: center;
+    height: var(--size);
+    min-width: var(--size);
+    line-height: var(--size);
+    padding: 0 var(--padding);
+
+    background-color: var(--main-color);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &_active {
+    background-color: var(--light-active-color);
+  }
+
+  &:not(.chat-card_active):hover {
+    background-color: var(--light-hover-color);
+  }
+}
