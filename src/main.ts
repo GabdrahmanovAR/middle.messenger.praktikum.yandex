@@ -4,6 +4,7 @@ import './utils/hb-helpers';
 import * as Components from './components';
 import { navigate } from './@core/Navigate';
 import { registerComponent } from './@core/RegisterComponent';
+import { IButtonProps } from './@models/components';
 // import * as Pages from './pages';
 // import { NavigatePage } from '../assets/constants/common';
 
@@ -55,5 +56,5 @@ registerComponent('Field', Components.Field);
 registerComponent('ErrorLine', Components.ErrorLine);
 
 document.addEventListener('DOMContentLoaded', () => {
-  navigate('login');
+  navigate('registration');
 });

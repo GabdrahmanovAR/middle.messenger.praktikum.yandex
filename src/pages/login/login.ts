@@ -21,21 +21,20 @@ export default class LoginPage extends Block<ILoginPageProps> {
           console.log({ login, password });
           (this.refs.submit as Button).setProps({ label: 'Заходим' });
 
-          let interval = 5;
+          let interval = 2;
           const navigateDelay = setInterval(() => {
-            console.log(`Переход на страницу регистрации через - ${interval}.`);
+            console.log(`Переход на страницу чатов через - ${interval}.`);
             interval -= 1;
 
             if (interval === 0) {
               clearInterval(navigateDelay);
-              navigate('registration');
             }
           }, 1000);
         }
       },
       onCreateAccount: (event: Event) => {
         event.preventDefault();
-        console.log('Перенаправление на страницу регистрации');
+        navigate('registration');
       },
     });
   }

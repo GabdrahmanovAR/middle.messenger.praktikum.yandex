@@ -221,11 +221,11 @@ class Block<Props extends object, Refs extends RefType = RefType> {
     });
   }
 
-  show() {
+  show(): void {
     this.getContent()!.style.display = 'block';
   }
 
-  hide() {
+  hide(): void {
     this.getContent()!.style.display = 'none';
   }
 }

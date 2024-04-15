@@ -12,8 +12,8 @@ export default class Field extends Block<IFieldProps> {
     });
   }
 
-  public getValue(): string | null {
-    if (!this.validate()) {
+  public getValue(withValidate = true): string | null {
+    if (withValidate && !this.validate()) {
       return null;
     }
 
