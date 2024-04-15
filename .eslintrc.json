@@ -40,6 +40,9 @@
     "no-multi-spaces": "error",
     "eslint-plugin-import/prefer-default-export": "off",
     "import/prefer-default-export": "off",
-    "import/no-extraneous-dependencies": "off"
+    "import/no-extraneous-dependencies": "off",
+    "no-underscore-dangle": "off",
+    "class-methods-use-this": "off",
+    "@typescript-eslint/explicit-function-return-type": "error"
   }
 }

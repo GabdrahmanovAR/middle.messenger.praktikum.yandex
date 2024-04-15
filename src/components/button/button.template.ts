@@ -1,3 +1,4 @@
+const buttonTemplate = `
 {{#if isRectangle}}
   {{#if icon}}
     <button 
@@ -40,3 +41,6 @@
     <img class="icon" src="{{icon}}" alt="Icon">
   </button>
 {{/if}}
+`;
+
+export default buttonTemplate;
