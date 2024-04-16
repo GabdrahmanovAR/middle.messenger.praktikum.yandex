@@ -13,7 +13,7 @@ class Block<Props extends object> {
 
   public id = uuid();
 
-  protected props: Props;
+  protected _props: Props;
 
   protected children: Block<Props>[] = [];
 
@@ -26,7 +26,7 @@ class Block<Props extends object> {
 
     const { props, children } = this.getChildrenAndProps(propsWithChildren);
 
-    this.props = this.makePropsProxy(props);
+    this._props = this.makePropsProxy(props);
     this.children = children;
 
     this.eventBus = (): EventBus => eventBus;
@@ -34,6 +34,14 @@ class Block<Props extends object> {
     this.registerEvents(eventBus);
 
     eventBus.emit(Block.EVENTS.INIT);
+  }
+
+  public get element(): HTMLElement | null {
+    return this._element;
+  }
+
+  public get props(): Props {
+    return this._props;
   }
 
   private _init(): void {
@@ -45,7 +53,7 @@ class Block<Props extends object> {
   protected init(): void {}
 
   private addEvents(): void {
-    const { events = {} } = this.props;
+    const { events = {} } = this._props;
 
     Object.keys(events).forEach((eventName) => {
       if (this._element) {
@@ -89,48 +97,23 @@ class Block<Props extends object> {
     return true;
   }
 
-  /**
-   * Хелпер, который проверяет, находится ли элемент в DOM дереве
-   * И есть нет, триггерит событие COMPONENT_WILL_UNMOUNT
-   */
-  // _checkInDom(): void {
-  //   const elementInDOM = document.body.contains(this._element);
-
-  //   if (elementInDOM) {
-  //     setTimeout(() => this._checkInDom(), 1000);
-  //     return;
-  //   }
-
-  //   this.eventBus().emit(Block.EVENTS.FLOW_CWU, this.props);
-  // }
-
-  // _componentWillUnmount(): void {
-  //   this.componentWillUnmount();
-  // }
-
-  // componentWillUnmount(): void {}
-
   setProps = (nextProps: object): void => {
     if (!nextProps) {
       return;
     }
 
-    const needUpdateProps = Object.keys(nextProps).some((key: string) => nextProps[key] !== this.props[key]);
+    const needUpdateProps = Object.keys(nextProps).some((key: string) => nextProps[key] !== this._props[key]);
 
     if (needUpdateProps) {
-      Object.assign(this.props, nextProps);
+      Object.assign(this._props, nextProps);
     }
   };
-
-  get element(): HTMLElement | null {
-    return this._element;
-  }
 
   private _render(): void {
     // сохранение значения поля инпут при ререндеринге
     // const inputValue = this._element?.querySelector('input')?.value;
 
-    const fragment = this.compile(this.render(), this.props);
+    const fragment = this.compile(this.render(), this._props);
 
     const newElement = fragment.firstElementChild as HTMLElement;
 

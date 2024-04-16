@@ -31,7 +31,7 @@ export default class LoginPage extends Block<ILoginPageProps> {
       onClick: onLoginBind,
     });
     const ButtonLink = new Button({
-      label: 'Нет аккаунта',
+      label: 'Нет аккаунта?',
       type: 'button',
       isLink: true,
       onClick: onCreateAccountBind,

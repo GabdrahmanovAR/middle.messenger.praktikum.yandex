@@ -1,20 +1,21 @@
 import * as Pages from '../pages';
+import { fields } from '../pages/login/login.const';
 
 type TRoute = 'login' | 'registration';
 
 const pages = {
-  login: Pages.LoginPage,
-  registration: Pages.RegistrationPage,
+  login: [Pages.LoginPage],
+  registration: [Pages.RegistrationPage, { fields }],
 };
 
 export function navigate(route: TRoute): void {
+  const [Source, context] = pages[route];
   const container = document.getElementById('app');
 
   if (container) {
     container.innerHTML = '';
 
-    const Component = pages[route];
-    const component = new Component();
+    const component = new Source(context);
     const content = component.getContent();
 
     if (content) {

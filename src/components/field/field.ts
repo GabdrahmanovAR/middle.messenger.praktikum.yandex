@@ -16,11 +16,11 @@ export default class Field extends Block<IFieldProps> {
     const validateBind = this.validate.bind(this);
 
     const InputField = new Input({
-      type: this.props.type,
-      name: this.props.name,
-      placeholder: this.props.label,
+      type: this._props.type,
+      name: this._props.name,
+      placeholder: this._props.label,
       classes: 'field__input',
-      required: this.props.required,
+      required: this._props.required,
       onBlur: validateBind,
     });
     const Error = new ErrorLine({
@@ -44,7 +44,7 @@ export default class Field extends Block<IFieldProps> {
 
   private validate(): boolean {
     const inputValue = ((this.children.InputField as Input)?.element as HTMLInputElement).value;
-    const validateMessage = this.props.validate?.(inputValue);
+    const validateMessage = this._props.validate?.(inputValue);
 
     if (validateMessage) {
       this.setProps({ error: true });

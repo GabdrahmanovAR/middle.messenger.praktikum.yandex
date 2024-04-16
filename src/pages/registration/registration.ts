@@ -1,56 +1,97 @@
+import * as validate from './../../utils/validate';
 import Block from '../../@core/Block';
-import { IRegistrationPageProps } from '../../@models/pages';
+import { ILoginField, IRegistrationPageProps } from '../../@models/pages';
 import RegistrationPageTemplate from './registration.template';
-import * as validate from '../../utils/validate';
-import { Field } from '../../components';
+import { Button, Field } from '../../components';
 import { navigate } from '../../@core/Navigate';
 
 export default class RegistrationPage extends Block<IRegistrationPageProps> {
-  constructor() {
+  constructor(props: IRegistrationPageProps) {
+    const registrationFields = props.fields.reduce((acc, data: ILoginField) => {
+      const component = new Field({
+        label: data.label,
+        name: data.name,
+        type: data.type,
+        required: data.required,
+        validate: data.validate,
+      });
+      // acc[component.id] = component;
+      acc[data.name] = component;
+      return acc;
+    }, {});
+
     super({
-      validate: {
-        email: validate.email,
-        login: validate.login,
-        password: validate.password,
-        name: validate.name,
-        phone: validate.phone,
-        repeatPassword: (value: string) => this.repeatPassword(value),
-      },
-      onSubmit: (event: Event) => {
-        event.preventDefault();
-        let allValid = true;
-
-        const formValues: Record<string, unknown> = {};
-        const formKeys = Object.keys(this.refs);
-
-        formKeys.forEach((key: string) => {
-          formValues[key] = (this.refs[key] as Field)?.getValue();
-
-          if (!formValues[key]) {
-            allValid = false;
-          }
-        });
-
-        if (allValid) {
-          console.log(formValues);
-        } else {
-          console.log('form not valid');
-        }
-      },
-      onLogin: (event: Event) => {
-        event.preventDefault();
-        navigate('login');
-      },
+      ...props,
+      fieldKeys: Object.keys(registrationFields),
+      ...registrationFields,
     });
   }
 
+  protected init(): void {
+    const onSubmitBind = this.onSubmit.bind(this);
+    const onLoginBind = this.onLogin.bind(this);
+    const repeatPasswordBind = this.repeatPassword.bind(this);
+
+    const ButtonSubmit = new Button({
+      label: 'Зарегистрироваться',
+      type: 'submit',
+      isRectangle: true,
+      onClick: onSubmitBind,
+    });
+    const ButtonLink = new Button({
+      label: 'Войти',
+      type: 'button',
+      isLink: true,
+      onClick: onLoginBind,
+    });
+
+    (this.children.repeat_password as Field).setProps({ validate: repeatPasswordBind });
+
+    this.children = {
+      ...this.children,
+      ButtonSubmit,
+      ButtonLink,
+    };
+  }
+
+  private onSubmit(event: Event): void {
+    event.preventDefault();
+    let allValid = true;
+
+    const formValues: Record<string, unknown> = {};
+    const formKeys = Object.keys(this.children);
+
+    formKeys.forEach((key: string) => {
+      if (this.children[key] instanceof Field) {
+        const fieldComponent = this.children[key] as Field;
+        formValues[fieldComponent.props.name] = (fieldComponent)?.getValue();
+
+        if (!formValues[key]) {
+          allValid = false;
+        }
+      }
+    });
+
+    if (allValid) {
+      console.log(formValues);
+    } else {
+      console.log('form not valid');
+    }
+  }
+
+  private onLogin(event: Event): void {
+    event.preventDefault();
+    navigate('login');
+  }
+
   private repeatPassword(repeatPasswordValue: string): string {
-    const passwordValue = (this.refs.password as Field).getValue(false);
+    const passwordValue = (this.children.password as Field).getValue(false);
 
     return validate.repeatPassword(passwordValue, repeatPasswordValue);
   }
 
   protected render(): string {
-    return RegistrationPageTemplate;
+    const fieldsComponents = this._props.fieldKeys.map((key: string) => `{{{ ${key} }}}`).join('');
+    return RegistrationPageTemplate.replace('#fields', fieldsComponents);
   }
 }

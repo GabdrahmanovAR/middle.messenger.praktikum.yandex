@@ -1,7 +1,7 @@
 export interface IInputProps {
   type: string;
-  name: string;
   classes?: string;
+  name: string;
   value?: string;
   placeholder?: string;
   required?: boolean;
@@ -11,8 +11,8 @@ export interface IInputProps {
 
 export interface IFieldProps {
   type: string;
-  name: string;
   label: string;
+  name: string;
   required?: boolean;
   error?: boolean;
   validate?: (value: string) => void;
