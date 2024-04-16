@@ -21,7 +21,7 @@ export interface IFieldProps {
 
 export interface IErrorLineProps {
   classes: string;
-  error: string;
+  error?: string;
 }
 
 export interface IButtonProps {

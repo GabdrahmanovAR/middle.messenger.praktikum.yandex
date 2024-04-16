@@ -12,26 +12,48 @@ export default class Field extends Block<IFieldProps> {
     });
   }
 
+  protected init(): void {
+    const validateBind = this.validate.bind(this);
+
+    const InputField = new Input({
+      type: this.props.type,
+      name: this.props.name,
+      placeholder: this.props.label,
+      classes: 'field__input',
+      required: this.props.required,
+      onBlur: validateBind,
+    });
+    const Error = new ErrorLine({
+      classes: 'field__validation',
+    });
+
+    this.children = {
+      ...this.children,
+      InputField,
+      Error,
+    };
+  }
+
   public getValue(withValidate = true): string | null {
     if (withValidate && !this.validate()) {
       return null;
     }
 
-    return ((this.refs.input as Input)?.element as HTMLInputElement).value;
+    return ((this.children.InputField as Input)?.element as HTMLInputElement).value;
   }
 
   private validate(): boolean {
-    const inputValue = ((this.refs.input as Input)?.element as HTMLInputElement).value;
+    const inputValue = ((this.children.InputField as Input)?.element as HTMLInputElement).value;
     const validateMessage = this.props.validate?.(inputValue);
 
     if (validateMessage) {
       this.setProps({ error: true });
-      (this.refs.errorLine as ErrorLine)?.setProps({ error: validateMessage });
+      (this.children.Error as ErrorLine)?.setProps({ error: validateMessage });
       return false;
     }
 
     this.setProps({ error: undefined });
-    (this.refs.errorLine as ErrorLine)?.setProps({ error: undefined });
+    (this.children.Error as ErrorLine)?.setProps({ error: undefined });
     return true;
   }
 
