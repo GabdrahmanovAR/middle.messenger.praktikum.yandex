@@ -82,6 +82,12 @@ a {
   background-repeat: no-repeat;
 }
 
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .container {
   height: 100%;
   width: 100%;
@@ -91,16 +97,15 @@ a {
 }
 
 .modal-container {
-  position: relative;
+  display: none;
+  position: absolute;
   z-index: 999;
   background-color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
-}
 
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  &_visible {
+    display: inherit;
+  }
 }
 
 .card {

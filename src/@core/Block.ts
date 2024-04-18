@@ -64,6 +64,16 @@ class Block<Props extends object> {
     });
   }
 
+  private removeEvents(): void {
+    const { events = {} } = this._props;
+
+    Object.keys(events).forEach((eventName) => {
+      if (this._element) {
+        this._element.removeEventListener(eventName, events[eventName]);
+      }
+    });
+  }
+
   private registerEvents(eventBus: EventBus): void {
     eventBus.on(Block.EVENTS.INIT, this._init.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
@@ -110,8 +120,7 @@ class Block<Props extends object> {
   };
 
   private _render(): void {
-    // сохранение значения поля инпут при ререндеринге
-    // const inputValue = this._element?.querySelector('input')?.value;
+    this.removeEvents();
 
     const fragment = this.compile(this.render(), this._props);
 
@@ -124,14 +133,6 @@ class Block<Props extends object> {
     this._element = newElement;
 
     this.addEvents();
-
-    // Восстановление значения поля инпут после ререндеринга
-    // if (inputValue && this._element) {
-    //   const input = this._element.querySelector('input');
-    //   if (input) {
-    //     input.value = inputValue;
-    //   }
-    // }
   }
 
   private compile(template: string, context: any): DocumentFragment {

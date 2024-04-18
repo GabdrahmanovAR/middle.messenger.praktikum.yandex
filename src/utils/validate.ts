@@ -71,8 +71,9 @@ export const email = (value: string): string => {
 };
 
 export const phone = (value: string): string => {
-  const DIGITS_ONLY_REGEX = /^\d+$/;
-  const PHONE_LENGTH_REGEX = /^\d{10,15}$/;
+  const DIGITS_ONLY_REGEX = /^\+?\d+$/;
+  // const DIGITS_ONLY_REGEX = /^+?\d+$/;
+  const PHONE_LENGTH_REGEX = /^\+?\d{10,15}$/;
 
   if (value === EMPTY_STRING) {
     return 'Необходимо заполнить поле';
@@ -103,6 +104,14 @@ export const name = (value: string): string => {
 
   if (!CAPITAL_LETTER_REGEX.test(value)) {
     return 'Первая буква имени должна быть заглавной';
+  }
+
+  return EMPTY_STRING;
+};
+
+export const empty = (value: string): string => {
+  if (value === EMPTY_STRING) {
+    return 'Необходимо заполнить поле';
   }
 
   return EMPTY_STRING;

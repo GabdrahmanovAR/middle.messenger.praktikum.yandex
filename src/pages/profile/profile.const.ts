@@ -1,79 +1,82 @@
-interface IDataField {
+import * as validate from '../../utils/validate';
+
+export interface IProfileField {
   label: string;
   value: string;
   type: string;
   name: string;
-  edit?: boolean;
-  direction?: string;
+  editable?: boolean;
+  validate?: (value: string) => string;
+  last?: boolean;
 }
 
-export const userData: IDataField[] = [
+export const dataFields: IProfileField[] = [
   {
     label: 'Почта',
     value: 'pochta@yandex.ru',
     type: 'email',
     name: 'email',
-    direction: 'right',
+    validate: validate.email,
   },
   {
     label: 'Логин',
     value: 'ivanivanov',
     type: 'text',
     name: 'login',
-    direction: 'right',
+    validate: validate.login,
   },
   {
     label: 'Имя',
     value: 'Иван',
     type: 'text',
     name: 'first_name',
-    direction: 'right',
+    validate: validate.name,
   },
   {
     label: 'Фамилия',
     value: 'Иванов',
     type: 'text',
     name: 'second_name',
-    direction: 'right',
+    validate: validate.name,
   },
   {
     label: 'Имя в чате',
     value: 'Иван',
     type: 'text',
     name: 'display_name',
-    direction: 'right',
+    validate: validate.empty,
   },
   {
     label: 'Телефон',
     value: '+7 (909) 967 30 30',
     type: 'text',
     name: 'phone',
-    direction: 'right',
+    validate: validate.phone,
+    last: true,
   },
 ];
-export const changePassword: IDataField[] = [
+export const passwordFields: IProfileField[] = [
   {
     label: 'Старый пароль',
     value: 'паролька',
     type: 'password',
     name: 'oldPassword',
-    edit: true,
-    direction: 'right',
+    editable: true,
+    validate: validate.empty,
   },
   {
     label: 'Новый пароль',
-    value: 'паролька1',
+    value: '',
     type: 'password',
     name: 'newPassword',
-    edit: true,
-    direction: 'right',
+    editable: true,
+    validate: validate.password,
   },
   {
     label: 'Повторите новый пароль',
-    value: 'паролька1',
+    value: '',
     type: 'password',
     name: 'repeatPassword',
-    edit: true,
-    direction: 'right',
+    editable: true,
   },
 ];

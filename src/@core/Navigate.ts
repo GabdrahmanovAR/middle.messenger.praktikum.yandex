@@ -1,11 +1,13 @@
 import * as Pages from '../pages';
 import { fields } from '../pages/login/login.const';
+import { dataFields, passwordFields } from '../pages/profile/profile.const';
 
-type TRoute = 'login' | 'registration';
+type TRoute = 'login' | 'registration' | 'profile';
 
 const pages = {
   login: [Pages.LoginPage],
   registration: [Pages.RegistrationPage, { fields }],
+  profile: [Pages.ProfilePage, { dataFields, passwordFields }],
 };
 
 export function navigate(route: TRoute): void {

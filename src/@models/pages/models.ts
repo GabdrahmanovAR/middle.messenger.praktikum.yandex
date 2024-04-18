@@ -1,4 +1,6 @@
-export interface ILoginPageProps {
+import { IProps } from '../common';
+
+export interface ILoginPageProps extends IProps {
 }
 
 export interface ILoginField {
@@ -8,9 +10,7 @@ export interface ILoginField {
   name: string;
   validate?: (value: string) => string,
 }
-export interface IRegistrationPageProps {
+export interface IRegistrationPageProps extends IProps {
   fields: ILoginField[],
-  fieldComponents: string;
   fieldKeys: string[];
-  registrationFieldsKeys: string[];
 }

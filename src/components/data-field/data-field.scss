@@ -1,5 +1,18 @@
 .data-field {
-  width: max-content;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-color-light);
+  position: relative;
+
+  &__content {
+    width: max-content;
+  }
+
+  &__label {
+    font-weight: var(--font-weight-600);
+  }
 
   &__input {
     border: 0;
@@ -7,19 +20,30 @@
     font-size: 1rem;
     color: var(--text-color-main);
     background: transparent;
-
-    &_right {
-      text-align: right;
-    }
-
-    &_left {
-      text-align: left;
-    }
+    text-align: right;
 
     &:read-only {
       color: var(--text-color-label);
       user-select: none;
       pointer-events: none;
     }
+  }
+
+  &_last {
+    border-bottom: none;
+  }
+
+  &_single {
+    border-bottom: none;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__validation {
+    position: absolute;
+    color: crimson;
+    right: 0;
+    bottom: -0.85rem;
+    font-size: 0.75rem;
   }
 }

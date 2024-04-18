@@ -1,4 +1,4 @@
-#file-upload {
+#file-upload, #button-upload {
   display: none;
 }
 
@@ -72,6 +72,7 @@
     span {
       font-size: 0.875rem;
       color: white;
+      user-select: none;
     }
   }
 

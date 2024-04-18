@@ -23,6 +23,10 @@ const inputTemplate = `
   {{#if required}}
     required
   {{/if}}
+
+  {{#unless editable}}
+    readonly
+  {{/unless}}
 />
 `;
 

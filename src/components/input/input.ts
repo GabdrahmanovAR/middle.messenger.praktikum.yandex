@@ -8,6 +8,8 @@ export default class Input extends Block<IInputProps> {
       ...props,
       events: {
         blur: props.onBlur,
+        click: props.onClick,
+        change: props.onChange,
       },
     });
   }

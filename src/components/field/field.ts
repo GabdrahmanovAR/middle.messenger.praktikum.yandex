@@ -5,22 +5,22 @@ import { Input } from '../input';
 import FieldTemplate from './field.template';
 
 export default class Field extends Block<IFieldProps> {
-  constructor(props: IFieldProps) {
-    super({
-      ...props,
-      onValidate: () => this.validate(),
-    });
-  }
+  // constructor(props: IFieldProps) {
+  //   super({
+  //     ...props,
+  //     onValidate: () => this.validate(),
+  //   });
+  // }
 
   protected init(): void {
     const validateBind = this.validate.bind(this);
 
     const InputField = new Input({
-      type: this._props.type,
-      name: this._props.name,
-      placeholder: this._props.label,
+      type: this.props.type,
+      name: this.props.name,
+      placeholder: this.props.label,
       classes: 'field__input',
-      required: this._props.required,
+      required: this.props.required,
       onBlur: validateBind,
     });
     const Error = new ErrorLine({

@@ -32,6 +32,9 @@
   &__form-content {
     flex-grow: 1;
     padding: 2rem 0;
+    align-items: center;
+    display: flex;
+    justify-content: center;
   }
 
   &__footer {

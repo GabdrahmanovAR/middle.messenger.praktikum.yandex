@@ -1,5 +1,6 @@
 .profile-container {
   display: flex;
+  position: relative;
 }
 
 .profile-back {
@@ -41,31 +42,25 @@
     font-weight: var(--font-weight-600);
   }
 
-  &__label {
-    font-weight: var(--font-weight-600);
+  &__save {
+    width: 60%;
+    min-width: 15rem;
   }
 
   &__item {
-    display: flex;
-    justify-content: space-between;
     margin-bottom: 0.5rem;
     padding: 0.5rem 0;
     border-bottom: 1px solid var(--border-color-light);
-
+    
     &_last {
       border-bottom: none;
     }
-
+  
     &_single {
       border-bottom: none;
       display: flex;
       justify-content: center;
     }
-  }
-
-  &__save {
-    width: 60%;
-    min-width: 15rem;
   }
 
   >* {

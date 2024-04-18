@@ -1,4 +1,4 @@
-import * as validate from './../../utils/validate';
+import * as validate from '../../utils/validate';
 import Block from '../../@core/Block';
 import { ILoginField, IRegistrationPageProps } from '../../@models/pages';
 import RegistrationPageTemplate from './registration.template';
@@ -15,7 +15,6 @@ export default class RegistrationPage extends Block<IRegistrationPageProps> {
         required: data.required,
         validate: data.validate,
       });
-      // acc[component.id] = component;
       acc[data.name] = component;
       return acc;
     }, {});
@@ -45,7 +44,7 @@ export default class RegistrationPage extends Block<IRegistrationPageProps> {
       onClick: onLoginBind,
     });
 
-    (this.children.repeat_password as Field).setProps({ validate: repeatPasswordBind });
+    (this.children.repeatPassword as Field).setProps({ validate: repeatPasswordBind });
 
     this.children = {
       ...this.children,
@@ -91,7 +90,7 @@ export default class RegistrationPage extends Block<IRegistrationPageProps> {
   }
 
   protected render(): string {
-    const fieldsComponents = this._props.fieldKeys.map((key: string) => `{{{ ${key} }}}`).join('');
+    const fieldsComponents = this.props.fieldKeys.map((key: string) => `{{{ ${key} }}}`).join('');
     return RegistrationPageTemplate.replace('#fields', fieldsComponents);
   }
 }
