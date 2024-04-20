@@ -3,12 +3,24 @@ import Handlebars from 'handlebars';
 import * as Pages from './pages';
 import { fields } from './pages/registration/registration.const';
 import { dataFields, passwordFields } from './pages/profile/profile.const';
+import { IProps } from './@models/common';
+import Block from './@core/Block';
 
-const pages = {
-  login: [Pages.LoginPage],
+type TPage = new (...args: any[]) => Block<IProps>;
+
+type TContext = {
+  [key: string]: unknown;
+};
+
+type TPages = {
+  [key: string]: [TPage, TContext | undefined];
+};
+
+const pages: TPages = {
+  login: [Pages.LoginPage, {}],
   registration: [Pages.RegistrationPage, { fields }],
   profile: [Pages.ProfilePage, { dataFields, passwordFields }],
-  chat: [Pages.ChatPage],
+  chat: [Pages.ChatPage, {}],
 };
 
 export function navigate(route: string): void {

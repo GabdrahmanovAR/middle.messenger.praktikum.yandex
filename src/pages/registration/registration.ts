@@ -6,7 +6,6 @@ import { Button, Field } from '../../components';
 
 export default class RegistrationPage extends Block<IRegistrationPageProps> {
   constructor(props: IRegistrationPageProps) {
-    console.log(props.fields);
     const registrationFields = props.fields.reduce((acc: Record<string, Field>, data: IField) => {
       const component = new Field({
         label: data.label,

@@ -45,12 +45,12 @@ export default class Field extends Block<IFieldProps> {
 
     if (validateMessage) {
       this.setProps({ error: true });
-      this.children.Error.setProps({ error: validateMessage });
+      this.children.Error?.setProps({ error: validateMessage });
       return false;
     }
 
     this.setProps({ error: undefined });
-    this.children.Error.setProps({ error: undefined });
+    this.children.Error?.setProps({ error: undefined });
     return true;
   }
 

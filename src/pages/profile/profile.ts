@@ -97,7 +97,7 @@ export default class ProfilePage extends Block<IProfilePageProps> {
       title: 'Загрузите файл',
     });
 
-    this.children.repeatPassword.setProps({ validate: repeatPasswordBind });
+    this.children.repeatPassword?.setProps({ validate: repeatPasswordBind });
 
     this.children = {
       ...this.children,
@@ -113,7 +113,7 @@ export default class ProfilePage extends Block<IProfilePageProps> {
 
   private onAvatarChange(event: Event): void {
     event.preventDefault();
-    this.children.ProfileModal.setProps({ visible: true });
+    this.children.ProfileModal?.setProps({ visible: true });
   }
 
   private onReturn(): void {

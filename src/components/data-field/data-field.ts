@@ -8,11 +8,13 @@ export default class DataField extends Block<IDataFieldProps> {
   constructor(props: IDataFieldProps) {
     super({
       ...props,
-      onEditStateChange: (state: boolean) => (this.children.InputField as Input).setProps({ readonly: state }),
+      onEditStateChange: (state: boolean) => this.children.InputField?.setProps({ readonly: state }),
       onValueChange: () => {
-        const input = (this.children.InputField as Input);
-        const value = (input.element as HTMLInputElement)?.value;
-        input.setProps({ value });
+        const input = this.children.InputField;
+        if (input?.element && input.element instanceof HTMLInputElement) {
+          const { value } = input.element;
+          input.setProps({ value });
+        }
       },
     });
   }
@@ -52,7 +54,6 @@ export default class DataField extends Block<IDataFieldProps> {
   }
 
   public clearError(): void {
-    // TODO поставить везде ? где вызывается метод у блока
     this.children.Error?.setProps({ error: undefined });
   }
 
@@ -61,11 +62,11 @@ export default class DataField extends Block<IDataFieldProps> {
     const validateMessage = this.props.validate?.(inputValue);
 
     if (validateMessage) {
-      (this.children.Error as ErrorLine)?.setProps({ error: validateMessage });
+      this.children.Error?.setProps({ error: validateMessage });
       return false;
     }
 
-    (this.children.Error as ErrorLine)?.setProps({ error: undefined });
+    this.children.Error?.setProps({ error: undefined });
     return true;
   }
 

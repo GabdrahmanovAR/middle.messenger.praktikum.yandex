@@ -95,7 +95,7 @@ class Block<Props extends IProps> {
     });
   }
 
-  protected componentDidMount(oldProps?: Props): void {}
+  protected componentDidMount(_oldProps?: Props): void {}
 
   public dispatchComponentDidMount(): void {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
@@ -107,7 +107,7 @@ class Block<Props extends IProps> {
     }
   }
 
-  protected componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+  protected componentDidUpdate(_oldProps: Props, _newProps: Props): boolean {
     return true;
   }
 
@@ -164,7 +164,7 @@ class Block<Props extends IProps> {
     return '';
   }
 
-  protected getContent(): HTMLElement | null {
+  public getContent(): HTMLElement | null {
     if (this.element?.parentNode?.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
       setTimeout(() => {
         if (this.element?.parentNode?.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) {

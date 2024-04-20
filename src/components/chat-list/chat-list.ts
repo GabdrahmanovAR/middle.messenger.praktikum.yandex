@@ -36,7 +36,7 @@ export default class ChatList extends Block<IChatListProps> {
         if (component.props.active) {
           this.setProps({ currentActive: component.props.id });
         }
-        component.setProps({ onClick: onChatCardClickBind });
+        component?.setProps({ onClick: onChatCardClickBind });
         component.updateOnClick();
       }
     });
