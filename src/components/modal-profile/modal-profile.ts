@@ -10,7 +10,7 @@ export default class ModalProfile extends Block<IModalProfileProps> {
     super({
       ...props,
       events: {
-        click: (event: MouseEvent) => {
+        click: (event: Event) => {
           const classNames = (event.target as HTMLElement).className;
           if (classNames.includes('modal-container')) {
             this.setProps({ visible: false });

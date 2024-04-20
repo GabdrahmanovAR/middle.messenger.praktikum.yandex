@@ -53,7 +53,7 @@ export default class ChatPage extends Block<IChatPageProps> {
   }
 
   private onPropertiesItemClick(itemName: string): void {
-    if (!itemName) {
+    if (!itemName || (itemName !== 'add' && itemName !== 'remove')) {
       return;
     }
 

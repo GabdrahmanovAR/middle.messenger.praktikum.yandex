@@ -164,7 +164,7 @@ class Block<Props extends IProps> {
     return '';
   }
 
-  protected getContent(): HTMLElement | null {
+  public getContent(): HTMLElement | null {
     if (this.element?.parentNode?.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
       setTimeout(() => {
         if (this.element?.parentNode?.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) {

@@ -44,8 +44,8 @@ export default class ModalUser extends Block<IModalUser> {
   }
 
   public updateChildrenState(): void {
-    this.children.FieldComponent.setProps({ label: this.props.fieldLabel });
-    this.children.ButtonComponent.setProps({ label: this.props.buttonLabel });
+    this.children.FieldComponent?.setProps({ label: this.props.fieldLabel });
+    this.children.ButtonComponent?.setProps({ label: this.props.buttonLabel });
   }
 
   private onClick(event: Event): void {

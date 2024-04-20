@@ -46,10 +46,9 @@ export default class DropdownList extends Block<IDropdownListProps> {
       const dropdownRect = dropdown.getBoundingClientRect();
       const containerRect = container.getBoundingClientRect();
 
-      // TODO у нижнией позиции не верный расчет по горизонтали
       let offsetTop: number | null = componentRect.bottom + indent;
       let offsetBottom: number | null = window.innerHeight - componentRect.top + indent;
-      let offsetLeft: number | null = componentRect.left - (window.innerWidth - containerRect.width);
+      let offsetLeft: number | null = componentRect.left;
       let offsetRight: number | null = containerRect.right - componentRect.right;
 
       if (offsetTop + dropdownRect.height > window.innerHeight) {
