@@ -5,7 +5,7 @@ export interface IProfileField {
   value: string;
   type: string;
   name: string;
-  editable?: boolean;
+  readonly?: boolean;
   validate?: (value: string) => string;
   last?: boolean;
 }
@@ -17,6 +17,7 @@ export const dataFields: IProfileField[] = [
     type: 'email',
     name: 'email',
     validate: validate.email,
+    readonly: true,
   },
   {
     label: 'Логин',
@@ -24,6 +25,7 @@ export const dataFields: IProfileField[] = [
     type: 'text',
     name: 'login',
     validate: validate.login,
+    readonly: true,
   },
   {
     label: 'Имя',
@@ -31,6 +33,7 @@ export const dataFields: IProfileField[] = [
     type: 'text',
     name: 'first_name',
     validate: validate.name,
+    readonly: true,
   },
   {
     label: 'Фамилия',
@@ -38,6 +41,7 @@ export const dataFields: IProfileField[] = [
     type: 'text',
     name: 'second_name',
     validate: validate.name,
+    readonly: true,
   },
   {
     label: 'Имя в чате',
@@ -45,6 +49,7 @@ export const dataFields: IProfileField[] = [
     type: 'text',
     name: 'display_name',
     validate: validate.empty,
+    readonly: true,
   },
   {
     label: 'Телефон',
@@ -53,6 +58,7 @@ export const dataFields: IProfileField[] = [
     name: 'phone',
     validate: validate.phone,
     last: true,
+    readonly: true,
   },
 ];
 export const passwordFields: IProfileField[] = [
@@ -61,7 +67,6 @@ export const passwordFields: IProfileField[] = [
     value: 'паролька',
     type: 'password',
     name: 'oldPassword',
-    editable: true,
     validate: validate.empty,
   },
   {
@@ -69,7 +74,6 @@ export const passwordFields: IProfileField[] = [
     value: '',
     type: 'password',
     name: 'newPassword',
-    editable: true,
     validate: validate.password,
   },
   {
@@ -77,6 +81,5 @@ export const passwordFields: IProfileField[] = [
     value: '',
     type: 'password',
     name: 'repeatPassword',
-    editable: true,
   },
 ];

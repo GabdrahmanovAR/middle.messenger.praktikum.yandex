@@ -13,7 +13,7 @@ export interface IInputProps extends IProps {
   onClick?: (event: Event) => void;
   onChange?: (event: Event) => void;
   events?: unknown;
-  editable?: boolean;
+  readonly?: boolean;
 }
 
 export interface IFieldProps extends IProps {

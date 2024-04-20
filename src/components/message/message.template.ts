@@ -1,3 +1,4 @@
+const messageTemplate = `
 <div class="message{{#if own}} own{{/if}}{{#if first}} first{{/if}}">
   <div class="message__content-wrapper">
     <div class="message__content">
@@ -19,3 +20,6 @@
       </div>
   </div>
 </div>
+`;
+
+export default messageTemplate;

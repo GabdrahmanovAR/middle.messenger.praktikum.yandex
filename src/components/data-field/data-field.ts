@@ -8,7 +8,7 @@ interface IDataFieldProps {
   label: string;
   value: string;
   name: string;
-  editable?: boolean;
+  readonly?: boolean;
   last?: boolean;
   validate?: (value: string) => void;
   onEditStateChange?: (state: boolean) => void;
@@ -19,7 +19,7 @@ export default class DataField extends Block<IDataFieldProps> {
   constructor(props: IDataFieldProps) {
     super({
       ...props,
-      onEditStateChange: (state: boolean) => (this.children.InputField as Input).setProps({ editable: state }),
+      onEditStateChange: (state: boolean) => (this.children.InputField as Input).setProps({ readonly: state }),
       onValueChange: () => {
         const input = (this.children.InputField as Input);
         const value = (input.element as HTMLInputElement)?.value;
@@ -36,7 +36,7 @@ export default class DataField extends Block<IDataFieldProps> {
       name: this.props.name,
       value: this.props.value,
       classes: 'data-field__input',
-      editable: this.props.editable,
+      readonly: this.props.readonly,
       onBlur: validateBind,
     });
     const Error = new ErrorLine({

@@ -34,6 +34,9 @@
 
   --scrollbar-width: 0.5rem;
 
+  --modal-z-index: 1001;
+  --dropdown-z-index: 101;
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -99,7 +102,7 @@ a {
 .modal-container {
   display: none;
   position: absolute;
-  z-index: 999;
+  z-index: var(--modal-z-index);
   background-color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
 

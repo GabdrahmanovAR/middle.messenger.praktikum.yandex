@@ -26,6 +26,7 @@ export default class ProfilePage extends Block<IProfilePageProps> {
         value: data.value,
         name: data.name,
         last: data.last,
+        readonly: data.readonly,
         validate: data.validate,
       });
       acc[data.name] = component;
@@ -38,7 +39,6 @@ export default class ProfilePage extends Block<IProfilePageProps> {
         value: data.value,
         name: data.name,
         last: data.last,
-        editable: data.editable,
         validate: data.validate,
       });
       acc[data.name] = component;
@@ -130,7 +130,7 @@ export default class ProfilePage extends Block<IProfilePageProps> {
   private onReturn(): void {
     console.log('Return');
     if (this.editDataActive) {
-      this.fieldsEditState(false);
+      this.fieldsEditState(true);
       this.setProps({ edit: false });
       this.editDataActive = false;
     } else if (this.ediPasswordActive) {
@@ -138,6 +138,7 @@ export default class ProfilePage extends Block<IProfilePageProps> {
       this.ediPasswordActive = false;
     } else {
       console.log('Возврат к чатам');
+      navigate('chat');
     }
 
     const formKeys = Object.keys(this.children);
@@ -196,7 +197,7 @@ export default class ProfilePage extends Block<IProfilePageProps> {
   private onEditData(): void {
     console.log('edit data');
     this.editDataActive = true;
-    this.fieldsEditState(true);
+    this.fieldsEditState(false);
 
     this.setProps({ edit: true });
   }

@@ -2,12 +2,13 @@ import * as Pages from '../pages';
 import { fields } from '../pages/login/login.const';
 import { dataFields, passwordFields } from '../pages/profile/profile.const';
 
-type TRoute = 'login' | 'registration' | 'profile';
+type TRoute = 'login' | 'registration' | 'profile' | 'chat';
 
 const pages = {
   login: [Pages.LoginPage],
   registration: [Pages.RegistrationPage, { fields }],
   profile: [Pages.ProfilePage, { dataFields, passwordFields }],
+  chat: [Pages.ChatPage],
 };
 
 export function navigate(route: TRoute): void {

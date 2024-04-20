@@ -1,3 +1,4 @@
+const chatCardTemplate = `
 <div class="chat-card {{#if active}}chat-card_active{{/if}}">
   <div class="chat-card__avatar">
     {{#if avatar}}
@@ -27,3 +28,6 @@
     {{/if}}
   </div>
 </div>
+`;
+
+export default chatCardTemplate;
