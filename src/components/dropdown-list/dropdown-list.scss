@@ -33,11 +33,13 @@
   &__item-icon {
     display: flex;
     align-items: center;
+    pointer-events: none;
   }
 
   &__item-name {
     padding-left: 1rem;
     user-select: none;
+    pointer-events: none;
   }
 
   &_visible {

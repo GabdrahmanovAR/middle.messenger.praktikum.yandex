@@ -1,4 +1,5 @@
-<div class="container center modal-container">
+const modalUserTemplate = `
+<div class="container center modal-container{{#if visible}} modal-container_visible{{/if}}">
   <div class="user-window">
     <div class="user-window__header">
       <span class="user-window__title">
@@ -7,16 +8,14 @@
     </div>
     <form action="" class="user-window__form">
       <div class="user-window__form-content">
-        {{> Field type="text" label="Логин"}}
+        {{{ FieldComponent }}}
       </div>
       <div class="user-window__footer">
-        {{#if add}}
-          {{> Button type="submit" label="Добавить" isRectangle=true}}
-        {{/if}}
-        {{#if delete}}
-          {{> Button type="submit" label="Удалить" isRectangle=true}}
-        {{/if}}
+        {{{ ButtonComponent }}}
       </div>
     </form>
   </div>
 </div>
+`;
+
+export default modalUserTemplate;

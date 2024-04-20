@@ -15,6 +15,7 @@ const chatTemplate = `
   <div class="chat-section">
     {{{ ChatContentComponent }}}
   </div>
+  {{{ UserModal }}}
 </div>
 `;
 

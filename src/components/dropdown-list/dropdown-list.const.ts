@@ -1,30 +1,36 @@
 export interface IDropDownList {
   icon: string;
+  title: string;
   name: string;
 }
 
 export const propertiesDropdownList: IDropDownList[] = [
   {
     icon: '/assets/icons/add_user.svg',
-    name: 'Добавить пользователя',
+    title: 'Добавить пользователя',
+    name: 'add',
   },
   {
     icon: '/assets/icons/delete_user.svg',
-    name: 'Удалить пользователя',
+    title: 'Удалить пользователя',
+    name: 'remove',
   },
 ];
 
 export const pinDropdownList: IDropDownList[] = [
   {
     icon: '/assets/icons/media.svg',
-    name: 'Фото или видео',
+    title: 'Фото или видео',
+    name: 'media',
   },
   {
     icon: '/assets/icons/file.svg',
-    name: 'Файл',
+    title: 'Файл',
+    name: 'file',
   },
   {
     icon: '/assets/icons/location.svg',
-    name: 'Локация',
+    title: 'Локация',
+    name: 'location',
   },
 ];

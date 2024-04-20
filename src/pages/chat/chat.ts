@@ -1,6 +1,6 @@
 import Block from '../../@core/Block';
 import { navigate } from '../../@core/Navigate';
-import { Button, ChatContent, ChatList, InputText } from '../../components';
+import { Button, ChatContent, ChatList, InputText, ModalUser } from '../../components';
 import { chatInfo, chatList } from './chat-list.const';
 import ChatTemplate from './chat.template';
 
@@ -10,6 +10,7 @@ interface IChatPageProps {
 export default class ChatPage extends Block<IChatPageProps> {
   protected init(): void {
     const onProfileButtonClickBind = this.onProfileButtonClick.bind(this);
+    const onPropertiesItemClickBind = this.onPropertiesItemClick.bind(this);
 
     const ProfileButton = new Button({
       label: 'Профиль',
@@ -30,7 +31,11 @@ export default class ChatPage extends Block<IChatPageProps> {
     });
     const ChatContentComponent = new ChatContent({
       chatInfo,
+      onModalOpen: (itemName: string): void => {
+        onPropertiesItemClickBind(itemName);
+      },
     });
+    const UserModal = new ModalUser({});
 
     this.children = {
       ...this.children,
@@ -38,11 +43,37 @@ export default class ChatPage extends Block<IChatPageProps> {
       InputTextField,
       ChatListComponent,
       ChatContentComponent,
+      UserModal,
     };
   }
 
   private onProfileButtonClick(): void {
     navigate('profile');
+  }
+
+  private onPropertiesItemClick(itemName: string): void {
+    if (!itemName) {
+      return;
+    }
+
+    if (itemName === 'add') {
+      (this.children.UserModal as ModalUser).setProps({
+        title: 'Добавить пользователя',
+        fieldLabel: 'Логин',
+        buttonLabel: 'Добавить',
+        visible: true,
+      });
+    }
+
+    if (itemName === 'remove') {
+      (this.children.UserModal as ModalUser).setProps({
+        title: 'Удалить пользователя',
+        fieldLabel: 'Логин',
+        buttonLabel: 'Удалить',
+        visible: true,
+      });
+    }
+    (this.children.UserModal as ModalUser).updateChildrenState();
   }
 
   protected render(): string {

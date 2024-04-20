@@ -10,10 +10,13 @@ import { pinDropdownList, propertiesDropdownList } from '../dropdown-list/dropdo
 
 interface IChatContentProps {
   chatInfo: IChatList;
+  onModalOpen: (itemName: string) => void;
 }
 
 export default class ChatContent extends Block<IChatContentProps> {
   protected init(): void {
+    this.setProps({ onModalOpen: this.props.onModalOpen });
+
     const onSendButtonClickBind = this.onSendButtonClick.bind(this);
     const onPropertiesButtonClickBind = this.onPropertiesButtonClick.bind(this);
     const onPinButtonClickBind = this.onPinButtonClick.bind(this);
@@ -49,10 +52,16 @@ export default class ChatContent extends Block<IChatContentProps> {
     const PropertiesDropdown = new DropDownList({
       list: propertiesDropdownList,
       appednTo: PropertiesButton.element,
+      onMenuItemSelect: (itemName: string): void => {
+        this.props.onModalOpen(itemName);
+      },
     });
     const PinDropdown = new DropDownList({
       list: pinDropdownList,
       appednTo: PinButton.element,
+      onMenuItemSelect: (value: string): void => {
+        this.props.onModalOpen(value);
+      },
     });
 
     this.children = {

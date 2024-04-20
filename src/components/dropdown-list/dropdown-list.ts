@@ -10,23 +10,39 @@ interface IDropdownListProps {
   bottom?: string;
   left?: string;
   right?: string;
+  onMenuItemSelect: (value: string) => void;
 }
 
 export default class DropdownList extends Block<IDropdownListProps> {
-  private onOuterClickBind!: (event: MouseEvent) => void;
+  private onElementClickBind!: (event: MouseEvent) => void;
 
-  public show(): void {
-    this.onOuterClickBind = this.onOuterClick.bind(this);
-    this.calculateDropDownPosition();
-
-    setTimeout(() => {
-      document.addEventListener('click', this.onOuterClickBind);
+  protected init(): void {
+    this.setProps({
+      onMenuItemSelect: this.props.onMenuItemSelect,
     });
   }
 
-  private onOuterClick(event: MouseEvent): void {
+  public show(): void {
+    this.onElementClickBind = this.onElementClick.bind(this);
+    this.calculateDropDownPosition();
+
+    setTimeout(() => {
+      document.addEventListener('click', this.onElementClickBind);
+    });
+  }
+
+  private onElementClick(event: MouseEvent): void {
+    console.log(event.target);
     if (!this.element?.contains(event.target as Node)) {
-      document.removeEventListener('click', this.onOuterClickBind);
+      document.removeEventListener('click', this.onElementClickBind);
+      this.setProps({ visible: false });
+    }
+    if (!(event.target instanceof HTMLElement)) {
+      return;
+    }
+    const attribute = event.target.getAttribute('name');
+    if (attribute) {
+      this.props.onMenuItemSelect(attribute);
       this.setProps({ visible: false });
     }
   }
@@ -95,12 +111,12 @@ export default class DropdownList extends Block<IDropdownListProps> {
     return `
     <div class="dropdown{{#if visible}} dropdown_visible{{/if}}" style="${this.positionStyle()}">
       ${this.props.list.map((list: IDropDownList) => `
-        <div class="dropdown__item">
+        <div name="${list.name}" class="dropdown__item">
           <div class="dropdown__item-icon">
             <img src="${list.icon}" alt="Dropdown list item icon">
           </div>
           <span class="dropdown__item-name">
-            ${list.name}
+            ${list.title}
           </span>
         </div>
       `).join('')}
