@@ -1,12 +1,5 @@
-export interface IChatList {
-  id: string;
-  name: string;
-  avatar?: string;
-  message?: string;
-  date?: string;
-  count?: string;
-  active?: boolean;
-}
+import { IChatList } from '../../@models/components';
+
 export const chatList: IChatList[] = [
   {
     id: 'id1',

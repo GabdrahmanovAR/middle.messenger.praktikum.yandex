@@ -134,11 +134,11 @@ a {
   height: 100%;
 }
 
-// .field-group {
-//   :not(:last-child) {
-//     margin-bottom: 0.5rem;
-//   }
-// }
+.field-group {
+  :not(:last-child) {
+    margin-bottom: 0.5rem;
+  }
+}
 
 .buttons-group {
   display: flex;

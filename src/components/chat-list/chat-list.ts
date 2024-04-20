@@ -1,17 +1,11 @@
 import Block from '../../@core/Block';
-import { IChatList } from '../../pages/chat/chat-list.const';
+import { IChatListProps, IChatList } from '../../@models/components';
 import { ChatCard } from '../chat-card';
 import ChatListTemplate from './chat-list.template';
 
-interface IChatListProps {
-  chatList: IChatList[];
-  fieldKeys?: string[];
-  currentActive?: string;
-}
-
 export default class ChatList extends Block<IChatListProps> {
   constructor(props: IChatListProps) {
-    const registrationFields = props.chatList.reduce((acc, data: IChatList) => {
+    const registrationFields = props.chatList.reduce((acc: Record<string, ChatCard>, data: IChatList) => {
       const component = new ChatCard({
         id: data.id,
         name: data.name,
@@ -51,8 +45,8 @@ export default class ChatList extends Block<IChatListProps> {
   private onChatCardClick(value: string): void {
     const { currentActive } = this.props;
     if (currentActive && currentActive !== value) {
-      (this.children[currentActive] as ChatCard).setProps({ active: false });
-      (this.children[value] as ChatCard).setProps({ active: true });
+      this.children[currentActive]?.setProps({ active: false });
+      this.children[value]?.setProps({ active: true });
       this.setProps({ currentActive: value });
     }
   }

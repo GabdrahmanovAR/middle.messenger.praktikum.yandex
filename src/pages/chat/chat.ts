@@ -1,11 +1,11 @@
 import Block from '../../@core/Block';
-import { navigate } from '../../@core/Navigate';
-import { Button, ChatContent, ChatList, InputText, ModalUser } from '../../components';
+import { IModalUser } from '../../@models/components';
+import { IChatPageProps } from '../../@models/pages';
+import {
+  Button, ChatContent, ChatList, InputText, ModalUser,
+} from '../../components';
 import { chatInfo, chatList } from './chat-list.const';
 import ChatTemplate from './chat.template';
-
-interface IChatPageProps {
-}
 
 export default class ChatPage extends Block<IChatPageProps> {
   protected init(): void {
@@ -35,7 +35,9 @@ export default class ChatPage extends Block<IChatPageProps> {
         onPropertiesItemClickBind(itemName);
       },
     });
-    const UserModal = new ModalUser({});
+    const UserModal = new ModalUser({
+      title: 'Управление пользователем',
+    });
 
     this.children = {
       ...this.children,
@@ -48,7 +50,6 @@ export default class ChatPage extends Block<IChatPageProps> {
   }
 
   private onProfileButtonClick(): void {
-    navigate('profile');
   }
 
   private onPropertiesItemClick(itemName: string): void {
@@ -56,24 +57,28 @@ export default class ChatPage extends Block<IChatPageProps> {
       return;
     }
 
+    const modalUser = this.children.UserModal;
+    const props: IModalUser = {
+      fieldLabel: 'Логин',
+      visible: true,
+    };
+
     if (itemName === 'add') {
-      (this.children.UserModal as ModalUser).setProps({
-        title: 'Добавить пользователя',
-        fieldLabel: 'Логин',
-        buttonLabel: 'Добавить',
-        visible: true,
-      });
+      props.title = 'Добавить пользователя';
+      props.buttonLabel = 'Добавить';
     }
 
     if (itemName === 'remove') {
-      (this.children.UserModal as ModalUser).setProps({
-        title: 'Удалить пользователя',
-        fieldLabel: 'Логин',
-        buttonLabel: 'Удалить',
-        visible: true,
-      });
+      props.title = 'Удалить пользователя';
+      props.buttonLabel = 'Удалить';
     }
-    (this.children.UserModal as ModalUser).updateChildrenState();
+
+    if (modalUser instanceof ModalUser) {
+      modalUser.setProps({ ...props });
+      modalUser.updateChildrenState();
+    } else {
+      throw new Error('Ошибка обновления модального окна');
+    }
   }
 
   protected render(): string {

@@ -3,13 +3,7 @@ import { Button } from '../button';
 import { Field } from '../field';
 import ModalUserTemplate from './modal-user.template';
 import * as validate from '../../utils/validate';
-
-export interface IModalUser {
-  title: string;
-  fieldLabel: string;
-  buttonLabel: string;
-  visible?: boolean;
-}
+import { IModalUser } from '../../@models/components';
 
 export default class ModalUser extends Block<IModalUser> {
   constructor(props: IModalUser) {
@@ -50,13 +44,15 @@ export default class ModalUser extends Block<IModalUser> {
   }
 
   public updateChildrenState(): void {
-    (this.children.FieldComponent as Field).setProps({ label: this.props.fieldLabel });
-    (this.children.ButtonComponent as Button).setProps({ label: this.props.buttonLabel });
+    this.children.FieldComponent.setProps({ label: this.props.fieldLabel });
+    this.children.ButtonComponent.setProps({ label: this.props.buttonLabel });
   }
 
   private onClick(event: Event): void {
     event.preventDefault();
-    const value = (this.children.FieldComponent as Field).getValue();
+    const field = this.children.FieldComponent;
+    const value = (field instanceof Field) && field.getValue();
+
     if (value) {
       console.log(value);
     }

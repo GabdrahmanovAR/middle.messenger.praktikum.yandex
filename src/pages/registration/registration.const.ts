@@ -1,9 +1,12 @@
-import { ILoginField } from '../../@models/pages';
+import { IField } from '../../@models/pages';
 import * as validate from '../../utils/validate';
 
-export const fields: ILoginField[] = [
+export const fields: IField[] = [
   {
     label: 'Почта', type: 'input', name: 'email', required: true, validate: validate.email,
+  },
+  {
+    label: 'Логин', type: 'input', name: 'login', required: true, validate: validate.email,
   },
   {
     label: 'Имя', type: 'input', name: 'first_name', required: true, validate: validate.name,

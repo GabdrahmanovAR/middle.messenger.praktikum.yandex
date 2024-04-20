@@ -20,6 +20,3 @@ const chatTemplate = `
 `;
 
 export default chatTemplate;
-
-// {{> ChatList chatList=chatList }}
-// {{> ChatContent info=chatInfo messages=messages }}

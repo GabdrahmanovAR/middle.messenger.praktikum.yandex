@@ -1,13 +1,13 @@
 import * as validate from '../../utils/validate';
 import Block from '../../@core/Block';
-import { ILoginField, IRegistrationPageProps } from '../../@models/pages';
+import { IField, IRegistrationPageProps } from '../../@models/pages';
 import RegistrationPageTemplate from './registration.template';
 import { Button, Field } from '../../components';
-import { navigate } from '../../@core/Navigate';
 
 export default class RegistrationPage extends Block<IRegistrationPageProps> {
   constructor(props: IRegistrationPageProps) {
-    const registrationFields = props.fields.reduce((acc, data: ILoginField) => {
+    console.log(props.fields);
+    const registrationFields = props.fields.reduce((acc: Record<string, Field>, data: IField) => {
       const component = new Field({
         label: data.label,
         name: data.name,
@@ -44,7 +44,7 @@ export default class RegistrationPage extends Block<IRegistrationPageProps> {
       onClick: onLoginBind,
     });
 
-    (this.children.repeatPassword as Field).setProps({ validate: repeatPasswordBind });
+    this.children.repeat_password?.setProps({ validate: repeatPasswordBind });
 
     this.children = {
       ...this.children,
@@ -80,7 +80,6 @@ export default class RegistrationPage extends Block<IRegistrationPageProps> {
 
   private onLogin(event: Event): void {
     event.preventDefault();
-    navigate('login');
   }
 
   private repeatPassword(repeatPasswordValue: string): string {

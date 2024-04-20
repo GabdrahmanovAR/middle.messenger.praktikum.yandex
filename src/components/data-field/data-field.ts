@@ -1,19 +1,8 @@
 import Block from '../../@core/Block';
+import { IDataFieldProps } from '../../@models/components';
 import { ErrorLine } from '../error-line';
 import { Input } from '../input';
 import DataFieldTemplate from './data-field.template';
-
-interface IDataFieldProps {
-  type: string;
-  label: string;
-  value: string;
-  name: string;
-  readonly?: boolean;
-  last?: boolean;
-  validate?: (value: string) => void;
-  onEditStateChange?: (state: boolean) => void;
-  onValueChange?: () => void;
-}
 
 export default class DataField extends Block<IDataFieldProps> {
   constructor(props: IDataFieldProps) {
@@ -55,15 +44,19 @@ export default class DataField extends Block<IDataFieldProps> {
       return null;
     }
 
-    return ((this.children.InputField as Input)?.element as HTMLInputElement).value;
+    const input = this.children.InputField.element;
+    if (input instanceof HTMLInputElement) {
+      return input.value;
+    }
+    return null;
   }
 
   public clearError(): void {
-    (this.children.Error as ErrorLine)?.setProps({ error: undefined });
+    // TODO поставить везде ? где вызывается метод у блока
+    this.children.Error?.setProps({ error: undefined });
   }
 
   private validate(): boolean {
-    console.log('validate');
     const inputValue = ((this.children.InputField as Input)?.element as HTMLInputElement).value;
     const validateMessage = this.props.validate?.(inputValue);
 

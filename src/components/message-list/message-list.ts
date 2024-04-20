@@ -1,9 +1,5 @@
 import Block from '../../@core/Block';
-import { IMessages, messages } from './message-list.const';
-
-interface IMessageListProps {
-  messages?: IMessages[];
-}
+import { IMessageListProps } from '../../@models/components';
 
 export default class MessageList extends Block<IMessageListProps> {
   protected render(): string {
@@ -14,7 +10,7 @@ export default class MessageList extends Block<IMessageListProps> {
     `;
   }
 }
-
+// TODO добить список сообщений?
 // ${this.props.messages?.map((messages: IMessages) => `
 //   <div class="message-list__date-group">
 //   <div class="sticky-date">
@@ -31,6 +27,3 @@ export default class MessageList extends Block<IMessageListProps> {
 
 // </div>
 // `).join('')}
-// {{#each messages}}
-  
-// {{/each}}

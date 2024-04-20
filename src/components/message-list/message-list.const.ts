@@ -1,22 +1,4 @@
-export interface IMessage {
-  message?: string;
-  own?: boolean;
-  read?: boolean;
-  delivered?: boolean;
-  send?: boolean;
-  image?: string;
-  date: string;
-}
-
-export interface IMessageGroup {
-  group: IMessage[];
-}
-
-export interface IMessages {
-  id: string;
-  date: string;
-  messageGroup: IMessageGroup[];
-}
+import { IMessages } from '../../@models/components';
 
 const fakeMessage = `Lorem ipsum dolor sit, amet consectetur adipisicing elit. Similique molestias, quae magni
 maxime

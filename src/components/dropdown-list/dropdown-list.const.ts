@@ -1,8 +1,4 @@
-export interface IDropDownList {
-  icon: string;
-  title: string;
-  name: string;
-}
+import { IDropDownList } from '../../@models/components';
 
 export const propertiesDropdownList: IDropDownList[] = [
   {

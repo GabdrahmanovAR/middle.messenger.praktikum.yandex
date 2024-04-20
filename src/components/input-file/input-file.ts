@@ -1,15 +1,7 @@
 import Block from '../../@core/Block';
+import { IInputFile } from '../../@models/components';
 import { Input } from '../input';
 import InputFileTemplate from './input-file.template';
-
-interface IInputFile {
-  avatar?: boolean;
-  acceptType?: string;
-  label?: string;
-  fileName?: string;
-  file?: File;
-  onClick?: (event: Event) => void;
-}
 
 export default class InputFile extends Block<IInputFile> {
   protected init(): void {

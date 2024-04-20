@@ -5,13 +5,6 @@ import { Input } from '../input';
 import FieldTemplate from './field.template';
 
 export default class Field extends Block<IFieldProps> {
-  // constructor(props: IFieldProps) {
-  //   super({
-  //     ...props,
-  //     onValidate: () => this.validate(),
-  //   });
-  // }
-
   protected init(): void {
     const validateBind = this.validate.bind(this);
 
@@ -39,7 +32,11 @@ export default class Field extends Block<IFieldProps> {
       return null;
     }
 
-    return ((this.children.InputField as Input)?.element as HTMLInputElement).value;
+    const input = this.children.InputField.element;
+    if (input instanceof HTMLInputElement) {
+      return input.value;
+    }
+    return null;
   }
 
   private validate(): boolean {
@@ -48,12 +45,12 @@ export default class Field extends Block<IFieldProps> {
 
     if (validateMessage) {
       this.setProps({ error: true });
-      (this.children.Error as ErrorLine)?.setProps({ error: validateMessage });
+      this.children.Error.setProps({ error: validateMessage });
       return false;
     }
 
     this.setProps({ error: undefined });
-    (this.children.Error as ErrorLine)?.setProps({ error: undefined });
+    this.children.Error.setProps({ error: undefined });
     return true;
   }
 

@@ -1,4 +1,3 @@
-import { IChatList } from '../../pages/chat/chat-list.const';
 import Block from '../../@core/Block';
 import { Button } from '../button';
 import { InputText } from '../input-text';
@@ -7,11 +6,7 @@ import { messages } from '../message-list/message-list.const';
 import ChatContentTemplate from './chat-content.template';
 import { DropDownList } from '../dropdown-list';
 import { pinDropdownList, propertiesDropdownList } from '../dropdown-list/dropdown-list.const';
-
-interface IChatContentProps {
-  chatInfo: IChatList;
-  onModalOpen: (itemName: string) => void;
-}
+import { IChatContentProps } from '../../@models/components';
 
 export default class ChatContent extends Block<IChatContentProps> {
   protected init(): void {
@@ -77,12 +72,16 @@ export default class ChatContent extends Block<IChatContentProps> {
   }
 
   private onPropertiesButtonClick(): void {
-    (this.children.PropertiesDropdown as DropDownList).show();
+    const dropdown = this.children.PropertiesDropdown;
+    if (dropdown instanceof DropDownList) {
+      dropdown.show();
+    }
   }
 
   private onPinButtonClick(): void {
-    if (this.element) {
-      (this.children.PinDropdown as DropDownList).show();
+    const dropdown = this.children.PinDropdown;
+    if (dropdown instanceof DropDownList) {
+      dropdown.show();
     }
   }
 

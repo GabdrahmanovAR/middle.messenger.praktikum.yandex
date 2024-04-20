@@ -3,7 +3,6 @@ import LoginTemplate from './login.template';
 import * as validate from '../../utils/validate';
 import { ILoginPageProps } from '../../@models/pages';
 import { Button, Field } from '../../components';
-import { navigate } from '../../@core/Navigate';
 
 export default class LoginPage extends Block<ILoginPageProps> {
   protected init(): void {
@@ -48,28 +47,19 @@ export default class LoginPage extends Block<ILoginPageProps> {
 
   private onLogin(event: Event): void {
     event.preventDefault();
-    const login = (this.children.FieldLogin as Field).getValue();
-    const password = (this.children.FieldPassword as Field).getValue();
+    const login = this.children.FieldLogin;
+    const password = this.children.FieldPassword;
+    const loginValue = (login instanceof Field) && login.getValue();
+    const passwordValue = (password instanceof Field) && password.getValue();
 
-    if (login && password) {
-      console.log({ login, password });
-      (this.children.ButtonSubmit as Button).setProps({ label: 'Заходим' });
-
-      let interval = 2;
-      const navigateDelay = setInterval(() => {
-        console.log(`Переход на страницу чатов через - ${interval}.`);
-        interval -= 1;
-
-        if (interval === 0) {
-          clearInterval(navigateDelay);
-        }
-      }, 1000);
+    if (loginValue && passwordValue) {
+      console.log({ login: loginValue, password: passwordValue });
+      this.children.ButtonSubmit.setProps({ label: 'Заходим' });
     }
   }
 
   private onCreateAccount(event: Event): void {
     event.preventDefault();
-    navigate('registration');
   }
 
   render(): string {

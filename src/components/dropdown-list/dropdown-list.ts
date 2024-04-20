@@ -1,17 +1,6 @@
 import { EMPTY_STRING } from '../../../assets/constants/common';
 import Block from '../../@core/Block';
-import { IDropDownList } from './dropdown-list.const';
-
-interface IDropdownListProps {
-  list: IDropDownList[];
-  appednTo: HTMLElement | null;
-  visible?: boolean;
-  top?: string;
-  bottom?: string;
-  left?: string;
-  right?: string;
-  onMenuItemSelect: (value: string) => void;
-}
+import { IDropDownList, IDropdownListProps } from '../../@models/components';
 
 export default class DropdownList extends Block<IDropdownListProps> {
   private onElementClickBind!: (event: MouseEvent) => void;
@@ -32,7 +21,6 @@ export default class DropdownList extends Block<IDropdownListProps> {
   }
 
   private onElementClick(event: MouseEvent): void {
-    console.log(event.target);
     if (!this.element?.contains(event.target as Node)) {
       document.removeEventListener('click', this.onElementClickBind);
       this.setProps({ visible: false });
@@ -58,6 +46,7 @@ export default class DropdownList extends Block<IDropdownListProps> {
       const dropdownRect = dropdown.getBoundingClientRect();
       const containerRect = container.getBoundingClientRect();
 
+      // TODO у нижнией позиции не верный расчет по горизонтали
       let offsetTop: number | null = componentRect.bottom + indent;
       let offsetBottom: number | null = window.innerHeight - componentRect.top + indent;
       let offsetLeft: number | null = componentRect.left - (window.innerWidth - containerRect.width);

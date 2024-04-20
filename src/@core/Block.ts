@@ -1,13 +1,17 @@
 import { v4 as uuid } from 'uuid';
 import Handlebars from 'handlebars';
 import EventBus from './EventBus';
+import { IProps, TEvents } from '../@models/common';
 
-class Block<Props extends object> {
+interface IPropsNChildren {
+  children: Record<string, Block<IProps>>,
+  props: Record<string, unknown>
+}
+class Block<Props extends IProps> {
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
     FLOW_CDU: 'flow:component-did-update',
-    // FLOW_CWU: 'flow:component-will-unmount',
     FLOW_RENDER: 'flow:render',
   };
 
@@ -15,7 +19,7 @@ class Block<Props extends object> {
 
   protected _props: Props;
 
-  protected children: Block<Props>[] = [];
+  protected children: Record<string, Block<IProps>>;
 
   private eventBus: () => EventBus;
 
@@ -26,7 +30,7 @@ class Block<Props extends object> {
 
     const { props, children } = this.getChildrenAndProps(propsWithChildren);
 
-    this._props = this.makePropsProxy(props);
+    this._props = this.makePropsProxy(props) as Props;
     this.children = children;
 
     this.eventBus = (): EventBus => eventBus;
@@ -53,23 +57,25 @@ class Block<Props extends object> {
   protected init(): void {}
 
   private addEvents(): void {
-    const { events = {} } = this._props;
+    const { events = {} as TEvents } = this._props;
 
-    Object.keys(events).forEach((eventName) => {
-      if (this._element) {
-        this._element.addEventListener(eventName, events[eventName]);
-      } else {
-        throw new Error(`Отсутствует элемент. Невозможно добавить событие - ${eventName}`);
+    Object.keys(events).forEach((eventName: string) => {
+      const event = events[eventName as keyof DocumentEventMap];
+
+      if (this._element && event) {
+        this._element.addEventListener(eventName, event);
       }
     });
   }
 
   private removeEvents(): void {
-    const { events = {} } = this._props;
+    const { events = {} as TEvents } = this._props;
 
     Object.keys(events).forEach((eventName) => {
-      if (this._element) {
-        this._element.removeEventListener(eventName, events[eventName]);
+      const event = events[eventName as keyof DocumentEventMap];
+
+      if (this._element && event) {
+        this._element.removeEventListener(eventName, event);
       }
     });
   }
@@ -78,12 +84,10 @@ class Block<Props extends object> {
     eventBus.on(Block.EVENTS.INIT, this._init.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
-    // eventBus.on(Block.EVENTS.FLOW_CWU, this._componentWillUnmount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
   }
 
   private _componentDidMount(): void {
-    // this._checkInDom();
     this.componentDidMount();
 
     Object.values(this.children).forEach((child) => {
@@ -107,7 +111,7 @@ class Block<Props extends object> {
     return true;
   }
 
-  setProps = (nextProps: object): void => {
+  setProps = (nextProps: Record<string, unknown>): void => {
     if (!nextProps) {
       return;
     }
@@ -147,9 +151,6 @@ class Block<Props extends object> {
     const temp = document.createElement('template');
 
     temp.innerHTML = html;
-    // contextAndStubs.__children?.forEach(({ embed }: any) => {
-    //   embed(temp.content);
-    // });
 
     Object.values(this.children).forEach((child) => {
       const stub = temp.content.querySelector(`[data-id="${child.id}"]`);
@@ -164,7 +165,6 @@ class Block<Props extends object> {
   }
 
   protected getContent(): HTMLElement | null {
-    // Хак, чтобы вызвать CDM только после добавления в DOM
     if (this.element?.parentNode?.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
       setTimeout(() => {
         if (this.element?.parentNode?.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) {
@@ -176,22 +176,19 @@ class Block<Props extends object> {
     return this._element;
   }
 
-  private makePropsProxy(props: any): any {
-    // Ещё один способ передачи this, но он больше не применяется с приходом ES6+
+  private makePropsProxy(props: Record<string, unknown>): Record<string, unknown> {
     const self = this;
 
     return new Proxy(props, {
-      get(target, prop) {
+      get(target: Record<string, unknown>, prop: string): void {
         const value = target[prop];
         return typeof value === 'function' ? value.bind(target) : value;
       },
-      set(target, prop, value): boolean {
+      set(target: Record<string, unknown>, prop: string, value: unknown): boolean {
         const oldTarget = { ...target };
 
         target[prop] = value;
 
-        // Запускаем обновление компоненты
-        // Плохой cloneDeep, в следующей итерации нужно заставлять добавлять cloneDeep им самим
         self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
         return true;
       },
@@ -201,15 +198,15 @@ class Block<Props extends object> {
     });
   }
 
-  private getChildrenAndProps(propsWithChildren: Props): Record<string, unknown> {
-    const children: Record<string, Block<Props>> = {};
-    const props: Props = {} as Props;
+  private getChildrenAndProps(propsWithChildren: Props): IPropsNChildren {
+    const children: Record<string, Block<IProps>> = {};
+    const props: Record<string, unknown> = {};
 
     Object.entries(propsWithChildren).forEach(([key, value]) => {
       if (value instanceof Block) {
         children[key] = value;
       } else {
-        props[key as keyof Props] = value;
+        props[key] = value;
       }
     });
 

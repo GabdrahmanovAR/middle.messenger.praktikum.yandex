@@ -1,15 +1,8 @@
 import { EMPTY_STRING } from '../../../assets/constants/common';
 import Block from '../../@core/Block';
+import { IInputTextProps } from '../../@models/components';
 import Input from '../input/input';
 import InputTextTemplate from './input-text.template';
-
-interface IInputTextProps {
-  name: string;
-  rounded?: boolean;
-  center?: boolean;
-  placeholder?: string;
-  icon?: string;
-}
 
 export default class InputText extends Block<IInputTextProps> {
   protected init(): void {
@@ -31,12 +24,18 @@ export default class InputText extends Block<IInputTextProps> {
   }
 
   public getValue(): string {
-    return ((this.children.InputField as Input)?.element as HTMLInputElement).value;
+    const input = this.children.InputField.element;
+    if (input instanceof HTMLInputElement) {
+      return input.value;
+    }
+    return EMPTY_STRING;
   }
 
   public resetValue(): void {
-    // (this.children.InputField as Input).setProps({ value: '' });
-    ((this.children.InputField as Input)?.element as HTMLInputElement).value = '';
+    const input = this.children.InputField.element;
+    if (input instanceof HTMLInputElement) {
+      input.value = EMPTY_STRING;
+    }
   }
 
   protected render(): string {

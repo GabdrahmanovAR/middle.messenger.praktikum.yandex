@@ -1,14 +1,5 @@
+import { IProfileField } from '../../@models/pages';
 import * as validate from '../../utils/validate';
-
-export interface IProfileField {
-  label: string;
-  value: string;
-  type: string;
-  name: string;
-  readonly?: boolean;
-  validate?: (value: string) => string;
-  last?: boolean;
-}
 
 export const dataFields: IProfileField[] = [
   {
