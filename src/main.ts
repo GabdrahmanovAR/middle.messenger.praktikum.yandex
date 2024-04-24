@@ -1,42 +1,54 @@
 import './style.scss';
-import './utils/hb-helpers';
-
 import Handlebars from 'handlebars';
-import * as Components from './components';
 import * as Pages from './pages';
-import { NavigatePage } from '../assets/constants/common';
+import { fields } from './pages/registration/registration.const';
+import { dataFields, passwordFields } from './pages/profile/profile.const';
+import { IProps } from './@models/common';
+import Block from './@core/Block';
 
-import { chatList, chatInfo } from './components/chat-list/chat-list';
-import { changePassword, userData } from './pages/profile/profile';
-import { dropDownlist, dropDownlist2 } from './components/dropdown-list/dropdown-list';
-import { messages } from './components/message-list/message-list';
+type TPage = new (...args: any[]) => Block<IProps>;
 
-const pages: Record<string, unknown[]> = {
-  [NavigatePage.LOGIN]: [Pages.LoginPage],
-  [NavigatePage.REGISTER]: [Pages.RegistrationPage],
-  [NavigatePage.NAV]: [Pages.NavigatePage],
-  [NavigatePage.CHAT]: [Pages.ChatPage, { chatList, chatInfo, messages }],
-  [NavigatePage.PROFILE]: [Pages.ProfilePage, { name: 'Иван', formData: userData }],
-  [NavigatePage.PROFILE_PASS]: [Pages.ProfilePassPage, { formData: changePassword, edit: true }],
-  [NavigatePage.ERROR]: [Pages.ErrorPage],
-  [NavigatePage.NOT_FOUND]: [Pages.NotFoundPage],
-  [NavigatePage.PROFILE_AVATAR_EDIT]: [Pages.ProfileAvatarEditPage],
-  [NavigatePage.PROFILE_USER_EDIT]: [Pages.ProfileUserEditPage],
-  [NavigatePage.DROPDOWN]: [Pages.DropDownPage, { dropdowns: [{ list: dropDownlist }, { list: dropDownlist2 }] }],
+type TContext = {
+  [key: string]: unknown;
 };
 
-Object.entries(Components).forEach(([name, component]: [string, string]) => {
-  Handlebars.registerPartial(name, component);
-});
+type TPages = {
+  [key: string]: [TPage, TContext | undefined];
+};
 
-function navigate(page: string) {
-  const [source, context] = pages[page];
-  const container = document.getElementById('app')!;
-  const templateDelegate: HandlebarsTemplateDelegate = Handlebars.compile(source);
-  container.innerHTML = templateDelegate(context);
+const pages: TPages = {
+  login: [Pages.LoginPage, {}],
+  registration: [Pages.RegistrationPage, { fields }],
+  profile: [Pages.ProfilePage, { dataFields, passwordFields }],
+  chat: [Pages.ChatPage, {}],
+};
+
+export function navigate(route: string): void {
+  const [Source, context] = pages[route];
+  const container = document.getElementById('app');
+
+  if (container) {
+    container.innerHTML = '';
+
+    const component = new Source(context);
+    const content = component.getContent();
+
+    if (content) {
+      container.append(content);
+    } else {
+      throw new Error(`Ошибка получения содержимого страницы - ${route}`);
+    }
+  }
 }
 
-document.addEventListener('DOMContentLoaded', () => navigate(NavigatePage.NAV));
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.getElementById('app');
+
+  if (container) {
+    const templateDelegate: HandlebarsTemplateDelegate = Handlebars.compile(Pages.NavigatePage);
+    container.innerHTML = templateDelegate({});
+  }
+});
 
 document.addEventListener('click', (e: MouseEvent) => {
   const page = (e.target as HTMLElement)?.getAttribute('page');

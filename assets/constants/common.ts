@@ -11,3 +11,5 @@ export enum NavigatePage {
   PROFILE_USER_EDIT = 'profile-user-edit',
   DROPDOWN = 'dropdown',
 }
+
+export const EMPTY_STRING = '';

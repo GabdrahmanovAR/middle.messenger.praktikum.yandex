@@ -18,10 +18,16 @@ npm run start
 npm run build
 ```
 
+Провести проверку кода с помощью Eslint можно запустив скрипт.
+
+```sh
+npm run lint
+```
+
 ## Деплой
 
 Настроен автодеплой приложения на ресурсе [Netlify](https://app.netlify.com/). Процесс деплоя запускается при изменении ветки deploy.
-Ссылка на свёрстанные страницы:
+Ссылка на страницы приложения:
 [https://ornate-churros-e697b5.netlify.app/](https://ornate-churros-e697b5.netlify.app/)
 
 ## Вёрстка

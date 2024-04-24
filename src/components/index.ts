@@ -1,6 +1,8 @@
 export { Button } from './button';
+export { Input } from './input';
 export { Field } from './field';
-export { Error } from './error';
+export { ErrorLine } from './error-line';
+export { ErrorInfo } from './error-info';
 export { ChatCard } from './chat-card';
 export { ChatList } from './chat-list';
 export { InputText } from './input-text';

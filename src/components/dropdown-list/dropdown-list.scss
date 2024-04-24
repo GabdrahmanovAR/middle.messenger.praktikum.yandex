@@ -4,6 +4,10 @@
   width: max-content;
   border-radius: 12px;
   box-shadow: rgba(60, 64, 67, 0.15) 0px 1px 2px 0px, rgba(60, 64, 67, 0.1) 0px 2px 6px 2px;
+  background-color: var(--background-color-white);
+  position: absolute;
+  z-index: var(--dropdown-z-index);
+  visibility: hidden;
 
   &__item {
     display: flex;
@@ -29,10 +33,16 @@
   &__item-icon {
     display: flex;
     align-items: center;
+    pointer-events: none;
   }
 
   &__item-name {
     padding-left: 1rem;
     user-select: none;
+    pointer-events: none;
+  }
+
+  &_visible {
+    visibility: visible;
   }
 }

@@ -1,4 +1,4 @@
-@import "../assets/css/normalize.css";
+@import "../assets/css/normalize.scss";
 @import "../assets/fonts/fonts.scss";
 
 :root {
@@ -33,6 +33,9 @@
   --header-height: 4rem;
 
   --scrollbar-width: 0.5rem;
+
+  --modal-z-index: 1001;
+  --dropdown-z-index: 101;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -82,6 +85,12 @@ a {
   background-repeat: no-repeat;
 }
 
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .container {
   height: 100%;
   width: 100%;
@@ -91,16 +100,15 @@ a {
 }
 
 .modal-container {
-  position: relative;
-  z-index: 999;
+  display: none;
+  position: absolute;
+  z-index: var(--modal-z-index);
   background-color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
-}
 
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  &_visible {
+    display: inherit;
+  }
 }
 
 .card {
