@@ -3,6 +3,8 @@ import LoginTemplate from './login.template';
 import * as validate from '../../utils/validate';
 import { ILoginPageProps } from '../../@models/pages';
 import { Button, Field } from '../../components';
+import router from '../../@core/Router';
+import Routes from '../../api/routes';
 
 export default class LoginPage extends Block<ILoginPageProps> {
   protected init(): void {
@@ -55,11 +57,13 @@ export default class LoginPage extends Block<ILoginPageProps> {
     if (loginValue && passwordValue) {
       console.log({ login: loginValue, password: passwordValue });
       this.children.ButtonSubmit.setProps({ label: 'Заходим' });
+      router.go(Routes.CHATS);
     }
   }
 
   private onCreateAccount(event: Event): void {
     event.preventDefault();
+    router.go(Routes.SIGN_IN);
   }
 
   render(): string {

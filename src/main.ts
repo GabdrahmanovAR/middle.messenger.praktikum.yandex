@@ -1,61 +1,72 @@
 import './style.scss';
-import Handlebars from 'handlebars';
+// import Handlebars from 'handlebars';
 import * as Pages from './pages';
 import { fields } from './pages/registration/registration.const';
 import { dataFields, passwordFields } from './pages/profile/profile.const';
-import { IProps } from './@models/common';
-import Block from './@core/Block';
+// import { IProps } from './@models/common';
+// import Block from './@core/Block';
+import Routes from './api/routes';
+import router from './@core/Router';
 
-type TPage = new (...args: any[]) => Block<IProps>;
+// const router = new Router('main#app');
 
-type TContext = {
-  [key: string]: unknown;
-};
+router
+  .use(Routes.LOGIN, Pages.LoginPage)
+  .use(Routes.SIGN_IN, Pages.RegistrationPage, { fields })
+  .use(Routes.PROFILE, Pages.ProfilePage, { dataFields, passwordFields })
+  .use(Routes.CHATS, Pages.ChatPage)
+  .start();
 
-type TPages = {
-  [key: string]: [TPage, TContext | undefined];
-};
+// type TPage = new (...args: any[]) => Block<IProps>;
 
-const pages: TPages = {
-  login: [Pages.LoginPage, {}],
-  registration: [Pages.RegistrationPage, { fields }],
-  profile: [Pages.ProfilePage, { dataFields, passwordFields }],
-  chat: [Pages.ChatPage, {}],
-};
+// type TContext = {
+//   [key: string]: unknown;
+// };
 
-export function navigate(route: string): void {
-  const [Source, context] = pages[route];
-  const container = document.getElementById('app');
+// type TPages = {
+//   [key: string]: [TPage, TContext | undefined];
+// };
 
-  if (container) {
-    container.innerHTML = '';
+// const pages: TPages = {
+//   login: [Pages.LoginPage, {}],
+//   registration: [Pages.RegistrationPage, { fields }],
+//   profile: [Pages.ProfilePage, { dataFields, passwordFields }],
+//   chat: [Pages.ChatPage, {}],
+// };
 
-    const component = new Source(context);
-    const content = component.getContent();
+// export function navigate(route: string): void {
+//   const [Source, context] = pages[route];
+//   const container = document.getElementById('app');
 
-    if (content) {
-      container.append(content);
-    } else {
-      throw new Error(`Ошибка получения содержимого страницы - ${route}`);
-    }
-  }
-}
+//   if (container) {
+//     container.innerHTML = '';
 
-document.addEventListener('DOMContentLoaded', () => {
-  const container = document.getElementById('app');
+//     const component = new Source(context);
+//     const content = component.getContent();
 
-  if (container) {
-    const templateDelegate: HandlebarsTemplateDelegate = Handlebars.compile(Pages.NavigatePage);
-    container.innerHTML = templateDelegate({});
-  }
-});
+//     if (content) {
+//       container.append(content);
+//     } else {
+//       throw new Error(`Ошибка получения содержимого страницы - ${route}`);
+//     }
+//   }
+// }
 
-document.addEventListener('click', (e: MouseEvent) => {
-  const page = (e.target as HTMLElement)?.getAttribute('page');
-  if (page) {
-    navigate(page);
+// document.addEventListener('DOMContentLoaded', () => {
+//   const container = document.getElementById('app');
 
-    e.preventDefault();
-    e.stopImmediatePropagation();
-  }
-});
+//   if (container) {
+//     const templateDelegate: HandlebarsTemplateDelegate = Handlebars.compile(Pages.NavigatePage);
+//     container.innerHTML = templateDelegate({});
+//   }
+// });
+
+// document.addEventListener('click', (e: MouseEvent) => {
+//   const page = (e.target as HTMLElement)?.getAttribute('page');
+//   if (page) {
+//     navigate(page);
+
+//     e.preventDefault();
+//     e.stopImmediatePropagation();
+//   }
+// });

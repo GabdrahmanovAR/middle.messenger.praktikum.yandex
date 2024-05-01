@@ -1,5 +1,7 @@
 import Block from '../../@core/Block';
+import router from '../../@core/Router';
 import { IProfilePageProps, IProfileField } from '../../@models/pages';
+import Routes from '../../api/routes';
 import {
   Button, DataField, Field, InputFile, ModalProfile,
 } from '../../components';
@@ -118,7 +120,7 @@ export default class ProfilePage extends Block<IProfilePageProps> {
 
   private onReturn(): void {
     if (!this.editDataActive && !this.ediPasswordActive) {
-      console.log('Возврат к чатам');
+      router.go(Routes.CHATS);
     }
 
     const formKeys = Object.keys(this.children);
@@ -196,6 +198,7 @@ export default class ProfilePage extends Block<IProfilePageProps> {
   }
 
   private onExit(): void {
+    router.go(Routes.LOGIN);
   }
 
   private repeatPassword(repeatPasswordValue: string): string {

@@ -216,7 +216,7 @@ class Block<Props extends IProps> {
   show(): void {
     const content = this.getContent();
     if (content) {
-      content.style.display = 'block';
+      content.style.display = 'flex';
     }
   }
 

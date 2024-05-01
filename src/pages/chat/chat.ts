@@ -1,6 +1,8 @@
 import Block from '../../@core/Block';
+import router from '../../@core/Router';
 import { IModalUser } from '../../@models/components';
 import { IChatPageProps } from '../../@models/pages';
+import Routes from '../../api/routes';
 import {
   Button, ChatContent, ChatList, InputText, ModalUser,
 } from '../../components';
@@ -50,6 +52,7 @@ export default class ChatPage extends Block<IChatPageProps> {
   }
 
   private onProfileButtonClick(): void {
+    router.go(Routes.PROFILE);
   }
 
   private onPropertiesItemClick(itemName: string): void {

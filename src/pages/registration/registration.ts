@@ -3,6 +3,8 @@ import Block from '../../@core/Block';
 import { IField, IRegistrationPageProps } from '../../@models/pages';
 import RegistrationPageTemplate from './registration.template';
 import { Button, Field } from '../../components';
+import router from '../../@core/Router';
+import Routes from '../../api/routes';
 
 export default class RegistrationPage extends Block<IRegistrationPageProps> {
   constructor(props: IRegistrationPageProps) {
@@ -72,6 +74,7 @@ export default class RegistrationPage extends Block<IRegistrationPageProps> {
 
     if (allValid) {
       console.log(formValues);
+      router.go(Routes.CHATS);
     } else {
       console.log('form not valid');
     }
@@ -79,6 +82,7 @@ export default class RegistrationPage extends Block<IRegistrationPageProps> {
 
   private onLogin(event: Event): void {
     event.preventDefault();
+    router.go(Routes.LOGIN);
   }
 
   private repeatPassword(repeatPasswordValue: string): string {
