@@ -37,6 +37,7 @@ export interface IButtonProps extends IProps {
   label?: string;
   icon?: string;
   theme?: string;
+  isLoading?: boolean;
   onClick?: (event: Event) => void;
 }
 

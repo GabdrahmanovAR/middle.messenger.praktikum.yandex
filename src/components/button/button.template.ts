@@ -19,7 +19,11 @@ const buttonTemplate = `
     </button>
   {{else}}
     <button type="{{type}}" class="button rectangle-button{{#if theme}} button_{{theme}}{{else}} button_primary{{/if}}">
-      {{label}}
+      {{#if isLoading}}
+        Загружаемся
+      {{else}}
+        {{label}}
+      {{/if}}
     </button>
   {{/if}}
 {{else if isLink}}

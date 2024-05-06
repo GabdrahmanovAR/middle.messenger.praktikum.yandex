@@ -5,8 +5,11 @@ import { ILoginPageProps } from '../../@models/pages';
 import { Button, Field } from '../../components';
 import router from '../../@core/Router';
 import Routes from '../../api/routes';
+import { login } from '../../services/auth.service';
+import { DefaultAppState } from '../../@models/common';
+import { connect } from '../../utils/connect';
 
-export default class LoginPage extends Block<ILoginPageProps> {
+class LoginPage extends Block<ILoginPageProps> {
   protected init(): void {
     const onLoginBind = this.onLogin.bind(this);
     const onCreateAccountBind = this.onCreateAccount.bind(this);
@@ -49,15 +52,15 @@ export default class LoginPage extends Block<ILoginPageProps> {
 
   private onLogin(event: Event): void {
     event.preventDefault();
-    const login = this.children.FieldLogin;
-    const password = this.children.FieldPassword;
-    const loginValue = (login instanceof Field) && login.getValue();
-    const passwordValue = (password instanceof Field) && password.getValue();
+    const loginComponent = this.children.FieldLogin;
+    const passwordComponent = this.children.FieldPassword;
+    const loginValue = (loginComponent instanceof Field) && loginComponent.getValue();
+    const passwordValue = (passwordComponent instanceof Field) && passwordComponent.getValue();
 
     if (loginValue && passwordValue) {
       console.log({ login: loginValue, password: passwordValue });
-      this.children.ButtonSubmit.setProps({ label: 'Заходим' });
-      router.go(Routes.CHATS);
+      login({ login: loginValue, password: passwordValue });
+      // router.go(Routes.CHATS);
     }
   }
 
@@ -66,7 +69,18 @@ export default class LoginPage extends Block<ILoginPageProps> {
     router.go(Routes.SIGN_IN);
   }
 
+  protected componentDidUpdate(_oldProps: ILoginPageProps, _newProps: ILoginPageProps): boolean {
+    console.log(_oldProps);
+    console.log(_newProps);
+    this.children.ButtonSubmit.setProps({ isLoading: _newProps.isLoading });
+    return true;
+  }
+
   render(): string {
     return LoginTemplate;
   }
 }
+
+const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({ isLoading: state.isLoading });
+
+export default connect(mapStateToProps)(LoginPage);

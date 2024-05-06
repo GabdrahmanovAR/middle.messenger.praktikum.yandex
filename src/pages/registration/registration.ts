@@ -5,6 +5,7 @@ import RegistrationPageTemplate from './registration.template';
 import { Button, Field } from '../../components';
 import router from '../../@core/Router';
 import Routes from '../../api/routes';
+import { createUser } from '../../services/auth.service';
 
 export default class RegistrationPage extends Block<IRegistrationPageProps> {
   constructor(props: IRegistrationPageProps) {
@@ -73,8 +74,10 @@ export default class RegistrationPage extends Block<IRegistrationPageProps> {
     });
 
     if (allValid) {
-      console.log(formValues);
-      router.go(Routes.CHATS);
+      const { repeatPassword, ...rest } = formValues;
+      console.log(rest);
+      createUser(rest);
+      // router.go(Routes.CHATS);
     } else {
       console.log('form not valid');
     }
