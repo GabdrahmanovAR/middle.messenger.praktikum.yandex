@@ -13,4 +13,5 @@ export interface IProps {
 export interface DefaultAppState {
   user: IUserInfo;
   isLoading: boolean;
+  globalError: string;
 }

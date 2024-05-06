@@ -7,6 +7,7 @@ import router from './@core/Router';
 import Store from './@core/Store';
 import { DefaultAppState } from './@models/common';
 import { IUserInfo } from './api/model';
+import { EMPTY_STRING } from '../assets/constants/common';
 
 declare global {
   interface Window { store: Store<DefaultAppState>; }
@@ -15,6 +16,7 @@ declare global {
 const defaultState: DefaultAppState = {
   user: {} as IUserInfo,
   isLoading: false,
+  globalError: EMPTY_STRING,
 };
 
 const store = new Store<DefaultAppState>(defaultState);

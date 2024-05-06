@@ -14,6 +14,9 @@ const loginTemplate = `
       </div>
     </form>
   </div>
+  {{#if globalError}}
+    <div>Ошибка авторизации</div>
+  {{/if}}
 </div>
 `;
 

@@ -81,6 +81,9 @@ class LoginPage extends Block<ILoginPageProps> {
   }
 }
 
-const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({ isLoading: state.isLoading });
+const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({
+  isLoading: state.isLoading,
+  globalError: state.globalError,
+});
 
 export default connect(mapStateToProps)(LoginPage);

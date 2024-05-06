@@ -80,7 +80,8 @@ export default class HTTPTransport {
           resolve(xhr.response);
         } else {
           const message = JSON.stringify({ status, reason: xhr.response?.reason });
-          reject(new Error(message));
+          // reject(new Error(message));
+          reject(message);
         }
       };
 

@@ -24,15 +24,27 @@ export const login = async (data: ILoginRequestData): Promise<void> => {
   }
 
   window.store.set({ isLoading: true });
-  try {
-    const user = await getUser();
-    console.log(response);
-    console.log(user);
-  } catch (error) {
-    console.log(error);
-  } finally {
-    window.store.set({ isLoading: false });
-  }
+  getUser()
+    .then((user: IUserInfo) => {
+      window.store.set({ user });
+      console.log(user);
+    })
+    .catch((error) => {
+      console.log(error);
+      window.store.set({ globalError: 'error' });
+    })
+    .finally(() => window.store.set({ isLoading: false }));
+  // try {
+  //   const user = await getUser();
+  //   window.store.set({ user });
+  //   console.log(response);
+  //   console.log(user);
+  // } catch (error) {
+  //   console.log(error);
+  //   window.store.set({ globalError: 'error' });
+  // } finally {
+  //   window.store.set({ isLoading: false });
+  // }
 };
 
 export const createUser = async (data: ICreateUser): Promise<void> => {

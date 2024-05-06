@@ -7,18 +7,6 @@ interface IRouteProps {
   viewProps?: IProps;
 }
 
-function render(query: string, block: Block<Record<string, unknown>>): Element | null {
-  const root = document.querySelector(query);
-  const content: HTMLElement | null = block.getContent();
-  if (root && content) {
-    // root.textContent = content;
-    // root.innerHTML = content;
-    root.append(content);
-    return root;
-  }
-  return null;
-}
-
 export default class Route {
   private _pathname: string;
 
@@ -55,10 +43,20 @@ export default class Route {
   render(): void {
     if (!this._block) {
       this._block = new this._blockClass(this._props.viewProps);
-      render(this._props.rootQuery, this._block);
+      this._render(this._props.rootQuery, this._block);
       return;
     }
 
     this._block.show();
+  }
+
+  private _render(query: string, block: Block<Record<string, unknown>>): Element | null {
+    const root = document.querySelector(query);
+    const content: HTMLElement | null = block.getContent();
+    if (root && content) {
+      root.append(content);
+      return root;
+    }
+    return null;
   }
 }
