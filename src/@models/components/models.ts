@@ -170,3 +170,8 @@ export interface IChatCardProps extends IProps {
   count?: string;
   onClick?: (value: string | null) => void;
 }
+
+export interface IGlobalErrorProps extends IProps {
+  closeIcon?: string;
+  globalError?: string;
+}

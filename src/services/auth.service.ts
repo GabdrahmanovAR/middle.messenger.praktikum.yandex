@@ -1,6 +1,8 @@
 import router from '../@core/Router';
 import AuthApi from '../api/auth.api';
-import { ICreateUser, ILoginRequestData, IUserInfo } from '../api/model';
+import {
+  IAPIError, ICreateUser, ILoginRequestData, IUserInfo,
+} from '../api/model';
 import Routes from '../api/routes';
 import { isApiError } from '../utils/apiError';
 
@@ -17,34 +19,21 @@ const getUser = async (): Promise<IUserInfo> => {
 };
 
 export const login = async (data: ILoginRequestData): Promise<void> => {
-  const response = await authApi.login(data);
-
-  if (isApiError(response)) {
-    throw new Error(response.reason);
-  }
-
   window.store.set({ isLoading: true });
-  getUser()
-    .then((user: IUserInfo) => {
-      window.store.set({ user });
-      console.log(user);
-    })
-    .catch((error) => {
-      console.log(error);
-      window.store.set({ globalError: 'error' });
-    })
-    .finally(() => window.store.set({ isLoading: false }));
-  // try {
-  //   const user = await getUser();
-  //   window.store.set({ user });
-  //   console.log(response);
-  //   console.log(user);
-  // } catch (error) {
-  //   console.log(error);
-  //   window.store.set({ globalError: 'error' });
-  // } finally {
-  //   window.store.set({ isLoading: false });
-  // }
+
+  try {
+    await authApi.login(data);
+    const user = await getUser();
+    window.store.set({ user });
+  } catch (error: unknown) {
+    let message = 'Ошибка авторизации';
+    if (isApiError(error)) {
+      message = error.reason;
+    }
+    window.store.set({ globalError: message });
+  } finally {
+    window.store.set({ isLoading: false });
+  }
 };
 
 export const createUser = async (data: ICreateUser): Promise<void> => {

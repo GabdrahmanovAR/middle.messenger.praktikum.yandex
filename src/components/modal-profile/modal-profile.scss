@@ -19,7 +19,7 @@
     font-size: 1.25rem;
 
     &_error {
-      color: var(--text-color-crimson);
+      color: var(--text-color-red);
     }
   }
 
@@ -46,6 +46,6 @@
     bottom: -1.5rem;
     left: 50%;
     transform: translateX(-50%);
-    color: var(--text-color-crimson);
+    color: var(--text-color-red);
   }
 }

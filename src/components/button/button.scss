@@ -51,9 +51,9 @@
   }
   &_danger {
     @include buttonTheme(
-      var(--text-color-crimson),
-      var(--text-color-crimson-hover),
-      var(--text-color-crimson-active)
+      var(--text-color-red),
+      var(--text-color-red-hover),
+      var(--text-color-red-active)
     );
   }
   &_text {
@@ -95,9 +95,9 @@
   }
   &_danger {
     @include buttonTheme(
-      var(--text-color-crimson),
-      var(--text-color-crimson-hover),
-      var(--text-color-crimson-active),
+      var(--text-color-red),
+      var(--text-color-red-hover),
+      var(--text-color-red-active),
       $isLink: true,
     );
   }
@@ -113,8 +113,8 @@
   justify-content: center;
   min-width: 1rem;
   min-height: 1rem;
-  width: 2rem;
-  height: 2rem;
+  width: inherit;
+  height: inherit;
   border-radius: 50%;
   color: var(--text-color-light);
 

@@ -12,12 +12,13 @@
   --border-color-light: #eaeaea;
   --border-color-grey: #999999;
   --border-color-active: var(--main-color);
+  --border-color-red: crimson;
   --text-color-main: #333333;
   --text-color-light: #fff;
   --text-color-label: #999999;
-  --text-color-crimson: crimson;
-  --text-color-crimson-hover: rgb(180, 15, 48);
-  --text-color-crimson-active: rgb(224, 66, 98);
+  --text-color-red: crimson;
+  --text-color-red-hover: rgb(180, 15, 48);
+  --text-color-red-active: rgb(224, 66, 98);
 
   --font-weight-500: 500;
   --font-weight-600: 600;
@@ -83,6 +84,7 @@ a {
   padding: 0 0.5rem;
   background-size: contain;
   background-repeat: no-repeat;
+  height: 100%;
 }
 
 .center {
@@ -91,12 +93,17 @@ a {
   align-items: center;
 }
 
+.column {
+  flex-direction: column;
+}
+
 .container {
   height: 100%;
   width: 100%;
   min-height: 100%;
   max-height: 100%;
   overflow: hidden;
+  position: relative;
 }
 
 .modal-container {

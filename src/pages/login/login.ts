@@ -2,7 +2,7 @@ import Block from '../../@core/Block';
 import LoginTemplate from './login.template';
 import * as validate from '../../utils/validate';
 import { ILoginPageProps } from '../../@models/pages';
-import { Button, Field } from '../../components';
+import { Button, Field, GlobalError } from '../../components';
 import router from '../../@core/Router';
 import Routes from '../../api/routes';
 import { login } from '../../services/auth.service';
@@ -40,6 +40,7 @@ class LoginPage extends Block<ILoginPageProps> {
       isLink: true,
       onClick: onCreateAccountBind,
     });
+    const GlobalErrorComponent = new GlobalError();
 
     this.children = {
       ...this.children,
@@ -47,6 +48,7 @@ class LoginPage extends Block<ILoginPageProps> {
       FieldPassword,
       ButtonSubmit,
       ButtonLink,
+      GlobalErrorComponent,
     };
   }
 
@@ -70,9 +72,9 @@ class LoginPage extends Block<ILoginPageProps> {
   }
 
   protected componentDidUpdate(_oldProps: ILoginPageProps, _newProps: ILoginPageProps): boolean {
-    console.log(_oldProps);
-    console.log(_newProps);
-    this.children.ButtonSubmit.setProps({ isLoading: _newProps.isLoading });
+    if (_oldProps.isLoading !== _newProps.isLoading) {
+      this.children.ButtonSubmit.setProps({ isLoading: _newProps.isLoading });
+    }
     return true;
   }
 
@@ -81,9 +83,6 @@ class LoginPage extends Block<ILoginPageProps> {
   }
 }
 
-const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({
-  isLoading: state.isLoading,
-  globalError: state.globalError,
-});
+const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({ isLoading: state.isLoading });
 
 export default connect(mapStateToProps)(LoginPage);
