@@ -8,10 +8,10 @@ import {
   Button, DataField, Field, InputFile, ModalProfile,
 } from '../../components';
 import { logout } from '../../services/auth.service';
-import { updateUserInfo } from '../../services/user.service';
+import { checkUserData, updateUserInfo, updateUserPassword } from '../../services/user.service';
 import { connect } from '../../utils/connect';
 import isEqual from '../../utils/isEqual';
-import { isUpdateUser } from '../../utils/type-check';
+import { isUpdatePassword, isUpdateUser } from '../../utils/type-check';
 import * as validate from '../../utils/validate';
 import { dataFields, passwordFields } from './profile.const';
 import ProfilePageTemplate from './profile.template';
@@ -57,6 +57,10 @@ class ProfilePage extends Block<IProfilePageProps> {
   private editDataActive = false;
 
   private ediPasswordActive = false;
+
+  protected componentDidMount(_oldProps?: IProfilePageProps | undefined): void {
+    checkUserData();
+  }
 
   protected init(): void {
     const onReturnBind = this.onReturn.bind(this);
@@ -179,19 +183,18 @@ class ProfilePage extends Block<IProfilePageProps> {
     });
 
     console.log(formValues);
-    if (allValid && isUpdateUser(formValues)) {
+    if (!allValid) {
+      return;
+    }
+    if (isUpdateUser(formValues)) {
       await updateUserInfo(formValues);
-      // formKeys.forEach((key: string) => {
-      //   const fieldComponent = this.children[key];
-
-      //   if (fieldComponent instanceof DataField && fieldComponent.props.onValueChange) {
-      //     fieldComponent.props.onValueChange();
-      //   }
-      // });
-
       this.onReturn();
-    } else {
-      console.log('form not valid');
+      return;
+    }
+    if (isUpdatePassword(formValues)) {
+      const { oldPassword, newPassword } = formValues;
+      await updateUserPassword({ oldPassword, newPassword });
+      this.onReturn();
     }
   }
 

@@ -5,6 +5,7 @@ import {
 } from '../api/model';
 import Routes from '../api/routes';
 import { isApiError } from '../utils/type-check';
+import { setGlobalError } from './global-error.service';
 
 const authApi = new AuthApi();
 
@@ -28,11 +29,7 @@ export const login = async (data: ILoginRequestData): Promise<void> => {
 
     router.go(Routes.CHATS);
   } catch (error: unknown) {
-    let message = 'Ошибка авторизации';
-    if (isApiError(error)) {
-      message = error.reason;
-    }
-    window.store.set({ globalError: message });
+    setGlobalError(error, 'Ошибка авторизации');
   } finally {
     window.store.set({ isLoading: false });
   }

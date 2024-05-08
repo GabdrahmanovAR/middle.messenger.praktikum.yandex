@@ -1,4 +1,4 @@
-import { IAPIError, IUpdateUser, IUserInfo } from '../api/model';
+import { IAPIError, IUpdatePassword, IUpdateUser } from '../api/model';
 
 export function isApiError(data: any): data is IAPIError {
   return data?.reason;
@@ -15,4 +15,13 @@ export function isUpdateUser(data: unknown): data is IUpdateUser {
       && 'display_name' in data
       && 'phone' in data
       && 'email' in data;
+}
+
+export function isUpdatePassword(data: unknown): data is IUpdatePassword {
+  if (!data || typeof data !== 'object') {
+    return false;
+  }
+
+  return 'oldPassword' in data
+      && 'newPassword' in data;
 }

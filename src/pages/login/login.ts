@@ -40,7 +40,6 @@ class LoginPage extends Block<ILoginPageProps> {
       isLink: true,
       onClick: onCreateAccountBind,
     });
-    const GlobalErrorComponent = new GlobalError();
 
     this.children = {
       ...this.children,
@@ -48,7 +47,6 @@ class LoginPage extends Block<ILoginPageProps> {
       FieldPassword,
       ButtonSubmit,
       ButtonLink,
-      GlobalErrorComponent,
     };
   }
 

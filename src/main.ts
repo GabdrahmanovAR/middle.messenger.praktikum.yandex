@@ -8,6 +8,7 @@ import Store from './@core/Store';
 import { DefaultAppState } from './@models/common';
 import { IUserInfo } from './api/model';
 import { EMPTY_STRING } from '../assets/constants/common';
+import { GlobalError } from './components';
 
 declare global {
   interface Window { store: Store<DefaultAppState>; }
@@ -21,6 +22,13 @@ const defaultState: DefaultAppState = {
 
 const store = new Store<DefaultAppState>(defaultState);
 window.store = store;
+
+const GlobalErrorComponent = new GlobalError();
+const globalErrorElement = GlobalErrorComponent.getContent();
+const main = document.getElementById('app');
+if (main && globalErrorElement) {
+  main.append(globalErrorElement);
+}
 
 router
   .use(Routes.LOGIN, Pages.LoginPage)

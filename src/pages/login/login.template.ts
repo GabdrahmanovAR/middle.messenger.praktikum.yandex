@@ -1,5 +1,5 @@
 const loginTemplate = `
-<div class="container center column">
+<div class="container center">
   <div class="card login-card">
     <div class="form-title">Вход</div>
 
@@ -14,12 +14,7 @@ const loginTemplate = `
       </div>
     </form>
   </div>
-  {{{ GlobalErrorComponent }}}
 </div>
 `;
 
 export default loginTemplate;
-
-// {{#if globalError}}
-//   <div>Ошибка авторизации</div>
-// {{/if}}
