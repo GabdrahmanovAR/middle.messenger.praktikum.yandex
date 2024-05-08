@@ -1,3 +1,4 @@
+import { IUserInfo } from '../../api/model';
 import { IProps } from '../common';
 import { IErrorInfoProps } from '../components';
 
@@ -28,10 +29,10 @@ export interface IProfileField {
   last?: boolean;
 }
 export interface IProfilePageProps extends IProps {
-  name: string;
-  dataFields: IProfileField[];
+  user: IUserInfo;
+  // dataFields: IProfileField[];
   dataFieldKeys: string[];
-  passwordFields: IProfileField[];
+  // passwordFields: IProfileField[];
   passwordFieldKeys: string[];
   edit?: boolean;
   editPassword?: boolean;

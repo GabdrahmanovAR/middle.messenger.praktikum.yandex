@@ -4,7 +4,7 @@ import * as validate from '../../utils/validate';
 export const dataFields: IProfileField[] = [
   {
     label: 'Почта',
-    value: 'pochta@yandex.ru',
+    value: '',
     type: 'email',
     name: 'email',
     validate: validate.email,
@@ -12,7 +12,7 @@ export const dataFields: IProfileField[] = [
   },
   {
     label: 'Логин',
-    value: 'ivanivanov',
+    value: '',
     type: 'text',
     name: 'login',
     validate: validate.login,
@@ -20,7 +20,7 @@ export const dataFields: IProfileField[] = [
   },
   {
     label: 'Имя',
-    value: 'Иван',
+    value: '',
     type: 'text',
     name: 'first_name',
     validate: validate.name,
@@ -28,7 +28,7 @@ export const dataFields: IProfileField[] = [
   },
   {
     label: 'Фамилия',
-    value: 'Иванов',
+    value: '',
     type: 'text',
     name: 'second_name',
     validate: validate.name,
@@ -36,7 +36,7 @@ export const dataFields: IProfileField[] = [
   },
   {
     label: 'Имя в чате',
-    value: 'Иван',
+    value: '',
     type: 'text',
     name: 'display_name',
     validate: validate.empty,
@@ -44,7 +44,7 @@ export const dataFields: IProfileField[] = [
   },
   {
     label: 'Телефон',
-    value: '+7 (909) 967 30 30',
+    value: '',
     type: 'text',
     name: 'phone',
     validate: validate.phone,
@@ -55,7 +55,7 @@ export const dataFields: IProfileField[] = [
 export const passwordFields: IProfileField[] = [
   {
     label: 'Старый пароль',
-    value: 'паролька',
+    value: '',
     type: 'password',
     name: 'oldPassword',
     validate: validate.empty,

@@ -25,6 +25,6 @@ window.store = store;
 router
   .use(Routes.LOGIN, Pages.LoginPage)
   .use(Routes.SIGN_IN, Pages.RegistrationPage, { fields })
-  .use(Routes.PROFILE, Pages.ProfilePage, { dataFields, passwordFields })
+  .use(Routes.PROFILE, Pages.ProfilePage)
   .use(Routes.CHATS, Pages.ChatPage)
   .start();

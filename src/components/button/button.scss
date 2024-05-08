@@ -58,7 +58,7 @@
   }
   &_text {
     @include buttonTheme(
-      var(transparent),
+      transparent,
       var(--background-color-light-grey),
       var(--background-color-light)
     );

@@ -1,20 +1,28 @@
 import Block from '../../@core/Block';
 import router from '../../@core/Router';
+import { DefaultAppState } from '../../@models/common';
 import { IProfilePageProps, IProfileField } from '../../@models/pages';
+import { IUserInfo } from '../../api/model';
 import Routes from '../../api/routes';
 import {
   Button, DataField, Field, InputFile, ModalProfile,
 } from '../../components';
+import { logout } from '../../services/auth.service';
+import { updateUserInfo } from '../../services/user.service';
+import { connect } from '../../utils/connect';
+import isEqual from '../../utils/isEqual';
+import { isUpdateUser } from '../../utils/type-check';
 import * as validate from '../../utils/validate';
+import { dataFields, passwordFields } from './profile.const';
 import ProfilePageTemplate from './profile.template';
 
-export default class ProfilePage extends Block<IProfilePageProps> {
+class ProfilePage extends Block<IProfilePageProps> {
   constructor(props: IProfilePageProps) {
-    const dataFields = props.dataFields.reduce((acc: Record<string, DataField>, data: IProfileField) => {
+    const dataFieldComponents = dataFields.reduce((acc: Record<string, DataField>, data: IProfileField) => {
       const component = new DataField({
         type: data.type,
         label: data.label,
-        value: data.value,
+        value: (props?.user[data.name as keyof IUserInfo] as string) ?? data.value,
         name: data.name,
         last: data.last,
         readonly: data.readonly,
@@ -23,7 +31,7 @@ export default class ProfilePage extends Block<IProfilePageProps> {
       acc[data.name] = component;
       return acc;
     }, {});
-    const passwordFields = props.passwordFields.reduce((acc: Record<string, DataField>, data: IProfileField) => {
+    const passwordFieldComponents = passwordFields.reduce((acc: Record<string, DataField>, data: IProfileField) => {
       const component = new DataField({
         type: data.type,
         label: data.label,
@@ -38,11 +46,11 @@ export default class ProfilePage extends Block<IProfilePageProps> {
 
     super({
       ...props,
-      name: 'Вася',
-      dataFieldKeys: Object.keys(dataFields),
-      passwordFieldKeys: Object.keys(passwordFields),
-      ...dataFields,
-      ...passwordFields,
+      name: '-',
+      dataFieldKeys: Object.keys(dataFieldComponents),
+      passwordFieldKeys: Object.keys(passwordFieldComponents),
+      ...dataFieldComponents,
+      ...passwordFieldComponents,
     });
   }
 
@@ -152,7 +160,7 @@ export default class ProfilePage extends Block<IProfilePageProps> {
     return value.toLowerCase().includes('password');
   }
 
-  private onSave(event: Event): void {
+  private async onSave(event: Event): Promise<void> {
     event.preventDefault();
     let allValid = true;
 
@@ -170,15 +178,16 @@ export default class ProfilePage extends Block<IProfilePageProps> {
       }
     });
 
-    if (allValid) {
-      console.log(formValues);
-      formKeys.forEach((key: string) => {
-        const fieldComponent = this.children[key];
+    console.log(formValues);
+    if (allValid && isUpdateUser(formValues)) {
+      await updateUserInfo(formValues);
+      // formKeys.forEach((key: string) => {
+      //   const fieldComponent = this.children[key];
 
-        if (fieldComponent instanceof DataField && fieldComponent.props.onValueChange) {
-          fieldComponent.props.onValueChange();
-        }
-      });
+      //   if (fieldComponent instanceof DataField && fieldComponent.props.onValueChange) {
+      //     fieldComponent.props.onValueChange();
+      //   }
+      // });
 
       this.onReturn();
     } else {
@@ -198,7 +207,7 @@ export default class ProfilePage extends Block<IProfilePageProps> {
   }
 
   private onExit(): void {
-    router.go(Routes.LOGIN);
+    logout();
   }
 
   private repeatPassword(repeatPasswordValue: string): string {
@@ -222,6 +231,28 @@ export default class ProfilePage extends Block<IProfilePageProps> {
     });
   }
 
+  protected componentDidUpdate(_oldProps: IProfilePageProps, _newProps: IProfilePageProps): boolean {
+    if (!isEqual(_oldProps.user, _newProps.user)) {
+      const { user } = _newProps;
+      this._updateDataFields(user);
+    }
+
+    if (_oldProps.isLoading !== _newProps.isLoading) {
+      this.children.ButtonSave.setProps({ isLoading: _newProps.isLoading });
+    }
+    return true;
+  }
+
+  private _updateDataFields(user: IUserInfo): void {
+    this.props.dataFieldKeys.forEach((fieldKey: string) => {
+      const dataField = this.children[fieldKey];
+      if (dataField instanceof DataField) {
+        const value = user[fieldKey as keyof IUserInfo];
+        dataField.setProps({ value });
+      }
+    });
+  }
+
   protected render(): string {
     const dataFieldComponents = this.props.dataFieldKeys.map((key: string) => `{{{ ${key} }}}`).join('');
     const passwordFieldComponents = this.props.passwordFieldKeys.map((key: string) => `{{{ ${key} }}}`).join('');
@@ -231,3 +262,10 @@ export default class ProfilePage extends Block<IProfilePageProps> {
       .replace('#passwordFields', passwordFieldComponents);
   }
 }
+
+const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({
+  user: state.user,
+  isLoading: state.isLoading,
+});
+
+export default connect(mapStateToProps)(ProfilePage);

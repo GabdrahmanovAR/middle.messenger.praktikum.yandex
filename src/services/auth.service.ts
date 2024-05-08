@@ -1,14 +1,14 @@
 import router from '../@core/Router';
 import AuthApi from '../api/auth.api';
 import {
-  IAPIError, ICreateUser, ILoginRequestData, IUserInfo,
+  ICreateUser, ILoginRequestData, IUserInfo,
 } from '../api/model';
 import Routes from '../api/routes';
-import { isApiError } from '../utils/apiError';
+import { isApiError } from '../utils/type-check';
 
 const authApi = new AuthApi();
 
-const getUser = async (): Promise<IUserInfo> => {
+export const getUser = async (): Promise<IUserInfo> => {
   const userResponse = await authApi.user();
 
   if (isApiError(userResponse)) {
@@ -25,6 +25,8 @@ export const login = async (data: ILoginRequestData): Promise<void> => {
     await authApi.login(data);
     const user = await getUser();
     window.store.set({ user });
+
+    router.go(Routes.CHATS);
   } catch (error: unknown) {
     let message = 'Ошибка авторизации';
     if (isApiError(error)) {

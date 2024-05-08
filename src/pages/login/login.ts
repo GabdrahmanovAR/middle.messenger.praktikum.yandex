@@ -62,7 +62,6 @@ class LoginPage extends Block<ILoginPageProps> {
     if (loginValue && passwordValue) {
       console.log({ login: loginValue, password: passwordValue });
       login({ login: loginValue, password: passwordValue });
-      // router.go(Routes.CHATS);
     }
   }
 

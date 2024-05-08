@@ -9,7 +9,13 @@ const profilePageTemplate = `
     <form action="" class="profile-form">
       <div class="profile-form__avatar">
         {{{ AvatarInput }}}
-        <span class="profile-form__user-name">{{name}}</span>
+        <span class="profile-form__user-name">
+          {{#if user.first_name}}
+            {{{user.first_name}}}
+          {{else}}
+            -
+          {{/if}}
+        </span>
       </div>
 
       <div class="profile-from__fields">

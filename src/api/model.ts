@@ -21,6 +21,17 @@ export interface ICreateUser extends Omit<IUserInfo, 'avatar' | 'display_name' |
   password: string;
 }
 
+export interface IUpdateUser extends Omit<IUserInfo, 'avatar' | 'id'> { }
+
+export interface IUpdatePassword {
+  oldPassword: string;
+  newPassword: string;
+}
+
+export interface IFindUser {
+  login: string;
+}
+
 // export type UserDTO = {
 //   id: number;
 //   login: string;

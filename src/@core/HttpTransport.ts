@@ -1,4 +1,4 @@
-import { HOST } from "../constants";
+import { HOST } from '../constants';
 
 enum METHOD {
   GET = 'GET',
@@ -59,13 +59,6 @@ export default class HTTPTransport {
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      // const currentMethod = typeof method === 'string' && method;
-
-      // if (!currentMethod) {
-      //   throw new Error('Ошибка получения метода запроса');
-      // }
-
-      // const isGet = method === METHOD.GET;
       xhr.open(method, `${this.preffix}${url}`);
 
       Object.keys(headers ?? {}).forEach((key: string) => xhr.setRequestHeader(key, headers[key]));
@@ -79,9 +72,7 @@ export default class HTTPTransport {
         if (status >= 200 && status < 300) {
           resolve(xhr.response);
         } else {
-          const message = JSON.stringify({ status, reason: xhr.response?.reason });
-          // reject(new Error(message));
-          reject(message);
+          reject({ status, reason: xhr.response?.reason });
         }
       };
 
