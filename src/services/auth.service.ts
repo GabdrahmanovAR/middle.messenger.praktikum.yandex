@@ -1,9 +1,10 @@
-import router from '../@core/Router';
+import { EMPTY_STRING } from '../../assets/constants/common';
 import AuthApi from '../api/auth.api';
 import {
   ICreateUser, ILoginRequestData, IUserInfo,
 } from '../api/model';
 import Routes from '../api/routes';
+import { RESOURCE_HOST } from '../constants';
 import { isApiError } from '../utils/type-check';
 import { setGlobalError } from './global-error.service';
 
@@ -19,15 +20,44 @@ export const getUser = async (): Promise<IUserInfo> => {
   return userResponse;
 };
 
+export const hasUserData = async (): Promise<boolean> => {
+  const { store } = window;
+  const state = store.getState();
+
+  if (state.user && Object.keys(state.user).length > 0) {
+    return true;
+  }
+
+  // первый запуск и не определен статус авторизации
+  if (state.authorized === null) {
+    store.set({ isLoading: true });
+    try {
+      const user = await getUser();
+      store.set({
+        user,
+        authorized: true,
+        avatar: user.avatar ? `${RESOURCE_HOST}${user.avatar}` : EMPTY_STRING,
+      });
+      return true;
+    } catch (error) {
+      store.set({ authorized: false });
+    } finally {
+      store.set({ isLoading: false });
+    }
+  }
+  return false;
+};
+
 export const login = async (data: ILoginRequestData): Promise<void> => {
   window.store.set({ isLoading: true });
 
   try {
     await authApi.login(data);
     const user = await getUser();
-    window.store.set({ user });
+    const avatar = user.avatar ? `${RESOURCE_HOST}${user.avatar}` : EMPTY_STRING;
+    window.store.set({ user, avatar });
 
-    router.go(Routes.CHATS);
+    window.router.go(Routes.CHATS);
   } catch (error: unknown) {
     setGlobalError(error, 'Ошибка авторизации');
   } finally {
@@ -42,14 +72,36 @@ export const createUser = async (data: ICreateUser): Promise<void> => {
     throw new Error(createResponse.reason);
   }
 
-  const user = await getUser();
+  if (createResponse.id) {
+    const user = await getUser();
+    window.store.set({ user });
+    window.router.go(Routes.CHATS);
+  }
+};
 
-  console.log(createResponse);
-  console.log(user);
+export const canActivate = async (pathname: string): Promise<boolean> => {
+  const hasUser = await hasUserData();
+  if (pathname === Routes.LOGIN || pathname === Routes.SIGN_UP) {
+    if (hasUser) {
+      window.router.go(Routes.CHATS);
+      return false;
+    }
+    return true;
+  }
+  if (pathname === Routes.CHATS || pathname === Routes.PROFILE) {
+    if (!hasUser) {
+      window.router.go(Routes.LOGIN);
+      return false;
+    }
+    return true;
+  }
+  return true;
 };
 
 export const logout = async (): Promise<void> => {
   await authApi.logout();
 
-  router.go(Routes.LOGIN);
+  window.router.reset();
+  window.store.reset({ authorized: false });
+  window.router.go(Routes.LOGIN);
 };

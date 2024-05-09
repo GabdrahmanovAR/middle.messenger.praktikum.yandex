@@ -93,7 +93,8 @@ export interface IModalUser extends IProps {
 }
 
 export interface IInputFile extends IProps {
-  avatar?: boolean;
+  avatar?: string;
+  isFile?: boolean;
   acceptType?: string;
   label?: string;
   fileName?: string;

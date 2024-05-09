@@ -2,8 +2,7 @@ import Block from '../../@core/Block';
 import LoginTemplate from './login.template';
 import * as validate from '../../utils/validate';
 import { ILoginPageProps } from '../../@models/pages';
-import { Button, Field, GlobalError } from '../../components';
-import router from '../../@core/Router';
+import { Button, Field } from '../../components';
 import Routes from '../../api/routes';
 import { login } from '../../services/auth.service';
 import { DefaultAppState } from '../../@models/common';
@@ -65,7 +64,7 @@ class LoginPage extends Block<ILoginPageProps> {
 
   private onCreateAccount(event: Event): void {
     event.preventDefault();
-    router.go(Routes.SIGN_IN);
+    window.router.go(Routes.SIGN_UP);
   }
 
   protected componentDidUpdate(_oldProps: ILoginPageProps, _newProps: ILoginPageProps): boolean {

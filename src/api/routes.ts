@@ -1,6 +1,6 @@
 enum Routes {
   LOGIN = '/',
-  SIGN_IN = '/sign-up',
+  SIGN_UP = '/sign-up',
   PROFILE = '/profile',
   CHATS = '/chats',
 }

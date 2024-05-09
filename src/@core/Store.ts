@@ -1,3 +1,4 @@
+import { DefaultAppState } from '../@models/common';
 import EventBus from './EventBus';
 
 export enum StoreEvents {
@@ -7,11 +8,14 @@ export enum StoreEvents {
 export default class Store<State extends Record<string, any> = Record<string, any>> extends EventBus {
   private state: State = {} as State;
 
-  constructor(defaultState: State) {
+  private defaultState: State = {} as State;
+
+  constructor(initialState: State) {
     super();
 
-    this.state = defaultState;
-    this.set(defaultState);
+    this.state = initialState;
+    this.defaultState = initialState;
+    this.set(initialState);
   }
 
   public getState(): State {
@@ -24,5 +28,9 @@ export default class Store<State extends Record<string, any> = Record<string, an
     this.state = { ...this.state, ...nextState };
 
     this.emit(StoreEvents.Updated, prevState, nextState);
+  }
+
+  public reset(save?: Partial<DefaultAppState>): void {
+    this.state = { ...this.defaultState, ...save };
   }
 }

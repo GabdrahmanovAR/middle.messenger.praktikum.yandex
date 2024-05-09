@@ -14,4 +14,6 @@ export interface DefaultAppState {
   user: IUserInfo;
   isLoading: boolean;
   globalError: string;
+  avatar: string;
+  authorized: boolean | null;
 }

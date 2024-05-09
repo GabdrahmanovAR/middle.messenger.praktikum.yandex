@@ -1,5 +1,4 @@
 import Block from '../../@core/Block';
-import router from '../../@core/Router';
 import { DefaultAppState } from '../../@models/common';
 import { IProfilePageProps, IProfileField } from '../../@models/pages';
 import { IUserInfo } from '../../api/model';
@@ -8,7 +7,7 @@ import {
   Button, DataField, Field, InputFile, ModalProfile,
 } from '../../components';
 import { logout } from '../../services/auth.service';
-import { checkUserData, updateUserInfo, updateUserPassword } from '../../services/user.service';
+import { updateUserInfo, updateUserPassword } from '../../services/user.service';
 import { connect } from '../../utils/connect';
 import isEqual from '../../utils/isEqual';
 import { isUpdatePassword, isUpdateUser } from '../../utils/type-check';
@@ -59,7 +58,7 @@ class ProfilePage extends Block<IProfilePageProps> {
   private ediPasswordActive = false;
 
   protected componentDidMount(_oldProps?: IProfilePageProps | undefined): void {
-    checkUserData();
+    // checkUserData();
   }
 
   protected init(): void {
@@ -104,7 +103,7 @@ class ProfilePage extends Block<IProfilePageProps> {
     });
     const AvatarInput = new InputFile({
       label: 'Поменять аватар',
-      avatar: true,
+      isFile: true,
       onClick: onAvatarChangeBind,
     });
     const ProfileModal = new ModalProfile({
@@ -132,7 +131,7 @@ class ProfilePage extends Block<IProfilePageProps> {
 
   private onReturn(): void {
     if (!this.editDataActive && !this.ediPasswordActive) {
-      router.go(Routes.CHATS);
+      window.router.go(Routes.CHATS);
     }
 
     const formKeys = Object.keys(this.children);

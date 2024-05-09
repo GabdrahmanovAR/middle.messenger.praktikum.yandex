@@ -4,7 +4,6 @@ import Block from './Block';
 
 interface IRouteProps {
   rootQuery: string;
-  viewProps?: IProps;
 }
 
 export default class Route {
@@ -42,7 +41,7 @@ export default class Route {
 
   render(): void {
     if (!this._block) {
-      this._block = new this._blockClass(this._props.viewProps);
+      this._block = new this._blockClass();
       this._render(this._props.rootQuery, this._block);
       return;
     }
@@ -58,5 +57,20 @@ export default class Route {
       return root;
     }
     return null;
+  }
+
+  public clear(): void {
+    const root = document.querySelector(this._props.rootQuery);
+    if (!root) {
+      throw new Error('Ошибка удаления из dom-дерева');
+    }
+
+    if (this._block) {
+      const content: HTMLElement | null = this._block.getContent();
+      if (content) {
+        root.removeChild(content);
+      }
+      this._block = null;
+    }
   }
 }

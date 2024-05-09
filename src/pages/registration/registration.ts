@@ -3,13 +3,14 @@ import Block from '../../@core/Block';
 import { IField, IRegistrationPageProps } from '../../@models/pages';
 import RegistrationPageTemplate from './registration.template';
 import { Button, Field } from '../../components';
-import router from '../../@core/Router';
 import Routes from '../../api/routes';
 import { createUser } from '../../services/auth.service';
+import { isCreateUser } from '../../utils/type-check';
+import { fields } from './registration.const';
 
 export default class RegistrationPage extends Block<IRegistrationPageProps> {
   constructor(props: IRegistrationPageProps) {
-    const registrationFields = props.fields.reduce((acc: Record<string, Field>, data: IField) => {
+    const registrationFields = fields.reduce((acc: Record<string, Field>, data: IField) => {
       const component = new Field({
         label: data.label,
         name: data.name,
@@ -73,19 +74,15 @@ export default class RegistrationPage extends Block<IRegistrationPageProps> {
       }
     });
 
-    if (allValid) {
-      const { repeatPassword, ...rest } = formValues;
-      console.log(rest);
+    const { repeatPassword, ...rest } = formValues;
+    if (allValid && isCreateUser(rest)) {
       createUser(rest);
-      // router.go(Routes.CHATS);
-    } else {
-      console.log('form not valid');
     }
   }
 
   private onLogin(event: Event): void {
     event.preventDefault();
-    router.go(Routes.LOGIN);
+    window.router.go(Routes.LOGIN);
   }
 
   private repeatPassword(repeatPasswordValue: string): string {
