@@ -37,6 +37,3 @@ export interface IProfilePageProps extends IProps {
   edit?: boolean;
   editPassword?: boolean;
 }
-
-export interface INotfoundPageProps extends IErrorInfoProps, IProps {
-}

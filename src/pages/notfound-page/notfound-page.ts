@@ -1,13 +1,12 @@
 import Block from '../../@core/Block';
-import { INotfoundPageProps } from '../../@models/pages';
 import { ErrorInfo } from '../../components';
-import ErrorPageTemplate from './error-page.template';
+import ErrorPageTemplate from './notfound-page.template';
 
-export default class NotFoundPage extends Block<INotfoundPageProps> {
+export default class NotfoundPage extends Block {
   protected init(): void {
     const ErrorComponent = new ErrorInfo({
-      code: this.props.code,
-      info: this.props.info,
+      code: '404',
+      info: 'Страница не найдена',
     });
 
     this.children = {

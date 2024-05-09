@@ -84,7 +84,11 @@ export default class Router {
   }
 
   public getRoute(pathname: string): Route | undefined {
-    return this.routes.find((route) => route.match(pathname));
+    const route = this.routes.find((routeItem) => routeItem.match(pathname));
+    if (!route) {
+      return this.routes.find((routeItem) => routeItem.match('*'));
+    }
+    return route;
   }
 
   public reset(): void {

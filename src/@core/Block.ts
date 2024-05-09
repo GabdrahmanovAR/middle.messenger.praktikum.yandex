@@ -7,7 +7,7 @@ interface IPropsNChildren {
   children: Record<string, Block<IProps>>,
   props: Record<string, unknown>
 }
-class Block<Props extends IProps> {
+class Block<Props extends IProps = IProps> {
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',

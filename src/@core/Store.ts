@@ -30,6 +30,10 @@ export default class Store<State extends Record<string, any> = Record<string, an
     this.emit(StoreEvents.Updated, prevState, nextState);
   }
 
+  /**
+   * Сброс состояния хранилища в начальное состояние
+   * @param save сохранение состояний для необходимых полей
+   */
   public reset(save?: Partial<DefaultAppState>): void {
     this.state = { ...this.defaultState, ...save };
   }

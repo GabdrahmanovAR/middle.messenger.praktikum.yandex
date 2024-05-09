@@ -42,4 +42,5 @@ router
   .use(Routes.SIGN_UP, Pages.RegistrationPage)
   .use(Routes.PROFILE, Pages.ProfilePage)
   .use(Routes.CHATS, Pages.ChatPage)
+  .use('*', Pages.NotFoundPage)
   .start();
