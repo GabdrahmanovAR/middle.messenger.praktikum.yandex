@@ -24,6 +24,7 @@ export const defaultState: DefaultAppState = {
   avatar: EMPTY_STRING,
   authorized: null,
   modalState: {} as IModalChat,
+  chats: [],
 };
 
 const store = new Store<DefaultAppState>(defaultState);

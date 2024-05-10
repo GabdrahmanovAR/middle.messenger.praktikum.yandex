@@ -1,31 +1,11 @@
 import Block from '../../@core/Block';
-import { IChatListProps, IChatList } from '../../@models/components';
+import { IChatListProps } from '../../@models/components';
+import { DefaultAppState } from '../../@models/store';
+import { connect } from '../../utils/connect';
 import { ChatCard } from '../chat-card';
 import ChatListTemplate from './chat-list.template';
 
-export default class ChatList extends Block<IChatListProps> {
-  constructor(props: IChatListProps) {
-    const registrationFields = props.chatList.reduce((acc: Record<string, ChatCard>, data: IChatList) => {
-      const component = new ChatCard({
-        id: data.id,
-        name: data.name,
-        avatar: data.avatar,
-        count: data.count,
-        active: data.active,
-        date: data.date,
-        message: data.message,
-      });
-      acc[data.id] = component;
-      return acc;
-    }, {});
-
-    super({
-      ...props,
-      fieldKeys: Object.keys(registrationFields),
-      ...registrationFields,
-    });
-  }
-
+class ChatList extends Block<IChatListProps> {
   protected init(): void {
     const onChatCardClickBind = this.onChatCardClick.bind(this);
     const keys = Object.keys(this.children);
@@ -52,15 +32,10 @@ export default class ChatList extends Block<IChatListProps> {
   }
 
   protected render(): string {
-    if (this.props.fieldKeys && this.props.fieldKeys.length > 0) {
-      const chatCards = this.props.fieldKeys.map((key: string) => `
-      <li class="chat-list__item">
-        {{{ ${key} }}}
-      </li>
-      `).join('');
-      return ChatListTemplate.replace('#chatList', chatCards);
-    }
-
     return ChatListTemplate;
   }
 }
+
+const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({ isLoading: state.isLoading });
+
+export default connect(mapStateToProps)(ChatList);

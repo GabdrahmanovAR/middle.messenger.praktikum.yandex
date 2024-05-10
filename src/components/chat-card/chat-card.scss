@@ -38,7 +38,6 @@
   &__text {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     flex-grow: 1;
     padding: 0.25rem;
   }
@@ -51,6 +50,7 @@
   &__message {
     color: var(--text-color-label);
     @include textWithDots(2);
+    margin-top: 0.25rem;
   }
 
   &__info {

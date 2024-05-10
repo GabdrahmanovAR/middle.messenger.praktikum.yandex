@@ -1,4 +1,4 @@
-import { IUserInfo } from '../../api/model';
+import { IChatInfo, IUserInfo } from '../../api/model';
 import { IProps } from '../common';
 
 export interface ILoginPageProps extends IProps {
@@ -16,7 +16,9 @@ export interface IRegistrationPageProps extends IProps {
   fieldKeys: string[];
 }
 
-export interface IChatPageProps extends IProps {}
+export interface IChatPageProps extends IProps {
+  chats: IChatInfo[];
+}
 
 export interface IProfileField {
   label: string;

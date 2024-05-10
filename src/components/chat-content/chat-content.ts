@@ -55,11 +55,11 @@ export default class ChatContent extends Block<IChatContentProps> {
 
     this.children = {
       ...this.children,
-      MessageListComponent,
       PropertiesButton,
+      MessageListComponent,
       PinButton,
-      SendButton,
       InputTextComponent,
+      SendButton,
       PropertiesDropdown,
       PinDropdown,
     };

@@ -53,7 +53,7 @@ class ModalChat extends Block<IModalChat> {
     const value = (field instanceof Field) && field.getValue();
 
     if (value) {
-      console.log(value);
+      this.props.onClick(value);
     }
   }
 

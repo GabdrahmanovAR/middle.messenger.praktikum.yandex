@@ -126,48 +126,35 @@ class Block<Props extends IProps = IProps> {
   private _render(): void {
     this.removeEvents();
 
-    // const propsAndStubs = { ...this.props };
+    const propsAndStubs = { ...this.props };
 
-    // Object.entries(this.children).forEach(([key, child]) => {
-    //   propsAndStubs[key] = `<div data-id="${child._id}"></div>`;
-    // });
+    Object.entries(this.children).forEach(([key, child]) => {
+      propsAndStubs[key] = `<div data-id="${child._id}"></div>`;
+    });
 
-    // const childrenProps = [];
-    // Object.entries(propsAndStubs).forEach(([key, value]) => {
-    //   if (Array.isArray(value)) {
-    //     propsAndStubs[key] = value.map((item) => {
-    //       if (item instanceof Block) {
-    //         childrenProps.push(item);
-    //         return `<div data-id="${item._id}"></div>`;
-    //       }
+    const childrenProps = [];
+    Object.entries(propsAndStubs).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        propsAndStubs[key] = value.map((item) => {
+          if (item instanceof Block) {
+            childrenProps.push(item);
+            return `<div data-id="${item._id}"></div>`;
+          }
 
-    //       return item;
-    //     }).join('');
-    //   }
-    // });
-    // const fragment = document.createElement('template');
+          return item;
+        }).join('');
+      }
+    });
+    const fragment = document.createElement('template');
 
-    // fragment.innerHTML = Handlebars.compile(this.render())(propsAndStubs);
-    // const newElement = fragment.content.firstElementChild as HTMLElement;
+    fragment.innerHTML = Handlebars.compile(this.render())(propsAndStubs);
+    const newElement = fragment.content.firstElementChild as HTMLElement;
 
-    // [...Object.values(this.children), ...childrenProps].forEach((child) => {
-    //   const stub = fragment.content.querySelector(`[data-id="${child._id}"]`);
+    [...Object.values(this.children), ...childrenProps].forEach((child) => {
+      const stub = fragment.content.querySelector(`[data-id="${child._id}"]`);
 
-    //   stub?.replaceWith(child.getContent());
-    // });
-
-    // if (this._element && newElement) {
-    //   newElement.style.display = this._element.style.display;
-    //   this._element.replaceWith(newElement);
-    // }
-
-    // this._element = newElement;
-
-    // this.addEvents();
-
-    const fragment = this.compile(this.render(), this._props);
-
-    const newElement = fragment.firstElementChild as HTMLElement;
+      stub?.replaceWith(child.getContent());
+    });
 
     if (this._element && newElement) {
       newElement.style.display = this._element.style.display;
@@ -177,6 +164,19 @@ class Block<Props extends IProps = IProps> {
     this._element = newElement;
 
     this.addEvents();
+
+    // const fragment = this.compile(this.render(), this._props);
+
+    // const newElement = fragment.firstElementChild as HTMLElement;
+
+    // if (this._element && newElement) {
+    //   newElement.style.display = this._element.style.display;
+    //   this._element.replaceWith(newElement);
+    // }
+
+    // this._element = newElement;
+
+    // this.addEvents();
   }
 
   private compile(template: string, context: any): DocumentFragment {

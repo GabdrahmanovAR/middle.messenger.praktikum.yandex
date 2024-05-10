@@ -1,3 +1,4 @@
+import Block from '../../@core/Block';
 import { IProps } from '../common';
 
 export interface IInputProps extends IProps {
@@ -60,8 +61,9 @@ export interface IChatList {
 }
 
 export interface IChatListProps extends IProps {
-  chatList: IChatList[];
-  fieldKeys?: string[];
+  chatList: Block[];
+  showList: boolean;
+  isLoading?: boolean;
   currentActive?: string;
 }
 
@@ -92,7 +94,7 @@ export interface IModalChat extends IProps {
   buttonLabel?: string;
   visible?: boolean;
   name: string;
-  // modalState: IModalState;
+  onClick?: (value: string) => void;
 }
 
 export interface IInputFile extends IProps {
@@ -165,13 +167,13 @@ export interface IDataFieldProps extends IProps {
 }
 
 export interface IChatCardProps extends IProps {
-  id: string;
+  id: number;
   name: string
   active?: boolean;
   avatar?: string;
   message?: string;
   date?: string;
-  count?: string;
+  count?: number;
   onClick?: (value: string | null) => void;
 }
 

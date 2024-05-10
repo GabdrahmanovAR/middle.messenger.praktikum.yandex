@@ -10,7 +10,7 @@ export enum Modal {
 
 export const propertiesDropdownList: IDropDownList[] = [
   {
-    icon: '/assets/icons/add_user.svg',
+    icon: '/assets/icons/add.svg',
     title: 'Добавить пользователя',
     name: Modal.ADD_USER,
     onClick: (): void => {
@@ -21,12 +21,13 @@ export const propertiesDropdownList: IDropDownList[] = [
         buttonLabel: 'Добавить',
         name: Modal.ADD_USER,
         visible: true,
+        onClick: (value: string) => console.log('Add user'),
       };
       openModal(modalState);
     },
   },
   {
-    icon: '/assets/icons/delete_user.svg',
+    icon: '/assets/icons/delete.svg',
     title: 'Удалить пользователя',
     name: Modal.REMOVE_USER,
     onClick: (): void => {
@@ -37,6 +38,24 @@ export const propertiesDropdownList: IDropDownList[] = [
         buttonLabel: 'Удалить',
         name: Modal.ADD_USER,
         visible: true,
+        onClick: (value: string) => console.log('Remove user'),
+      };
+      openModal(modalState);
+    },
+  },
+  {
+    icon: '/assets/icons/delete.svg',
+    title: 'Удалить чат',
+    name: Modal.REMOVE_CHAT,
+    onClick: (): void => {
+      const modalState: IModalChat = {
+        title: 'Удалить чат',
+        fieldLabel: 'Наименование чата',
+        fieldName: Modal.REMOVE_CHAT,
+        buttonLabel: 'Удалить',
+        name: Modal.REMOVE_CHAT,
+        visible: true,
+        onClick: (value: string) => console.log('Remove chat'),
       };
       openModal(modalState);
     },
@@ -45,14 +64,20 @@ export const propertiesDropdownList: IDropDownList[] = [
 
 export const chatDropdownList: IDropDownList[] = [
   {
-    icon: '/assets/icons/add_user.svg',
+    icon: '/assets/icons/add.svg',
     title: 'Добавить чат',
     name: Modal.ADD_CHAT,
-  },
-  {
-    icon: '/assets/icons/delete_user.svg',
-    title: 'Удалить чат',
-    name: Modal.REMOVE_CHAT,
+    onClick: (): void => {
+      const modalState: IModalChat = {
+        title: 'Добавить чат',
+        fieldLabel: 'Наименование чата',
+        fieldName: Modal.ADD_CHAT,
+        buttonLabel: 'Добавить',
+        name: Modal.ADD_CHAT,
+        visible: true,
+      };
+      openModal(modalState);
+    },
   },
 ];
 

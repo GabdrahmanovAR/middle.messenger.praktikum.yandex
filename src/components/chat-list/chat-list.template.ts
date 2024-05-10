@@ -1,13 +1,16 @@
 const chatListTemplate = `
-<ul class="chat-list">
-  #chatList
-</ul>
+{{#if showList}}
+  <ul class="chat-list">
+    {{{ chatList }}}
+  </ul>
+{{else}}
+  {{#if isLoading}}
+    <div class="chat-list__info">Загружаем чаты ...</div>
+  {{else}}
+    <div class="chat-list__info">Нет чатов</div>
+  {{/if}}
+{{/if}}
+
 `;
 
 export default chatListTemplate;
-
-// {{#each chatList}}
-// <li class="chat-list__item" key="{{this.id}}">
-//   {{> ChatCard }}
-// </li>
-// {{/each}}
