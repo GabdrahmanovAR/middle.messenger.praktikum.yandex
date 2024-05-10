@@ -47,16 +47,10 @@ export default class ChatContent extends Block<IChatContentProps> {
     const PropertiesDropdown = new DropDownList({
       list: propertiesDropdownList,
       appednTo: PropertiesButton.element,
-      onMenuItemSelect: (itemName: string): void => {
-        this.props.onModalOpen(itemName);
-      },
     });
     const PinDropdown = new DropDownList({
       list: pinDropdownList,
       appednTo: PinButton.element,
-      onMenuItemSelect: (value: string): void => {
-        this.props.onModalOpen(value);
-      },
     });
 
     this.children = {

@@ -67,12 +67,13 @@ export interface IChatListProps extends IProps {
 
 export interface IChatContentProps extends IProps {
   chatInfo: IChatList;
-  onModalOpen: (itemName: string) => void;
+  // onModalOpen: (itemName: string) => void;
 }
 export interface IDropDownList {
   icon: string;
   title: string;
   name: string;
+  onClick?: () => void;
 }
 export interface IDropdownListProps extends IProps {
   list: IDropDownList[];
@@ -82,14 +83,16 @@ export interface IDropdownListProps extends IProps {
   bottom?: string;
   left?: string;
   right?: string;
-  onMenuItemSelect: (value: string) => void;
 }
 
-export interface IModalUser extends IProps {
+export interface IModalChat extends IProps {
   title?: string;
   fieldLabel?: string;
+  fieldName?: string;
   buttonLabel?: string;
   visible?: boolean;
+  name: string;
+  // modalState: IModalState;
 }
 
 export interface IInputFile extends IProps {

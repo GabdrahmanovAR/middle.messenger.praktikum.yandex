@@ -2,6 +2,7 @@ const chatTemplate = `
 <div class="container chat-container">
   <div class="sidebar">
     <div class="sidebar__settings">
+      {{{ ChatPropertiesButton }}}
       {{{ ProfileButton }}}
     </div>
     <div class="sidebar__search">
@@ -15,7 +16,8 @@ const chatTemplate = `
   <div class="chat-section">
     {{{ ChatContentComponent }}}
   </div>
-  {{{ UserModal }}}
+  {{{ ChatModal }}}
+  {{{ ChatDropdown }}}
 </div>
 `;
 

@@ -5,9 +5,16 @@ import { IDropDownList, IDropdownListProps } from '../../@models/components';
 export default class DropdownList extends Block<IDropdownListProps> {
   private onElementClickBind!: (event: MouseEvent) => void;
 
-  protected init(): void {
-    this.setProps({
-      onMenuItemSelect: this.props.onMenuItemSelect,
+  constructor(props: IDropdownListProps) {
+    super({
+      ...props,
+      onMenuItemSelect: (attr: string) => {
+        props.list.forEach((listItem: IDropDownList) => {
+          if (listItem.name === attr && listItem.onClick) {
+            listItem.onClick();
+          }
+        });
+      },
     });
   }
 
@@ -30,9 +37,17 @@ export default class DropdownList extends Block<IDropdownListProps> {
     }
     const attribute = event.target.getAttribute('name');
     if (attribute) {
-      this.props.onMenuItemSelect(attribute);
+      this.onMenuItemClick(attribute);
       this.setProps({ visible: false });
     }
+  }
+
+  private onMenuItemClick(attr: string): void {
+    this.props.list.forEach((listItem: IDropDownList) => {
+      if (listItem.name === attr && listItem.onClick) {
+        listItem.onClick();
+      }
+    });
   }
 
   private calculateDropDownPosition(): void {

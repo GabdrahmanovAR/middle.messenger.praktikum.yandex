@@ -12,6 +12,6 @@ export { Message } from './message';
 export { InputFile } from './input-file';
 export { DataField } from './data-field';
 export { ModalProfile } from './modal-profile';
-export { ModalUser } from './modal-user';
+export { ModalChat } from './modal-chat';
 export { DropDownList } from './dropdown-list';
 export { GlobalError } from './global-error';

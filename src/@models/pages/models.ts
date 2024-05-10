@@ -1,6 +1,5 @@
 import { IUserInfo } from '../../api/model';
 import { IProps } from '../common';
-import { IErrorInfoProps } from '../components';
 
 export interface ILoginPageProps extends IProps {
 }

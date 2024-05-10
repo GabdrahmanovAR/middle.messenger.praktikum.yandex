@@ -33,10 +33,11 @@ export const hasUserData = async (): Promise<boolean> => {
     store.set({ isLoading: true });
     try {
       const user = await getUser();
+      const avatar = user.avatar ? `${RESOURCE_HOST}${user.avatar}` : EMPTY_STRING;
       store.set({
         user,
         authorized: true,
-        avatar: user.avatar ? `${RESOURCE_HOST}${user.avatar}` : EMPTY_STRING,
+        avatar,
       });
       return true;
     } catch (error) {

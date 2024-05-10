@@ -1,6 +1,7 @@
 import Block from '../@core/Block';
 import { StoreEvents } from '../@core/Store';
-import { DefaultAppState, IProps } from '../@models/common';
+import { IProps } from '../@models/common';
+import { DefaultAppState } from '../@models/store';
 import isEqual from './isEqual';
 
 export function connect(mapStateToProps: (state: DefaultAppState) => Partial<DefaultAppState>) {
