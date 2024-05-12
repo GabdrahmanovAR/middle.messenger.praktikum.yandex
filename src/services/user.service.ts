@@ -53,10 +53,12 @@ export const updateUserAvatar = async (file: File): Promise<void> => {
 };
 
 export const findUser = async (login: string): Promise<IUserInfo[] | null> => {
-  const findedUser = await userApi.findUser({ login });
+  const findedUsers = await userApi.findUser({ login });
 
-  if (isApiError(findedUser) || (Array.isArray(findedUser) && findedUser.length === 0)) {
+  if (isApiError(findedUsers) || (Array.isArray(findedUsers) && findedUsers.length === 0)) {
+    window.store.set({ findedUsers: [] });
     return null;
   }
-  return findedUser;
+  window.store.set({ findedUsers });
+  return findedUsers;
 };

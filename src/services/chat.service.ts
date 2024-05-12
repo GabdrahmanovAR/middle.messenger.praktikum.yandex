@@ -1,7 +1,7 @@
 import { EMPTY_STRING } from '../../assets/constants/common';
 import { ISelectedChat } from '../@models/components';
 import ChatApi from '../api/chat.api';
-import { IAddChatUser } from '../api/model';
+import { IAddChatUser, IChatToken, IChatUser } from '../api/model';
 import { setGlobalError } from './global-error.service';
 
 const chatApi = new ChatApi();
@@ -49,10 +49,31 @@ export const deleteChat = async (): Promise<void> => {
   }
 };
 
-export const selectChat = (chat: ISelectedChat): void => {
-  window.store.set({ selectedChat: chat });
-};
-
 export const addChatUser = async (data: IAddChatUser): Promise<void> => {
   await chatApi.addChatUser(data);
+};
+
+export const getChatUsers = async (chatId: number): Promise<IChatUser[]> => chatApi.getChatUsers(chatId);
+
+export const getChatToken = async (chatId: number): Promise<IChatToken> => chatApi.getChatToken(chatId);
+
+export const selectChat = async (chat: ISelectedChat): Promise<void> => {
+  const { store } = window;
+  const state = store.getState();
+  const currentSelectedChatId = state.selectedChat?.id;
+
+  if (currentSelectedChatId && currentSelectedChatId === chat.id) {
+    return;
+  }
+
+  store.set({ isLoading: true });
+
+  try {
+    const users = await getChatUsers(chat.id);
+    store.set({ selectedChat: chat, selectedChatUsers: users });
+  } catch (error) {
+    setGlobalError(error);
+  } finally {
+    store.set({ isLoading: false });
+  }
 };

@@ -27,6 +27,9 @@ export const defaultState: DefaultAppState = {
   modalConfirm: {} as IModalConfirm,
   chats: [],
   selectedChat: {} as ISelectedChat,
+  selectedChatUsers: [],
+  findedUsers: [],
+  chatConnection: null,
 };
 
 const store = new Store<DefaultAppState>(defaultState);

@@ -8,7 +8,7 @@ const modalChatTemplate = `
     </div>
     <form action="" class="user-window__form">
       <div class="user-window__form-content">
-        {{{ FieldComponent }}}
+        {{{ DropdownInput }}}
       </div>
       <div class="user-window__footer">
         {{{ ButtonComponent }}}

@@ -102,7 +102,13 @@ export const canActivate = async (pathname: string): Promise<boolean> => {
 export const logout = async (): Promise<void> => {
   await authApi.logout();
 
+  const { store } = window;
+  const state = store.getState();
+
+  if (state.chatConnection) {
+    state.chatConnection.close();
+  }
   window.router.reset();
-  window.store.reset({ authorized: false });
+  store.reset({ authorized: false });
   window.router.go(Routes.LOGIN);
 };

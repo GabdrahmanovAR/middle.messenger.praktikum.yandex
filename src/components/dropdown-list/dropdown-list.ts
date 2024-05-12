@@ -115,10 +115,12 @@ export default class DropdownList extends Block<IDropdownListProps> {
     <div class="dropdown{{#if visible}} dropdown_visible{{/if}}" style="${this.positionStyle()}">
       ${this.props.list.map((list: IDropDownList) => `
         <div name="${list.name}" class="dropdown__item">
-          <div class="dropdown__item-icon">
-            <img src="${list.icon}" alt="Dropdown list item icon">
-          </div>
-          <span class="dropdown__item-name">
+          ${list.icon ? `
+            <div class="dropdown__item-icon">
+              <img src="${list.icon}" alt="Dropdown list item icon">
+            </div>
+          ` : ''}
+          <span class="dropdown__item-name ${!list.icon ? 'pl-0' : 'pl-1'}">
             ${list.title}
           </span>
         </div>

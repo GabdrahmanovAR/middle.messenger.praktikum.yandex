@@ -10,6 +10,7 @@ export { ChatContent } from './chat-content';
 export { MessageList } from './message-list';
 export { Message } from './message';
 export { InputFile } from './input-file';
+export { InputDropdown } from './input-dropdown';
 export { DataField } from './data-field';
 export { ModalProfile } from './modal-profile';
 export { ModalChat } from './modal-chat';

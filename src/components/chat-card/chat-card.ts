@@ -4,6 +4,7 @@ import { IChatCardProps, ISelectedChat } from '../../@models/components';
 import { DefaultAppState } from '../../@models/store';
 import { selectChat } from '../../services/chat.service';
 import { connect } from '../../utils/connect';
+import isEqual from '../../utils/isEqual';
 import ChatCardTemplate from './chat-card.template';
 
 class ChatCatd extends Block<IChatCardProps> {
@@ -40,7 +41,9 @@ class ChatCatd extends Block<IChatCardProps> {
 
   protected componentDidUpdate(_oldProps: IChatCardProps, _newProps: IChatCardProps): boolean {
     const { selectedChat } = _newProps;
-    if (selectedChat && Object.keys(selectedChat).length > 0) {
+    const hasData = selectedChat && Object.keys(selectedChat).length > 0;
+    const notEqual = !isEqual((_oldProps.selectedChat ?? {}), selectedChat ?? {});
+    if (hasData && notEqual) {
       this.setProps({ active: this.props.id === selectedChat.id });
     }
     return true;

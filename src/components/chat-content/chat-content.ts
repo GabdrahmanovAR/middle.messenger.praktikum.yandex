@@ -9,6 +9,8 @@ import { pinDropdownList, propertiesDropdownList } from '../dropdown-list/dropdo
 import { IChatContentProps } from '../../@models/components';
 import { connect } from '../../utils/connect';
 import { DefaultAppState } from '../../@models/store';
+import isEqual from '../../utils/isEqual';
+import { createWebSocket, sendMessage } from '../../services/websocket.service';
 
 class ChatContent extends Block<IChatContentProps> {
   constructor(props: IChatContentProps) {
@@ -94,7 +96,18 @@ class ChatContent extends Block<IChatContentProps> {
     if (message) {
       console.log(message);
       inputText.resetValue();
+      sendMessage(message);
     }
+  }
+
+  protected componentDidUpdate(_oldProps: IChatContentProps, _newProps: IChatContentProps): boolean {
+    const { selectedChat } = _newProps;
+    const hasData = selectedChat && Object.keys(selectedChat).length > 0;
+    if (hasData) {
+      console.log('CREATE WEBSOCKET');
+      createWebSocket();
+    }
+    return true;
   }
 
   protected render(): string {

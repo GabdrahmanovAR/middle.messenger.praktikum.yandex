@@ -1,4 +1,5 @@
 import Block from '../../@core/Block';
+import { IUserInfo } from '../../api/model';
 import { IProps } from '../common';
 
 export interface IInputProps extends IProps {
@@ -26,6 +27,20 @@ export interface IFieldProps extends IProps {
   error?: boolean;
   validate?: (value: string) => void;
   onInput?: (value: string) => void;
+}
+
+export interface IInputDropDownProps extends IProps {
+  type: string;
+  label: string;
+  name: string;
+  titleField: string;
+  valueField: string;
+  required?: boolean;
+  error?: boolean;
+  listItems?: IDropDownList[];
+  validate?: (value: string) => void;
+  onInput?: (value: string) => void;
+  onMenuItemSelect?: (data: unknown) => void;
 }
 
 export interface IErrorLineProps extends IProps {
@@ -79,6 +94,7 @@ export interface IDropdownListProps extends IProps {
   bottom?: string;
   left?: string;
   right?: string;
+  onMenuItemSelect?: (value: string) => void;
 }
 
 export interface IModalChat extends IProps {
@@ -87,6 +103,7 @@ export interface IModalChat extends IProps {
   fieldName?: string;
   buttonLabel?: string;
   visible?: boolean;
+  findedUsers?: IUserInfo[];
   name: string;
   onClick?: (value: string) => void;
 }

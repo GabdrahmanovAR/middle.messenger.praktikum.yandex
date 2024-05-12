@@ -1,0 +1,60 @@
+@mixin fieldState($borderColor) {
+  border-color: $borderColor;
+
+  + .input-dropdown__label {
+    font-size: 0.8rem;
+    cursor: text;
+    top: 2px;
+  }
+}
+
+.input-dropdown {
+  position: relative;
+  margin: 0;
+  padding: 0.75rem 0 0;
+  width: 100%;
+
+  &__input {
+    width: 100%;
+    border: 0;
+    border-bottom: 2px solid var(--border-color-light);
+    outline: 0;
+    font-size: 1rem;
+    color: var(--text-color-main);
+    padding: 0.4375rem 0;
+    background: transparent;
+    transition: border-color 0.2s;
+    margin-bottom: 0.5rem;
+
+    &::placeholder {
+      color: transparent;
+    }
+
+    &:focus, &:valid:not(:placeholder-shown) {
+      @include fieldState(var(--border-color-active));
+    }
+  }
+
+  &__label {
+    position: absolute;
+    top: 20px;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: var(--text-color-label);
+    pointer-events: none;
+  }
+
+  &__validation {
+    position: absolute;
+    font-size: 0.75rem;
+    bottom: -0.5rem;
+    color: crimson;
+  }
+
+  &__error {
+    input.input-dropdown__input {
+      border-color: crimson !important;
+    }
+  }
+}

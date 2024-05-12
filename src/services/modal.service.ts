@@ -13,7 +13,10 @@ export const openConfirmModal = (state: IModalConfirm): void => {
 };
 
 export const closeModal = (): void => {
-  window.store.set({ modalState: { visible: false } as IModalChat });
+  window.store.set({
+    modalState: { visible: false } as IModalChat,
+    findedUsers: [],
+  });
 };
 
 export const closeConfirmModal = (): void => {

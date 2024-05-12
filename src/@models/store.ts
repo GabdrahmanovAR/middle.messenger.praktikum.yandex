@@ -1,4 +1,5 @@
-import { IChatInfo, IUserInfo } from '../api/model';
+import WSTransport from '../@core/WsTransport';
+import { IChatInfo, IChatUser, IUserInfo } from '../api/model';
 import { IModalChat, IModalConfirm, ISelectedChat } from './components';
 
 export interface DefaultAppState {
@@ -11,4 +12,7 @@ export interface DefaultAppState {
   modalConfirm: IModalConfirm;
   chats: IChatInfo[];
   selectedChat: ISelectedChat,
+  selectedChatUsers: IChatUser[],
+  findedUsers: IUserInfo[],
+  chatConnection: WSTransport | null,
 }

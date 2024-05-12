@@ -34,7 +34,7 @@ export default class ChatApi {
     return chatApi.delete('/chats/users', { data });
   }
 
-  async getChatToken(chatId: number): Promise<IChatToken[]> {
+  async getChatToken(chatId: number): Promise<IChatToken> {
     return chatApi.post(`/chats/token/${chatId}`);
   }
 }
