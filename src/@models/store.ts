@@ -1,5 +1,5 @@
 import { IChatInfo, IUserInfo } from '../api/model';
-import { IModalChat } from './components';
+import { IModalChat, IModalConfirm, ISelectedChat } from './components';
 
 export interface DefaultAppState {
   user: IUserInfo;
@@ -8,5 +8,7 @@ export interface DefaultAppState {
   avatar: string;
   authorized: boolean | null;
   modalState: IModalChat;
+  modalConfirm: IModalConfirm;
   chats: IChatInfo[];
+  selectedChat: ISelectedChat,
 }

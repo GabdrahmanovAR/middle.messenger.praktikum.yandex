@@ -129,7 +129,7 @@ class Block<Props extends IProps = IProps> {
     const propsAndStubs = { ...this.props };
 
     Object.entries(this.children).forEach(([key, child]) => {
-      propsAndStubs[key] = `<div data-id="${child._id}"></div>`;
+      propsAndStubs[key] = `<div data-id="${child.id}"></div>`;
     });
 
     const childrenProps = [];
@@ -138,7 +138,7 @@ class Block<Props extends IProps = IProps> {
         propsAndStubs[key] = value.map((item) => {
           if (item instanceof Block) {
             childrenProps.push(item);
-            return `<div data-id="${item._id}"></div>`;
+            return `<div data-id="${item.id}"></div>`;
           }
 
           return item;
@@ -151,7 +151,7 @@ class Block<Props extends IProps = IProps> {
     const newElement = fragment.content.firstElementChild as HTMLElement;
 
     [...Object.values(this.children), ...childrenProps].forEach((child) => {
-      const stub = fragment.content.querySelector(`[data-id="${child._id}"]`);
+      const stub = fragment.content.querySelector(`[data-id="${child.id}"]`);
 
       stub?.replaceWith(child.getContent());
     });

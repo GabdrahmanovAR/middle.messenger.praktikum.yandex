@@ -8,7 +8,7 @@ import { EMPTY_STRING } from '../assets/constants/common';
 import { GlobalError } from './components';
 import { canActivate } from './services/auth.service';
 import { DefaultAppState } from './@models/store';
-import { IModalChat } from './@models/components';
+import { IModalChat, IModalConfirm, ISelectedChat } from './@models/components';
 
 declare global {
   interface Window {
@@ -24,7 +24,9 @@ export const defaultState: DefaultAppState = {
   avatar: EMPTY_STRING,
   authorized: null,
   modalState: {} as IModalChat,
+  modalConfirm: {} as IModalConfirm,
   chats: [],
+  selectedChat: {} as ISelectedChat,
 };
 
 const store = new Store<DefaultAppState>(defaultState);

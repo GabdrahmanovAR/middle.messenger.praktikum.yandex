@@ -1,4 +1,5 @@
-import { IUpdatePassword, IUserInfo } from '../api/model';
+import { EMPTY_STRING } from '../../assets/constants/common';
+import { IAddChatUser, IUpdatePassword, IUserInfo } from '../api/model';
 import UserApi from '../api/user.api';
 import { isApiError } from '../utils/type-check';
 import { setGlobalError } from './global-error.service';
@@ -49,4 +50,13 @@ export const updateUserAvatar = async (file: File): Promise<void> => {
   } finally {
     window.store.set({ isLoading: false });
   }
+};
+
+export const findUser = async (login: string): Promise<IUserInfo[] | null> => {
+  const findedUser = await userApi.findUser({ login });
+
+  if (isApiError(findedUser) || (Array.isArray(findedUser) && findedUser.length === 0)) {
+    return null;
+  }
+  return findedUser;
 };

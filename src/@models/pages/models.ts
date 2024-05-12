@@ -1,3 +1,4 @@
+import Block from '../../@core/Block';
 import { IChatInfo, IUserInfo } from '../../api/model';
 import { IProps } from '../common';
 
@@ -31,10 +32,10 @@ export interface IProfileField {
 }
 export interface IProfilePageProps extends IProps {
   user: IUserInfo;
-  // dataFields: IProfileField[];
-  dataFieldKeys: string[];
-  // passwordFields: IProfileField[];
-  passwordFieldKeys: string[];
+  dataFields: Block[];
+  // dataFieldKeys: string[];
+  passwordFields: Block[];
+  // passwordFieldKeys: string[];
   edit?: boolean;
   editPassword?: boolean;
 }

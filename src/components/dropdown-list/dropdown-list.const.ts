@@ -1,5 +1,6 @@
-import { IDropDownList, IModalChat } from '../../@models/components';
-import { openModal } from '../../services/modal.service';
+import { IDropDownList, IModalChat, IModalConfirm } from '../../@models/components';
+import { deleteChat } from '../../services/chat.service';
+import { closeConfirmModal, openConfirmModal, openModal } from '../../services/modal.service';
 
 export enum Modal {
   ADD_USER = 'add-user',
@@ -48,16 +49,16 @@ export const propertiesDropdownList: IDropDownList[] = [
     title: 'Удалить чат',
     name: Modal.REMOVE_CHAT,
     onClick: (): void => {
-      const modalState: IModalChat = {
-        title: 'Удалить чат',
-        fieldLabel: 'Наименование чата',
-        fieldName: Modal.REMOVE_CHAT,
-        buttonLabel: 'Удалить',
-        name: Modal.REMOVE_CHAT,
+      const modalState: IModalConfirm = {
+        title: 'Удаление чата',
+        text: 'Вы собираетесь удалить чат. Все сообщения и история чата будут удалены. Продолжить?',
         visible: true,
-        onClick: (value: string) => console.log('Remove chat'),
+        onConfirm: async () => {
+          await deleteChat();
+          closeConfirmModal();
+        },
       };
-      openModal(modalState);
+      openConfirmModal(modalState);
     },
   },
 ];

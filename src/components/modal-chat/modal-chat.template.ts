@@ -1,4 +1,4 @@
-const modalUserTemplate = `
+const modalChatTemplate = `
 <div class="container center modal-container{{#if visible}} modal-container_visible{{/if}}">
   <div class="user-window">
     <div class="user-window__header">
@@ -18,4 +18,4 @@ const modalUserTemplate = `
 </div>
 `;
 
-export default modalUserTemplate;
+export default modalChatTemplate;

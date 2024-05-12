@@ -18,7 +18,7 @@ export default class UserApi {
     return userApi.put('/user/password', { data });
   }
 
-  async findUser(data: IFindUser): Promise<IUserInfo | IAPIError> {
-    return userApi.post('/auth/logout', { data });
+  async findUser(data: IFindUser): Promise<IUserInfo[] | IAPIError> {
+    return userApi.post('/user/search', { data });
   }
 }

@@ -8,6 +8,7 @@ import { connect } from '../../utils/connect';
 import { closeModal } from '../../services/modal.service';
 import { DefaultAppState } from '../../@models/store';
 import isEqual from '../../utils/isEqual';
+import { findUser } from '../../services/user.service';
 
 class ModalChat extends Block<IModalChat> {
   constructor(props: IModalChat) {
@@ -26,12 +27,14 @@ class ModalChat extends Block<IModalChat> {
 
   protected init(): void {
     const onClickBind = this.onClick.bind(this);
+    const onInputBind = this.onInput.bind(this);
 
     const FieldComponent = new Field({
       label: this.props?.fieldLabel ?? 'Введите текст',
       type: 'text',
       name: this.props?.fieldName ?? 'modal-field',
       validate: validate.empty,
+      onInput: onInputBind,
     });
     const ButtonComponent = new Button({
       type: 'submit',
@@ -47,12 +50,19 @@ class ModalChat extends Block<IModalChat> {
     };
   }
 
+  private async onInput(value: string): Promise<void> {
+    if (value) {
+      const user = await findUser(value);
+      console.log(user);
+    }
+  }
+
   private onClick(event: Event): void {
     event.preventDefault();
     const field = this.children.FieldComponent;
     const value = (field instanceof Field) && field.getValue();
 
-    if (value) {
+    if (value && this.props.onClick) {
       this.props.onClick(value);
     }
   }

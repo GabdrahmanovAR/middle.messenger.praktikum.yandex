@@ -1,13 +1,23 @@
+import { EMPTY_STRING } from '../../../assets/constants/common';
 import Block from '../../@core/Block';
-import { IChatCardProps } from '../../@models/components';
+import { IChatCardProps, ISelectedChat } from '../../@models/components';
+import { DefaultAppState } from '../../@models/store';
+import { selectChat } from '../../services/chat.service';
+import { connect } from '../../utils/connect';
 import ChatCardTemplate from './chat-card.template';
 
-export default class ChatCatd extends Block<IChatCardProps> {
+class ChatCatd extends Block<IChatCardProps> {
   constructor(props: IChatCardProps) {
     super({
       ...props,
       events: {
         click: (): void => {
+          const selectedChatProps: ISelectedChat = {
+            id: props.id,
+            title: props.name,
+            avatar: props.avatar ?? EMPTY_STRING,
+          };
+          selectChat(selectedChatProps);
           if (props.onClick) {
             props.onClick(props.id);
           }
@@ -28,7 +38,19 @@ export default class ChatCatd extends Block<IChatCardProps> {
     });
   }
 
+  protected componentDidUpdate(_oldProps: IChatCardProps, _newProps: IChatCardProps): boolean {
+    const { selectedChat } = _newProps;
+    if (selectedChat && Object.keys(selectedChat).length > 0) {
+      this.setProps({ active: this.props.id === selectedChat.id });
+    }
+    return true;
+  }
+
   protected render(): string {
     return ChatCardTemplate;
   }
 }
+
+const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({ selectedChat: state.selectedChat });
+
+export default connect(mapStateToProps)(ChatCatd);

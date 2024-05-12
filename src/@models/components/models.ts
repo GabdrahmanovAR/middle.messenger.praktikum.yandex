@@ -13,7 +13,9 @@ export interface IInputProps extends IProps {
   onBlur?: () => void;
   onClick?: (event: Event) => void;
   onChange?: (event: Event) => void;
+  onInput?: (event: Event) => void;
   readonly?: boolean;
+  withDelay?: boolean;
 }
 
 export interface IFieldProps extends IProps {
@@ -23,6 +25,7 @@ export interface IFieldProps extends IProps {
   required?: boolean;
   error?: boolean;
   validate?: (value: string) => void;
+  onInput?: (value: string) => void;
 }
 
 export interface IErrorLineProps extends IProps {
@@ -48,16 +51,7 @@ export interface IInputTextProps extends IProps {
   center?: boolean;
   placeholder?: string;
   icon?: string;
-}
-
-export interface IChatList {
-  id: string;
-  name: string;
-  avatar?: string;
-  message?: string;
-  date?: string;
-  count?: string;
-  active?: boolean;
+  onSearch?: (value: string) => void;
 }
 
 export interface IChatListProps extends IProps {
@@ -68,8 +62,8 @@ export interface IChatListProps extends IProps {
 }
 
 export interface IChatContentProps extends IProps {
-  chatInfo: IChatList;
-  // onModalOpen: (itemName: string) => void;
+  showChat?: boolean;
+  selectedChat?: ISelectedChat;
 }
 export interface IDropDownList {
   icon: string;
@@ -95,6 +89,13 @@ export interface IModalChat extends IProps {
   visible?: boolean;
   name: string;
   onClick?: (value: string) => void;
+}
+
+export interface IModalConfirm extends IProps {
+  title: string;
+  text: string;
+  visible?: boolean;
+  onConfirm?: () => void;
 }
 
 export interface IInputFile extends IProps {
@@ -174,7 +175,14 @@ export interface IChatCardProps extends IProps {
   message?: string;
   date?: string;
   count?: number;
-  onClick?: (value: string | null) => void;
+  selectedChat?: ISelectedChat;
+  onClick?: (value: number | null) => void;
+}
+
+export interface ISelectedChat {
+  id: number;
+  title: string;
+  avatar: string;
 }
 
 export interface IGlobalErrorProps extends IProps {

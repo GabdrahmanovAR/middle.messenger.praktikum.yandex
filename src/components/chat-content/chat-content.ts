@@ -7,8 +7,17 @@ import ChatContentTemplate from './chat-content.template';
 import { DropDownList } from '../dropdown-list';
 import { pinDropdownList, propertiesDropdownList } from '../dropdown-list/dropdown-list.const';
 import { IChatContentProps } from '../../@models/components';
+import { connect } from '../../utils/connect';
+import { DefaultAppState } from '../../@models/store';
 
-export default class ChatContent extends Block<IChatContentProps> {
+class ChatContent extends Block<IChatContentProps> {
+  constructor(props: IChatContentProps) {
+    super({
+      ...props,
+      showChat: !!props.selectedChat?.id,
+    });
+  }
+
   protected init(): void {
     this.setProps({ onModalOpen: this.props.onModalOpen });
 
@@ -92,3 +101,7 @@ export default class ChatContent extends Block<IChatContentProps> {
     return ChatContentTemplate;
   }
 }
+
+const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({ selectedChat: state.selectedChat });
+
+export default connect(mapStateToProps)(ChatContent);

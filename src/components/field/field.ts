@@ -5,8 +5,11 @@ import { Input } from '../input';
 import FieldTemplate from './field.template';
 
 export default class Field extends Block<IFieldProps> {
+  private _timer: number | null = null;
+
   protected init(): void {
     const validateBind = this.validate.bind(this);
+    const onInputBind = this.onInput.bind(this);
 
     const InputField = new Input({
       type: this.props.type,
@@ -15,6 +18,7 @@ export default class Field extends Block<IFieldProps> {
       classes: 'field__input',
       required: this.props.required,
       onBlur: validateBind,
+      onInput: onInputBind,
     });
     const Error = new ErrorLine({
       classes: 'field__validation',
@@ -25,6 +29,23 @@ export default class Field extends Block<IFieldProps> {
       InputField,
       Error,
     };
+  }
+
+  private onInput(event: Event): void {
+    const input = event.target instanceof HTMLInputElement ? event.target : null;
+
+    if (!input) {
+      return;
+    }
+
+    if (this._timer) {
+      clearTimeout(this._timer);
+    }
+    this._timer = setTimeout(() => {
+      if (this.props.onInput) {
+        this.props.onInput(input.value);
+      }
+    }, 500);
   }
 
   public getValue(withValidate = true): string | null {

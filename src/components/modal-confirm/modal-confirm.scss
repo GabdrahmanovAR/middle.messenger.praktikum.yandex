@@ -1,0 +1,36 @@
+.confirm-window {
+  display: flex;
+  flex-direction: column;
+  min-width: 30rem;
+  min-height: 20rem;
+  width: 30rem;
+  background-color: white;
+  border-radius: 1rem;
+  border: 2px solid var(--border-color-grey);
+  cursor: default;
+  padding: 3rem 2rem;
+
+  &__header {
+    text-align: center;
+  }
+
+  &__content {
+    flex-grow: 1;
+    padding: 2rem 0;
+    text-align: center;
+  }
+
+  &__title {
+    font-weight: var(--font-weight-600);
+    font-size: 1.25rem;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  &__button {
+    width: 40%;
+  }
+}

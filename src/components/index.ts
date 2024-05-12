@@ -13,5 +13,6 @@ export { InputFile } from './input-file';
 export { DataField } from './data-field';
 export { ModalProfile } from './modal-profile';
 export { ModalChat } from './modal-chat';
+export { ModalConfirm } from './modal-confirm';
 export { DropDownList } from './dropdown-list';
 export { GlobalError } from './global-error';

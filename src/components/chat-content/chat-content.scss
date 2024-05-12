@@ -26,6 +26,13 @@
       border-radius: 50%;
       object-fit: cover;
     }
+
+    &_default {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      background-color: var(--background-color-light);
+    }
   }
 
   &__user-name {

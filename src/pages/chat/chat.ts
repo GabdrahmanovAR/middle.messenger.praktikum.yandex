@@ -7,12 +7,12 @@ import { IChatInfo } from '../../api/model';
 import Routes from '../../api/routes';
 import {
   Button, ChatCard, ChatContent, ChatList, InputText, ModalChat,
+  ModalConfirm,
 } from '../../components';
 import { Modal } from '../../components/dropdown-list/dropdown-list.const';
 import { createChat, getChats } from '../../services/chat.service';
 import { openModal } from '../../services/modal.service';
 import { connect } from '../../utils/connect';
-import { chatInfo } from './chat-list.const';
 import ChatTemplate from './chat.template';
 
 class ChatPage extends Block<IChatPageProps> {
@@ -20,6 +20,7 @@ class ChatPage extends Block<IChatPageProps> {
     getChats();
     const onProfileButtonClickBind = this.onProfileButtonClick.bind(this);
     const onChatPropertiesButtonClickBind = this.onChatPropertiesButtonClick.bind(this);
+    const onSearchBind = this.onSearch.bind(this);
 
     const ProfileButton = new Button({
       label: 'Профиль',
@@ -36,27 +37,30 @@ class ChatPage extends Block<IChatPageProps> {
       type: 'button',
       onClick: onChatPropertiesButtonClickBind,
     });
-    const InputTextField = new InputText({
+    const SearchField = new InputText({
       name: 'profile-button',
       center: true,
       placeholder: 'Поиск',
       icon: '/assets/icons/search.svg',
+      onSearch: onSearchBind,
     });
     const ChatListComponent = new ChatList({
       chats: [],
       showList: false,
     });
-    const ChatContentComponent = new ChatContent({ chatInfo });
+    const ChatContentComponent = new ChatContent({});
     const ChatModal = new ModalChat({});
+    const ConfirmModal = new ModalConfirm({});
 
     this.children = {
       ...this.children,
       AddChatButton,
       ProfileButton,
-      InputTextField,
+      SearchField,
       ChatListComponent,
       ChatContentComponent,
       ChatModal,
+      ConfirmModal,
     };
   }
 
@@ -90,6 +94,10 @@ class ChatPage extends Block<IChatPageProps> {
       date: chat.last_message?.time,
       message: chat.last_message?.content ?? 'Нет сообщений',
     }));
+  }
+
+  private onSearch(value: string): void {
+    // TODO запуск фильтрации массива в списке chat-list
   }
 
   protected componentDidUpdate(_oldProps: IChatPageProps, _newProps: IChatPageProps): boolean {

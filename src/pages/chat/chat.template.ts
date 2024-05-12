@@ -6,7 +6,7 @@ const chatTemplate = `
       {{{ ProfileButton }}}
     </div>
     <div class="sidebar__search">
-      {{{ InputTextField }}}
+      {{{ SearchField }}}
     </div>
     <div class="sidebar__list">
       {{{ ChatListComponent }}}
@@ -17,6 +17,7 @@ const chatTemplate = `
     {{{ ChatContentComponent }}}
   </div>
   {{{ ChatModal }}}
+  {{{ ConfirmModal }}}
   {{{ ChatDropdown }}}
 </div>
 `;

@@ -70,7 +70,7 @@ export const createUser = async (data: ICreateUser): Promise<void> => {
   const createResponse = await authApi.create(data);
 
   if (isApiError(createResponse)) {
-    throw new Error(createResponse.reason);
+    setGlobalError(createResponse);
   }
 
   if (createResponse.id) {
