@@ -1,6 +1,7 @@
+import { IMessageType } from '../@models/websocket';
 import EventBus from './EventBus';
 
-enum WSTransportEvent {
+export enum WSTransportEvent {
   OPEN = 'open',
   CLOSE = 'close',
   ERROR = 'error',
@@ -65,25 +66,20 @@ export default class WSTransport extends EventBus {
 
   private subscribe(socket: WebSocket): void {
     socket.addEventListener('open', () => {
-      console.log('open');
       this.emit(WSTransportEvent.OPEN);
     });
 
     socket.addEventListener('close', () => {
-      console.log('close');
       this.emit(WSTransportEvent.CLOSE);
     });
 
     socket.addEventListener('error', (event: Event) => {
-      console.log('error');
       this.emit(WSTransportEvent.ERROR, event);
     });
 
-    socket.addEventListener('message', (message: MessageEvent<any>) => {
-      console.log('message');
-      console.log(message);
+    socket.addEventListener('message', (message: MessageEvent<string>) => {
       try {
-        const data = JSON.parse(message.data);
+        const data = JSON.parse(message.data) as IMessageType;
         if (['pong', 'user connected'].includes(data?.type)) {
           return;
         }

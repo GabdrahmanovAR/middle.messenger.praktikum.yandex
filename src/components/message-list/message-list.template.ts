@@ -1,5 +1,11 @@
-import { EMPTY_STRING } from '../../../assets/constants/common';
+const messageListTemplate = `
+<div class="message-list">
+  {{#if empty}}
+    <div>Нет сообщений</div>
+  {{else}}
+    {{{ messageList }}}
+  {{/if}}
+</div>
+`;
 
-const messageList = EMPTY_STRING;
-
-export default messageList;
+export default messageListTemplate;

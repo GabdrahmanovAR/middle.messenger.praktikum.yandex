@@ -20,6 +20,7 @@ declare global {
 export const defaultState: DefaultAppState = {
   user: {} as IUserInfo,
   isLoading: false,
+  isChatLoading: false,
   globalError: EMPTY_STRING,
   avatar: EMPTY_STRING,
   authorized: null,
@@ -29,7 +30,8 @@ export const defaultState: DefaultAppState = {
   selectedChat: {} as ISelectedChat,
   selectedChatUsers: [],
   findedUsers: [],
-  chatConnection: null,
+  socket: null,
+  messages: [],
 };
 
 const store = new Store<DefaultAppState>(defaultState);

@@ -2,14 +2,18 @@ const chatContentTemplate = `
 <div id="chatContent" class="chat-content">
   {{#if selectedChat.id}}
     <div class="chat-content__header">
-      <div class="chat-content__avatar">
-        {{#if selectedChat.avatar}}
-          <img src="{{selectedChat.avatar}}" alt="User avatar" />
-        {{else}}
-          <div class="chat-content__avatar_default"></div>
-        {{/if}}
-      </div>
-      <div class="chat-content__user-name">{{selectedChat.title}}</div>
+      {{#if isChatLoading}}
+        <div class="chat-content__loading">Подключение к чату ...</div>
+      {{else}}
+        <div class="chat-content__avatar">
+          {{#if selectedChat.avatar}}
+            <img src="{{selectedChat.avatar}}" alt="User avatar" />
+          {{else}}
+            <div class="chat-content__avatar_default"></div>
+          {{/if}}
+        </div>
+        <div class="chat-content__user-name">{{selectedChat.title}}</div>
+      {{/if}}
       <div class="chat-content__utils">
         {{{ PropertiesButton }}}
       </div>

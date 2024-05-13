@@ -105,8 +105,8 @@ export const logout = async (): Promise<void> => {
   const { store } = window;
   const state = store.getState();
 
-  if (state.chatConnection) {
-    state.chatConnection.close();
+  if (state.socket) {
+    state.socket.close();
   }
   window.router.reset();
   store.reset({ authorized: false });

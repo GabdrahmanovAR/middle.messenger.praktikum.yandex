@@ -1,10 +1,12 @@
 import WSTransport from '../@core/WsTransport';
 import { IChatInfo, IChatUser, IUserInfo } from '../api/model';
 import { IModalChat, IModalConfirm, ISelectedChat } from './components';
+import { IMessageType } from './websocket';
 
 export interface DefaultAppState {
   user: IUserInfo;
   isLoading: boolean;
+  isChatLoading: boolean;
   globalError: string;
   avatar: string;
   authorized: boolean | null;
@@ -14,5 +16,6 @@ export interface DefaultAppState {
   selectedChat: ISelectedChat,
   selectedChatUsers: IChatUser[],
   findedUsers: IUserInfo[],
-  chatConnection: WSTransport | null,
+  socket: WSTransport | null,
+  messages: IMessageType[],
 }

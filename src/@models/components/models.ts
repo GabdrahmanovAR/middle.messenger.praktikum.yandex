@@ -1,6 +1,8 @@
 import Block from '../../@core/Block';
+import WSTransport from '../../@core/WsTransport';
 import { IUserInfo } from '../../api/model';
 import { IProps } from '../common';
+import { IMessageType } from '../websocket';
 
 export interface IInputProps extends IProps {
   type: string;
@@ -79,6 +81,7 @@ export interface IChatListProps extends IProps {
 export interface IChatContentProps extends IProps {
   showChat?: boolean;
   selectedChat?: ISelectedChat;
+  socket?: WSTransport | null;
 }
 export interface IDropDownList {
   icon: string;
@@ -147,29 +150,32 @@ export interface IMessage {
   date: string;
 }
 
-export interface IMessageGroup {
-  group: IMessage[];
-}
+// export interface IMessageGroup {
+//   group: IMessage[];
+// }
 
-export interface IMessages {
-  id: string;
-  date: string;
-  messageGroup: IMessageGroup[];
-}
+// export interface IMessages {
+//   id: string;
+//   date: string;
+//   messageGroup: IMessageGroup[];
+// }
 
 export interface IMessageListProps extends IProps {
-  messages?: IMessages[];
+  messages?: IMessageType[];
+  messageList?: Block[];
+  user?: IUserInfo;
+  empty?: boolean;
 }
 
 export interface IMessageProps extends IProps {
   own?: boolean;
   first?: boolean;
   image?: string;
-  message?: string;
+  message: string;
   send?: boolean;
   delivered?: boolean;
   read?: boolean;
-  date?: string;
+  date: string;
 }
 
 export interface IDataFieldProps extends IProps {

@@ -1,7 +1,6 @@
 import Block from '../../@core/Block';
-import { DefaultAppState } from '../../@models/common';
 import { IInputFile } from '../../@models/components';
-import { readFile } from '../../services/file.service';
+import { DefaultAppState } from '../../@models/store';
 import { connect } from '../../utils/connect';
 import { Input } from '../input';
 import InputFileTemplate from './input-file.template';

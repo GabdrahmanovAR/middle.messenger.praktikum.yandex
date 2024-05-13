@@ -9,8 +9,10 @@ import { pinDropdownList, propertiesDropdownList } from '../dropdown-list/dropdo
 import { IChatContentProps } from '../../@models/components';
 import { connect } from '../../utils/connect';
 import { DefaultAppState } from '../../@models/store';
+import { createWebSocket, sendMessage, showMessage } from '../../services/websocket.service';
+import WSTransport, { WSTransportEvent } from '../../@core/WsTransport';
 import isEqual from '../../utils/isEqual';
-import { createWebSocket, sendMessage } from '../../services/websocket.service';
+import { IMessageType } from '../../@models/websocket';
 
 class ChatContent extends Block<IChatContentProps> {
   constructor(props: IChatContentProps) {
@@ -21,6 +23,7 @@ class ChatContent extends Block<IChatContentProps> {
   }
 
   protected init(): void {
+    console.log('init');
     this.setProps({ onModalOpen: this.props.onModalOpen });
 
     const onSendButtonClickBind = this.onSendButtonClick.bind(this);
@@ -93,19 +96,32 @@ class ChatContent extends Block<IChatContentProps> {
   private onSendButtonClick(): void {
     const inputText = (this.children.InputTextComponent as InputText);
     const message = inputText.getValue();
-    if (message) {
-      console.log(message);
+    const { socket } = this.props;
+
+    if (message && socket) {
       inputText.resetValue();
-      sendMessage(message);
+      socket.send({ content: message, type: 'message' });
+      // sendMessage(message);
     }
   }
 
+  private onMessage(message: IMessageType | IMessageType[]): void {
+    showMessage(message);
+    console.log(message);
+  }
+
   protected componentDidUpdate(_oldProps: IChatContentProps, _newProps: IChatContentProps): boolean {
-    const { selectedChat } = _newProps;
-    const hasData = selectedChat && Object.keys(selectedChat).length > 0;
-    if (hasData) {
-      console.log('CREATE WEBSOCKET');
+    const selectedChatOldValue = _oldProps.selectedChat ?? {};
+    const selectedChatnewValue = _newProps.selectedChat ?? {};
+    const hasData = selectedChatnewValue && Object.keys(selectedChatnewValue).length > 0;
+    const { socket } = _newProps;
+
+    if (!isEqual(selectedChatOldValue, selectedChatnewValue) && hasData) {
       createWebSocket();
+    }
+
+    if (socket) {
+      socket.on(WSTransportEvent.MESSAGE, this.onMessage);
     }
     return true;
   }
@@ -115,6 +131,10 @@ class ChatContent extends Block<IChatContentProps> {
   }
 }
 
-const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({ selectedChat: state.selectedChat });
+const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({
+  selectedChat: state.selectedChat,
+  isChatLoading: state.isChatLoading,
+  socket: state.socket,
+});
 
 export default connect(mapStateToProps)(ChatContent);

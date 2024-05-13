@@ -7,7 +7,7 @@ const messageTemplate = `
             <img src="{{image}}" alt="Message image">
           </div>
         {{else}}
-          {{lineBreak  message}}
+          {{message}}
         {{/if}}
         <span class="message__info clearfix">
           {{#if own}}
