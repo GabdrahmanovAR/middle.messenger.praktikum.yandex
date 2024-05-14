@@ -1,6 +1,5 @@
 import Block from '../../@core/Block';
 import { Button } from '../button';
-import { Field } from '../field';
 import { InputDropdown } from '../input-dropdown';
 import ModalChatTemplate from './modal-chat.template';
 import { IDropDownList, IModalChat } from '../../@models/components';
@@ -11,6 +10,7 @@ import isEqual from '../../utils/isEqual';
 import { findUser } from '../../services/user.service';
 import { IUserInfo } from '../../api/model';
 import { EMPTY_STRING } from '../../../assets/constants/common';
+import * as validate from '../../utils/validate';
 
 class ModalChat extends Block<IModalChat> {
   constructor(props: IModalChat) {
@@ -20,6 +20,7 @@ class ModalChat extends Block<IModalChat> {
         click: (event: Event) => {
           const classNames = (event.target as HTMLElement).className;
           if (classNames.includes('modal-container')) {
+            (this.children.DropdownInput as InputDropdown).clear();
             closeModal();
           }
         },
@@ -38,6 +39,7 @@ class ModalChat extends Block<IModalChat> {
       titleField: 'login',
       valueField: 'id',
       onInput: onInputBind,
+      validate: validate.empty,
       onMenuItemSelect: (data) => console.log('CLICK'),
     });
     const ButtonComponent = new Button({
@@ -65,11 +67,13 @@ class ModalChat extends Block<IModalChat> {
 
   private onClick(event: Event): void {
     event.preventDefault();
-    const field = this.children.FieldComponent;
-    const value = (field instanceof Field) && field.getValue();
+    const field = this.children.DropdownInput;
+    const value = (field instanceof InputDropdown) && field.getValue();
 
     if (value && this.props.onClick) {
       this.props.onClick(value);
+      field.clear();
+      closeModal();
     }
   }
 

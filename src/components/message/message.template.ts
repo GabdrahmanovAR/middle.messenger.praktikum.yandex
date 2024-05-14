@@ -1,6 +1,9 @@
 const messageTemplate = `
 <div class="message{{#if own}} own{{/if}}{{#if first}} first{{/if}}">
   <div class="message__content-wrapper">
+    {{#if name}}
+      <div class="message__name">{{name}}</div>
+    {{/if}}
     <div class="message__content">
         {{#if image}}
           <div class="message__image">

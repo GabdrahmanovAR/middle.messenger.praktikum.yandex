@@ -17,6 +17,7 @@ class ChatCatd extends Block<IChatCardProps> {
             id: props.id,
             title: props.name,
             avatar: props.avatar ?? EMPTY_STRING,
+            createdBy: props.createdBy,
           };
           selectChat(selectedChatProps);
           if (props.onClick) {

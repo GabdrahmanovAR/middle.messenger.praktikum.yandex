@@ -10,9 +10,10 @@ import {
   ModalConfirm,
 } from '../../components';
 import { Modal } from '../../components/dropdown-list/dropdown-list.const';
-import { createChat, getChats } from '../../services/chat.service';
+import { createChat, getChats, setCardLastMessageUserName } from '../../services/chat.service';
 import { openModal } from '../../services/modal.service';
 import { connect } from '../../utils/connect';
+import { getDate } from '../../utils/time';
 import ChatTemplate from './chat.template';
 
 class ChatPage extends Block<IChatPageProps> {
@@ -33,7 +34,7 @@ class ChatPage extends Block<IChatPageProps> {
     const AddChatButton = new Button({
       isRound: true,
       theme: 'text',
-      icon: '/assets/icons/add.svg',
+      icon: '/assets/icons/add-chat.svg',
       type: 'button',
       onClick: onChatPropertiesButtonClickBind,
     });
@@ -86,13 +87,15 @@ class ChatPage extends Block<IChatPageProps> {
   }
 
   private createChatCardsList(chats: IChatInfo[]): Block[] {
-    return chats.map((chat) => new ChatCard({
+    return chats.map((chat: IChatInfo) => new ChatCard({
       id: chat.id,
       name: chat.title,
       avatar: chat.avatar ?? EMPTY_STRING,
       count: chat.unread_count,
-      date: chat.last_message?.time,
+      date: getDate(chat.last_message?.time ?? EMPTY_STRING),
       message: chat.last_message?.content ?? 'Нет сообщений',
+      userMessage: setCardLastMessageUserName(chat),
+      createdBy: chat.created_by,
     }));
   }
 

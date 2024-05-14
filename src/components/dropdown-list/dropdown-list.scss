@@ -28,6 +28,10 @@
     &:last-child {
       margin-bottom: 0.5rem;
     }
+
+    &_readonly {
+      color: var(--text-color-label);
+    }
   }
 
   &__item-icon {

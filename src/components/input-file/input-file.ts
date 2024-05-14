@@ -36,8 +36,6 @@ class InputFile extends Block<IInputFile> {
     const file: File | null = inputFile.files && inputFile.files[0];
 
     if (file) {
-      // TODO нужно ли считывать текущий файл и обновлять аватар, даже если запрос был с ошибкой
-      // readFile(file);
       this.setProps({ fileName: file.name, file });
     }
   }

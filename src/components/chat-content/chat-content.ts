@@ -6,11 +6,11 @@ import { messages } from '../message-list/message-list.const';
 import ChatContentTemplate from './chat-content.template';
 import { DropDownList } from '../dropdown-list';
 import { pinDropdownList, propertiesDropdownList } from '../dropdown-list/dropdown-list.const';
-import { IChatContentProps } from '../../@models/components';
+import { IChatContentProps, IDropDownList } from '../../@models/components';
 import { connect } from '../../utils/connect';
 import { DefaultAppState } from '../../@models/store';
-import { createWebSocket, sendMessage, showMessage } from '../../services/websocket.service';
-import WSTransport, { WSTransportEvent } from '../../@core/WsTransport';
+import { createWebSocket, showMessage } from '../../services/websocket.service';
+import { WSTransportEvent } from '../../@core/WsTransport';
 import isEqual from '../../utils/isEqual';
 import { IMessageType } from '../../@models/websocket';
 
@@ -23,12 +23,13 @@ class ChatContent extends Block<IChatContentProps> {
   }
 
   protected init(): void {
-    console.log('init');
     this.setProps({ onModalOpen: this.props.onModalOpen });
 
     const onSendButtonClickBind = this.onSendButtonClick.bind(this);
     const onPropertiesButtonClickBind = this.onPropertiesButtonClick.bind(this);
     const onPinButtonClickBind = this.onPinButtonClick.bind(this);
+    const onEnterbind = this.onEnter.bind(this);
+    const mapPropertiesListBind = this.mapPropertiesList.bind(this);
 
     const MessageListComponent = new MessageList({
       messages,
@@ -57,9 +58,11 @@ class ChatContent extends Block<IChatContentProps> {
       name: 'message',
       placeholder: 'Сообщение',
       rounded: true,
+      onEnter: onEnterbind,
     });
     const PropertiesDropdown = new DropDownList({
-      list: propertiesDropdownList,
+      // list: mapPropertiesListBind(propertiesDropdownList),
+      list: [],
       appednTo: PropertiesButton.element,
     });
     const PinDropdown = new DropDownList({
@@ -79,6 +82,22 @@ class ChatContent extends Block<IChatContentProps> {
     };
   }
 
+  private mapPropertiesList(list: IDropDownList[]): IDropDownList[] {
+    const userId = this.props.user?.id;
+    const chatCreatedUserId = this.props.selectedChat?.createdBy;
+
+    if (userId && chatCreatedUserId) {
+      return list.map((item: IDropDownList) => {
+        if (userId !== chatCreatedUserId) {
+          item.readonly = true;
+        }
+        return item;
+      });
+    }
+
+    return list;
+  }
+
   private onPropertiesButtonClick(): void {
     const dropdown = this.children.PropertiesDropdown;
     if (dropdown instanceof DropDownList) {
@@ -94,14 +113,27 @@ class ChatContent extends Block<IChatContentProps> {
   }
 
   private onSendButtonClick(): void {
+    console.log('content');
     const inputText = (this.children.InputTextComponent as InputText);
     const message = inputText.getValue();
+
+    if (message) {
+      inputText.resetValue();
+      this.sendMessage(message);
+    }
+  }
+
+  private onEnter(content: string): void {
+    const inputText = (this.children.InputTextComponent as InputText);
+    inputText.resetValue();
+    this.sendMessage(content);
+  }
+
+  private sendMessage(content: string): void {
     const { socket } = this.props;
 
-    if (message && socket) {
-      inputText.resetValue();
-      socket.send({ content: message, type: 'message' });
-      // sendMessage(message);
+    if (socket && content) {
+      socket.send({ content, type: 'message' });
     }
   }
 
@@ -117,7 +149,9 @@ class ChatContent extends Block<IChatContentProps> {
     const { socket } = _newProps;
 
     if (!isEqual(selectedChatOldValue, selectedChatnewValue) && hasData) {
+      console.log('CREATE WEB_SOCKET');
       createWebSocket();
+      this.children.PropertiesDropdown.setProps({ list: this.mapPropertiesList(propertiesDropdownList) });
     }
 
     if (socket) {
@@ -133,6 +167,7 @@ class ChatContent extends Block<IChatContentProps> {
 
 const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({
   selectedChat: state.selectedChat,
+  user: state.user,
   isChatLoading: state.isChatLoading,
   socket: state.socket,
 });

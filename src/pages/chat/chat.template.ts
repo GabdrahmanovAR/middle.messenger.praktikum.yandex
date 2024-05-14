@@ -2,8 +2,8 @@ const chatTemplate = `
 <div class="container chat-container">
   <div class="sidebar">
     <div class="sidebar__settings">
-      {{{ AddChatButton }}}
-      {{{ ProfileButton }}}
+      <div class="sidebar__icon-button">{{{ AddChatButton }}}</div>
+      <div>{{{ ProfileButton }}}</div>
     </div>
     <div class="sidebar__search">
       {{{ SearchField }}}

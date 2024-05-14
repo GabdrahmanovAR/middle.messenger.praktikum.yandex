@@ -1,3 +1,4 @@
+import { EMPTY_STRING } from '../../../assets/constants/common';
 import Block from '../../@core/Block';
 import { IInputDropDownProps } from '../../@models/components';
 import { DropDownList } from '../dropdown-list';
@@ -5,7 +6,7 @@ import { ErrorLine } from '../error-line';
 import { Input } from '../input';
 import InputDropDownTemplate from './input-dropdown.template';
 
-export default class InputDropDown extends Block<IInputDropDownProps> {
+export default class InputDropdown extends Block<IInputDropDownProps> {
   private _timer: number | null = null;
 
   protected init(): void {
@@ -72,8 +73,14 @@ export default class InputDropDown extends Block<IInputDropDownProps> {
     return null;
   }
 
+  public clear(): void {
+    this.setProps({ error: undefined });
+    this.children.InputField.setProps({ value: EMPTY_STRING });
+    this.children.Error.setProps({ error: undefined });
+  }
+
   private validate(): boolean {
-    const inputValue = ((this.children.InputField as Input)?.element as HTMLInputElement).value;
+    const inputValue = (this.children.InputField.element as HTMLInputElement).value;
     const validateMessage = this._props.validate?.(inputValue);
 
     if (validateMessage) {

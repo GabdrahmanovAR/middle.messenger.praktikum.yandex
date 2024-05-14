@@ -44,7 +44,7 @@ export default class DropdownList extends Block<IDropdownListProps> {
 
   private onMenuItemClick(attr: string): void {
     this.props.list.forEach((listItem: IDropDownList) => {
-      if (listItem.name === attr && listItem.onClick) {
+      if (listItem.name === attr && listItem.onClick && !listItem.readonly) {
         listItem.onClick();
       }
     });
@@ -120,7 +120,7 @@ export default class DropdownList extends Block<IDropdownListProps> {
               <img src="${list.icon}" alt="Dropdown list item icon">
             </div>
           ` : ''}
-          <span class="dropdown__item-name ${!list.icon ? 'pl-0' : 'pl-1'}">
+          <span class="dropdown__item-name ${!list.icon ? 'pl-0' : 'pl-1'} ${list.readonly ? 'dropdown__item_readonly' : ''}">
             ${list.title}
           </span>
         </div>

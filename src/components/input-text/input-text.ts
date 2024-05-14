@@ -11,11 +11,14 @@ export default class InputText extends Block<IInputTextProps> {
     super({
       ...props,
       onSearch: props.onSearch,
+      onEnter: props.onEnter,
     });
   }
 
   protected init(): void {
     const onInputBind = this.onInput.bind(this);
+    const onEnterBind = this.onEnter.bind(this);
+
     const InputField = new Input({
       type: 'text',
       name: this.props.name,
@@ -26,6 +29,7 @@ export default class InputText extends Block<IInputTextProps> {
         ${this.props.center ? ' input-text_center' : EMPTY_STRING}
       `,
       onInput: onInputBind,
+      onEnter: onEnterBind,
     });
 
     this.children = {
@@ -49,6 +53,13 @@ export default class InputText extends Block<IInputTextProps> {
         this.props.onSearch(input.value);
       }
     }, 500);
+  }
+
+  private onEnter(event: Event): void {
+    const inputValue = (event.target as HTMLInputElement).value;
+    if (inputValue && this.props.onEnter) {
+      this.props.onEnter(inputValue);
+    }
   }
 
   public getValue(): string {

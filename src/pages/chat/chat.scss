@@ -20,6 +20,11 @@
       height: var(--header-height);
     }
 
+    &__icon-button {
+      height: 2rem;
+      width: 2rem;
+    }
+
     &__search {
       padding: 0 0.5rem 0.5rem 0.5rem;
     }

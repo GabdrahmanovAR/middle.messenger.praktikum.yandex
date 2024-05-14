@@ -1,6 +1,6 @@
 import Block from '../../@core/Block';
 import WSTransport from '../../@core/WsTransport';
-import { IUserInfo } from '../../api/model';
+import { IChatUser, IUserInfo } from '../../api/model';
 import { IProps } from '../common';
 import { IMessageType } from '../websocket';
 
@@ -17,6 +17,7 @@ export interface IInputProps extends IProps {
   onClick?: (event: Event) => void;
   onChange?: (event: Event) => void;
   onInput?: (event: Event) => void;
+  onEnter?: (event: Event) => void;
   readonly?: boolean;
   withDelay?: boolean;
 }
@@ -69,6 +70,7 @@ export interface IInputTextProps extends IProps {
   placeholder?: string;
   icon?: string;
   onSearch?: (value: string) => void;
+  onEnter?: (value: string) => void;
 }
 
 export interface IChatListProps extends IProps {
@@ -81,12 +83,14 @@ export interface IChatListProps extends IProps {
 export interface IChatContentProps extends IProps {
   showChat?: boolean;
   selectedChat?: ISelectedChat;
+  user?: IUserInfo;
   socket?: WSTransport | null;
 }
 export interface IDropDownList {
   icon: string;
   title: string;
   name: string;
+  readonly?: boolean;
   onClick?: () => void;
 }
 export interface IDropdownListProps extends IProps {
@@ -164,6 +168,7 @@ export interface IMessageListProps extends IProps {
   messages?: IMessageType[];
   messageList?: Block[];
   user?: IUserInfo;
+  selectedChatUsers: IChatUser[];
   empty?: boolean;
 }
 
@@ -176,6 +181,7 @@ export interface IMessageProps extends IProps {
   delivered?: boolean;
   read?: boolean;
   date: string;
+  name?: string;
 }
 
 export interface IDataFieldProps extends IProps {
@@ -196,8 +202,10 @@ export interface IChatCardProps extends IProps {
   active?: boolean;
   avatar?: string;
   message?: string;
+  userMessage?: string;
   date?: string;
   count?: number;
+  createdBy: number;
   selectedChat?: ISelectedChat;
   onClick?: (value: number | null) => void;
 }
@@ -206,6 +214,7 @@ export interface ISelectedChat {
   id: number;
   title: string;
   avatar: string;
+  createdBy: number;
 }
 
 export interface IGlobalErrorProps extends IProps {

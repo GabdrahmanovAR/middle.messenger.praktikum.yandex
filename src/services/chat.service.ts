@@ -1,7 +1,9 @@
 import { EMPTY_STRING } from '../../assets/constants/common';
 import { ISelectedChat } from '../@models/components';
 import ChatApi from '../api/chat.api';
-import { IAddChatUser, IChatToken, IChatUser } from '../api/model';
+import {
+  IAddChatUser, IChatInfo, IChatToken, IChatUser,
+} from '../api/model';
 import { setGlobalError } from './global-error.service';
 
 const chatApi = new ChatApi();
@@ -76,4 +78,18 @@ export const selectChat = async (chat: ISelectedChat): Promise<void> => {
   } finally {
     store.set({ isLoading: false });
   }
+};
+
+export const setCardLastMessageUserName = (chat: IChatInfo): string => {
+  const { store } = window;
+  const state = store.getState();
+  const { user } = state;
+
+  const chatLastMessageUserName = chat.last_message?.user?.first_name;
+
+  if (!chatLastMessageUserName) {
+    return EMPTY_STRING;
+  }
+
+  return chatLastMessageUserName === user.first_name ? 'Вы' : chatLastMessageUserName;
 };

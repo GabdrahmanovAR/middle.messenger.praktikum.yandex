@@ -9,6 +9,7 @@ import { GlobalError } from './components';
 import { canActivate } from './services/auth.service';
 import { DefaultAppState } from './@models/store';
 import { IModalChat, IModalConfirm, ISelectedChat } from './@models/components';
+import { handleUnhandledErrors } from './services/global-error.service';
 
 declare global {
   interface Window {
@@ -43,6 +44,8 @@ const main = document.getElementById('app');
 if (main && globalErrorElement) {
   main.append(globalErrorElement);
 }
+
+handleUnhandledErrors();
 
 const router = new Router('main#app', canActivate);
 window.router = router;

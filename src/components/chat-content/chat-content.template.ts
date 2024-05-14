@@ -19,19 +19,21 @@ const chatContentTemplate = `
       </div>
     </div>
 
-    <div class="chat-content__chat">
+    <div id="message-list" class="chat-content__chat">
       {{{ MessageListComponent }}}
     </div>
 
     <div class="chat-input">
-      <div class="chat-input__settings">
-        {{{ PinButton }}}
-      </div>
-      <div class="chat-input__input">
-        {{{ InputTextComponent }}}
-      </div>
-      <div class="chat-input__send-button">
-        {{{ SendButton }}}
+      <div class="chat-input__container">
+        <div class="chat-input__settings">
+          {{{ PinButton }}}
+        </div>
+        <div class="chat-input__input">
+          {{{ InputTextComponent }}}
+        </div>
+        <div class="chat-input__send-button">
+          {{{ SendButton }}}
+        </div>
       </div>
     </div>
 

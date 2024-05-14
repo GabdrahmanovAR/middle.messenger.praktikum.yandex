@@ -66,7 +66,6 @@ export default class Router {
     }
 
     this._currentRoute = route;
-    console.log('render invoke');
     route.render();
   }
 

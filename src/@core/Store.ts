@@ -1,4 +1,4 @@
-import { DefaultAppState } from '../@models/common';
+import { DefaultAppState } from '../@models/store';
 import EventBus from './EventBus';
 
 export enum StoreEvents {
@@ -35,6 +35,11 @@ export default class Store<State extends Record<string, any> = Record<string, an
    * @param save сохранение состояний для необходимых полей
    */
   public reset(save?: Partial<DefaultAppState>): void {
-    this.state = { ...this.defaultState, ...save };
+    const prevState = { ...this.state };
+    const nextState = { ...this.defaultState, ...save };
+
+    this.state = { ...nextState };
+    this.emit(StoreEvents.Updated, prevState, nextState);
+    this.clear();
   }
 }

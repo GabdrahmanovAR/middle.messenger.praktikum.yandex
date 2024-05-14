@@ -11,3 +11,13 @@ export const setGlobalError = (error: unknown, message = 'Ошибка запр�
 export const clearGlobalError = (): void => {
   window.store.set({ globalError: EMPTY_STRING });
 };
+
+export const handleUnhandledErrors = (): void => {
+  window.addEventListener('unhandledrejection', (event) => {
+    console.error('Unhandled rejection (promise: ', event.promise, ', reason: ', event.reason, ').');
+  });
+  window.addEventListener('error', (event) => {
+    console.error('Unhandled error');
+    console.log(event);
+  });
+};

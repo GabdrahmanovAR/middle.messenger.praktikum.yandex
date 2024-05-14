@@ -12,7 +12,7 @@ export const createWebSocket = async (): Promise<WSTransport | null> => {
   const userId = state.user.id;
   const currentSocket = state.socket;
 
-  store.set({ isChatLoading: true });
+  store.set({ isChatLoading: true, messages: [] });
 
   if (!chatId || !userId) {
     const message = 'Ошибка подключения к чату. Отсутствует идентификатор чата или пользователя';
@@ -57,6 +57,7 @@ export const showMessage = (message: IMessageType | IMessageType[]): void => {
   const { messages } = state;
   const newMessages = [];
 
+  // TODO добавить обновление вида карточки в соответствии с последним отправленным сообщением
   if (Array.isArray(message)) {
     newMessages.push(...message);
   } else {

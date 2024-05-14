@@ -15,6 +15,10 @@ $max-width: 29rem;
     border: 1px solid var(--border-color-light-grey);
   }
 
+  &__name {
+    color: green;;
+  }
+
   &__image {
     max-width: $max-width;
     object-fit: cover;

@@ -47,8 +47,6 @@ export default class ModalProfile extends Block<IModalProfileProps> {
     const file = input && (input.props as IInputFile)?.file;
 
     if (file) {
-      // TODO запуск обновления аватара на сервере
-      console.log(file);
       await updateUserAvatar(file);
       input.setProps({ fileName: EMPTY_STRING, file: undefined });
       this.setProps({ visible: false, error: false });

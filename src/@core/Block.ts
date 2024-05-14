@@ -164,40 +164,13 @@ class Block<Props extends IProps = IProps> {
     this._element = newElement;
 
     this.addEvents();
-
-    // const fragment = this.compile(this.render(), this._props);
-
-    // const newElement = fragment.firstElementChild as HTMLElement;
-
-    // if (this._element && newElement) {
-    //   newElement.style.display = this._element.style.display;
-    //   this._element.replaceWith(newElement);
-    // }
-
-    // this._element = newElement;
-
-    // this.addEvents();
+    this._componentAfterUpdate();
   }
 
-  private compile(template: string, context: any): DocumentFragment {
-    const contextAndStubs = { ...context };
+  protected componentAfterUpdate(): void {}
 
-    Object.entries(this.children).forEach(([key, child]) => {
-      contextAndStubs[key] = `<div data-id="${child.id}"></div>`;
-    });
-
-    const html = Handlebars.compile(template)(contextAndStubs);
-
-    const temp = document.createElement('template');
-
-    temp.innerHTML = html;
-
-    Object.values(this.children).forEach((child) => {
-      const stub = temp.content.querySelector(`[data-id="${child.id}"]`);
-      stub?.replaceWith(child.getContent()!);
-    });
-
-    return temp.content;
+  private _componentAfterUpdate(): void {
+    this.componentAfterUpdate();
   }
 
   protected render(): string {
