@@ -1,6 +1,7 @@
 import Block from './Block';
 import Route from './Route';
 
+// TODO !!!!!!! исправить ошибки роутера
 export default class Router {
   private static __instance: ThisType<Router>;
 
