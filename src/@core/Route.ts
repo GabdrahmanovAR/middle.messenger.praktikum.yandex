@@ -6,16 +6,16 @@ interface IRouteProps {
   rootQuery: string;
 }
 
-export default class Route {
+export default class Route<T extends IProps = IProps> {
   private _pathname: string;
 
-  private _blockClass: Block<Record<string, unknown>> | null;
+  private _blockClass: typeof Block<T> | null;
 
-  private _block: Block<Record<string, unknown>> | null;
+  private _block: Block<T> | null;
 
   private _props: IRouteProps;
 
-  constructor(pathname: string, view: Block<Record<string, unknown>> | null, props: IRouteProps) {
+  constructor(pathname: string, view: typeof Block<T> | null, props: IRouteProps) {
     this._pathname = pathname;
     this._blockClass = view;
     this._block = null;
@@ -40,13 +40,13 @@ export default class Route {
   }
 
   render(): void {
-    if (!this._block) {
+    if (!this._block && this._blockClass) {
       this._block = new this._blockClass();
       this._render(this._props.rootQuery, this._block);
       return;
     }
 
-    this._block.show();
+    this._block?.show();
   }
 
   private _render(query: string, block: Block<Record<string, unknown>>): Element | null {

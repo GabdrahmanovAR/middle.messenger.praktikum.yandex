@@ -1,3 +1,4 @@
+import { IProps } from '../@models/common';
 import Block from './Block';
 import Route from './Route';
 
@@ -35,8 +36,8 @@ export default class Router {
    * @param block
    * @returns
    */
-  public use(pathname: string, block: Block<Record<string, unknown>>): this {
-    const route = new Route(pathname, block, { rootQuery: this._rootQuery });
+  public use<T extends IProps>(pathname: string, block: typeof Block<T>): this {
+    const route = new Route<T>(pathname, block, { rootQuery: this._rootQuery });
 
     this.routes.push(route);
 

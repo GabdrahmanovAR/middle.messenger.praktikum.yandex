@@ -5,8 +5,8 @@ import { ILoginPageProps } from '../../@models/pages';
 import { Button, Field } from '../../components';
 import Routes from '../../api/routes';
 import { login } from '../../services/auth.service';
-import { DefaultAppState } from '../../@models/common';
 import { connect } from '../../utils/connect';
+import { DefaultAppState } from '../../@models/store';
 
 class LoginPage extends Block<ILoginPageProps> {
   protected init(): void {
