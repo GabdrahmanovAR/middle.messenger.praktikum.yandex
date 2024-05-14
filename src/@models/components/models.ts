@@ -215,6 +215,8 @@ export interface ISelectedChat {
   title: string;
   avatar: string;
   createdBy: number;
+  userMessage?: string;
+  message?: string;
 }
 
 export interface IGlobalErrorProps extends IProps {

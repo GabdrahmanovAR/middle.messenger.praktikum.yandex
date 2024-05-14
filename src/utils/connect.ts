@@ -5,8 +5,8 @@ import { DefaultAppState } from '../@models/store';
 import isEqual from './isEqual';
 
 export function connect(mapStateToProps: (state: DefaultAppState) => Partial<DefaultAppState>) {
-  return function <T extends IProps>(Component: typeof Block): typeof Block {
-    return class extends Component<T> {
+  return function <T extends IProps>(Component: typeof Block<T>): typeof Block<T> {
+    return class extends Component {
       constructor(props: T) {
         // сохраняем начальное состояние
         const { store } = window;

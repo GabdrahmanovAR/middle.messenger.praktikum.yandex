@@ -123,4 +123,4 @@ class ChatPage extends Block<IChatPageProps> {
 
 const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({ chats: state.chats });
 
-export default connect(mapStateToProps)(ChatPage);
+export default connect(mapStateToProps)<IChatPageProps>(ChatPage);

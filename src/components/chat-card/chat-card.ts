@@ -44,8 +44,8 @@ class ChatCatd extends Block<IChatCardProps> {
     const { selectedChat } = _newProps;
     const hasData = selectedChat && Object.keys(selectedChat).length > 0;
     const notEqual = !isEqual((_oldProps.selectedChat ?? {}), selectedChat ?? {});
-    if (hasData && notEqual) {
-      this.setProps({ active: this.props.id === selectedChat.id });
+    if (hasData && notEqual && this.props.id === selectedChat.id) {
+      this.setProps({ active: true, ...selectedChat });
     }
     return true;
   }
