@@ -12,7 +12,6 @@ export default class InputDropdown extends Block<IInputDropDownProps> {
   protected init(): void {
     const validateBind = this.validate.bind(this);
     const onInputBind = this.onInput.bind(this);
-    const onMenuItemSelectBind = this.onMenuItemSelect.bind(this);
 
     const InputField = new Input({
       type: this.props.type,
@@ -29,7 +28,6 @@ export default class InputDropdown extends Block<IInputDropDownProps> {
     const DropDown = new DropDownList({
       appednTo: InputField.element,
       list: this.props.listItems ?? [],
-      onMenuItemSelect: onMenuItemSelectBind,
     });
 
     this.children = {
@@ -38,10 +36,6 @@ export default class InputDropdown extends Block<IInputDropDownProps> {
       Error,
       DropDown,
     };
-  }
-
-  private onMenuItemSelect(value: string): void {
-    console.log(value);
   }
 
   private onInput(event: Event): void {
@@ -73,6 +67,13 @@ export default class InputDropdown extends Block<IInputDropDownProps> {
     return null;
   }
 
+  public updateValue(value: string): void {
+    const input = this.children.InputField.element;
+    if (input instanceof HTMLInputElement) {
+      input.value = value;
+    }
+  }
+
   public clear(): void {
     this.setProps({ error: undefined });
     this.children.InputField.setProps({ value: EMPTY_STRING });
@@ -95,12 +96,15 @@ export default class InputDropdown extends Block<IInputDropDownProps> {
   }
 
   protected componentDidUpdate(_oldProps: IInputDropDownProps, _newProps: IInputDropDownProps): boolean {
-    console.log('dropdown');
+    console.log('dropdown !!!!!!!');
     const { listItems } = _newProps;
     if (listItems && listItems.length > 0) {
-      this.children.DropDown.setProps({ visible: true, list: listItems });
+      // TODO тут ли передавать айди контейнера для долбанного дропдауна добавления пользователей
+      this.children.DropDown.showList('add-user-container');
+      this.children.DropDown.setProps({ list: listItems });
     } else {
-      this.children.DropDown.setProps({ visible: false, list: [] });
+      this.children.DropDown.hideList();
+      this.children.DropDown.setProps({ list: [] });
     }
     return true;
   }

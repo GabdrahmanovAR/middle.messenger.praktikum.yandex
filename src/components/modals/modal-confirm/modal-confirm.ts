@@ -1,10 +1,10 @@
-import Block from '../../@core/Block';
-import { Button } from '../button';
+import Block from '../../../@core/Block';
+import { Button } from '../../button';
 import ModalConfirmTemplate from './modal-confirm.template';
-import { IModalConfirm } from '../../@models/components';
-import { connect } from '../../utils/connect';
-import { closeConfirmModal } from '../../services/modal.service';
-import { DefaultAppState } from '../../@models/store';
+import { IModalConfirm } from '../../../@models/components';
+import { connect } from '../../../utils/connect';
+import { closeConfirmModal } from '../../../services/modal.service';
+import { DefaultAppState } from '../../../@models/store';
 
 class ModalConfirm extends Block<IModalConfirm> {
   constructor(props: IModalConfirm) {

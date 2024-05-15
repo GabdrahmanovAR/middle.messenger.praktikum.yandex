@@ -52,7 +52,36 @@ export const deleteChat = async (): Promise<void> => {
 };
 
 export const addChatUser = async (data: IAddChatUser): Promise<void> => {
+  const { store } = window;
+  const state = store.getState();
+  const { selectedChatUsers } = state;
+
+  const hasUser = selectedChatUsers.some((newUser: IChatUser) => data.users.some((userId: number) => userId === newUser.id));
+
+  if (hasUser) {
+    setGlobalError({}, 'Пользователь уже добавлен в чат');
+    return;
+  }
   await chatApi.addChatUser(data);
+};
+
+// TODO добавить обновление списка пользователей чата
+export const removeChatUser = async (chatId: number | undefined, userId: number | undefined): Promise<void> => {
+  if (!chatId || !userId) {
+    const idError = 'Отсутствует идентификатор чата/пользователя. Удаление пользователя остановлено.';
+    setGlobalError({}, idError);
+    return;
+  }
+
+  const data: IAddChatUser = {
+    chatId,
+    users: [userId],
+  };
+  try {
+    await chatApi.removeChatUser(data);
+  } catch (error) {
+    setGlobalError(error, 'Ошибка удаления пользователя из чата');
+  }
 };
 
 export const getChatUsers = async (chatId: number): Promise<IChatUser[]> => chatApi.getChatUsers(chatId);

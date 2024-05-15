@@ -1,3 +1,4 @@
+import { EMPTY_STRING } from '../../../assets/constants/common';
 import Block from '../../@core/Block';
 import { IFieldProps } from '../../@models/components';
 import { ErrorLine } from '../error-line';
@@ -72,6 +73,19 @@ export default class Field extends Block<IFieldProps> {
 
     this.setProps({ error: undefined });
     this.children.Error?.setProps({ error: undefined });
+    return true;
+  }
+
+  public clear(): void {
+    this.setProps({ error: undefined });
+    this.children.InputField.setProps({ value: EMPTY_STRING });
+    this.children.Error.setProps({ error: undefined });
+  }
+
+  protected componentDidUpdate(_oldProps: IFieldProps, _newProps: IFieldProps): boolean {
+    if (_oldProps.name !== _newProps.name) {
+      this.children.InputField.setProps({ name: _newProps.name });
+    }
     return true;
   }
 

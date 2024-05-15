@@ -86,13 +86,25 @@ export interface IChatContentProps extends IProps {
   user?: IUserInfo;
   socket?: WSTransport | null;
 }
-export interface IDropDownList {
+
+export interface IDropDownItems {
+  addUser: IDropDownItem,
+  removeUser: IDropDownItem,
+  removeChat: IDropDownItem,
+  leaveChat: IDropDownItem,
+}
+
+export interface IDropDownItem {
   icon: string;
   title: string;
   name: string;
-  readonly?: boolean;
+  modalDescription: Record<string, unknown>;
+}
+
+export interface IDropDownList extends Omit<IDropDownItem, 'modalDescription'> {
   onClick?: () => void;
 }
+
 export interface IDropdownListProps extends IProps {
   list: IDropDownList[];
   appednTo: HTMLElement | null;
@@ -104,20 +116,36 @@ export interface IDropdownListProps extends IProps {
   onMenuItemSelect?: (value: string) => void;
 }
 
-export interface IModalChat extends IProps {
+export interface IModalUser extends IProps {
   title?: string;
   fieldLabel?: string;
   fieldName?: string;
   buttonLabel?: string;
   visible?: boolean;
   findedUsers?: IUserInfo[];
-  name: string;
+  onClick?: (value: string) => void;
+}
+
+export interface IModalRemoveUser extends IProps {
+  title?: string;
+  chatUsers?: IChatUser[];
+  chatId?: number;
+  visible?: boolean;
+  onClick?: () => void;
+}
+
+export interface IModalChat extends IProps {
+  title?: string;
+  fieldLabel?: string;
+  fieldName?: string;
+  buttonLabel?: string;
+  visible?: boolean;
   onClick?: (value: string) => void;
 }
 
 export interface IModalConfirm extends IProps {
-  title: string;
-  text: string;
+  title?: string;
+  text?: string;
   visible?: boolean;
   onConfirm?: () => void;
 }

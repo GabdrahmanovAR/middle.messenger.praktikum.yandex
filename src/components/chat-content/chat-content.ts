@@ -2,17 +2,22 @@ import Block from '../../@core/Block';
 import { Button } from '../button';
 import { InputText } from '../input-text';
 import { MessageList } from '../message-list';
-import { messages } from '../message-list/message-list.const';
 import ChatContentTemplate from './chat-content.template';
 import { DropDownList } from '../dropdown-list';
-import { pinDropdownList, propertiesDropdownList } from '../dropdown-list/dropdown-list.const';
-import { IChatContentProps, IDropDownList } from '../../@models/components';
+import { Modal, pinDropdownList, chatPropertiesDropDown } from '../dropdown-list/dropdown-list.const';
+import {
+  IChatContentProps, IDropDownItem, IDropDownItems, IDropDownList, IModalConfirm, IModalRemoveUser, IModalUser,
+} from '../../@models/components';
 import { connect } from '../../utils/connect';
 import { DefaultAppState } from '../../@models/store';
 import { createWebSocket, showMessage } from '../../services/websocket.service';
 import { WSTransportEvent } from '../../@core/WsTransport';
 import isEqual from '../../utils/isEqual';
 import { IMessageType } from '../../@models/websocket';
+import { closeConfirmModal, openConfirmModal, openAddUserModal, openRemoveUserModal } from '../../services/modal.service';
+import { addChatUser, deleteChat } from '../../services/chat.service';
+import { IAddChatUser } from '../../api/model';
+import { setGlobalError } from '../../services/global-error.service';
 
 class ChatContent extends Block<IChatContentProps> {
   constructor(props: IChatContentProps) {
@@ -29,10 +34,10 @@ class ChatContent extends Block<IChatContentProps> {
     const onPropertiesButtonClickBind = this.onPropertiesButtonClick.bind(this);
     const onPinButtonClickBind = this.onPinButtonClick.bind(this);
     const onEnterbind = this.onEnter.bind(this);
-    const mapPropertiesListBind = this.mapPropertiesList.bind(this);
 
     const MessageListComponent = new MessageList({
-      messages,
+      messages: [],
+      selectedChatUsers: [],
     });
     const PropertiesButton = new Button({
       isRound: true,
@@ -60,8 +65,8 @@ class ChatContent extends Block<IChatContentProps> {
       rounded: true,
       onEnter: onEnterbind,
     });
+    // TODO для не админа, добавить вместо удалить чат - выйти из группы и удалять себя из группы по запросу delete /chats/users, для админов только удалить чат
     const PropertiesDropdown = new DropDownList({
-      // list: mapPropertiesListBind(propertiesDropdownList),
       list: [],
       appednTo: PropertiesButton.element,
     });
@@ -82,33 +87,126 @@ class ChatContent extends Block<IChatContentProps> {
     };
   }
 
-  private mapPropertiesList(list: IDropDownList[]): IDropDownList[] {
+  private mapPropertiesToList(list: IDropDownItems): IDropDownList[] {
     const userId = this.props.user?.id;
     const chatCreatedUserId = this.props.selectedChat?.createdBy;
+    const dropDownList: IDropDownList[] = [];
+    const adminUser = userId === chatCreatedUserId;
 
     if (userId && chatCreatedUserId) {
-      return list.map((item: IDropDownList) => {
-        if (userId !== chatCreatedUserId) {
-          item.readonly = true;
+      Object.entries(list).forEach(([key, item]) => {
+        if (adminUser && key !== Modal.LEAVE_CHAT) {
+          dropDownList.push({
+            icon: item.icon,
+            title: item.title,
+            name: item.name,
+            onClick: this.setModalClickFunction(item.name, item.modalDescription),
+          });
+          return;
         }
-        return item;
+        if (!adminUser && key === Modal.LEAVE_CHAT) {
+          dropDownList.push({
+            icon: item.icon,
+            title: item.title,
+            name: item.name,
+            onClick: this.setModalClickFunction(item.name, item.modalDescription),
+          });
+        }
       });
     }
 
-    return list;
+    return dropDownList;
+  }
+
+  private setModalClickFunction(modalName: string, modalDescription: Record<string, unknown>): () => void {
+    let onClick = (): void => {};
+
+    if (modalName === Modal.ADD_USER) {
+      onClick = (): void => {
+        const modalState: IModalUser = {
+          ...modalDescription,
+          // TODO добавление/удаление пользователя в чат по id
+          onClick: (value: string) => this.addChatUser(value),
+        };
+        openAddUserModal(modalState);
+      };
+    }
+
+    if (modalName === Modal.REMOVE_USER) {
+      onClick = (): void => {
+        const modalRemoveUser: IModalRemoveUser = {
+          ...modalDescription,
+          chatId: this.props.selectedChat?.id,
+          onClick: () => {
+            console.log('close remove user');
+            // const modalState: IModalConfirm = {
+            //   ...modalDescription,
+            //   onConfirm: async () => {
+            //     await deleteChat(); // тут должно быть удаление пользователя с чата
+            //     closeConfirmModal();
+            //   },
+            // };
+            // openConfirmModal(modalState);
+          },
+        };
+        openRemoveUserModal(modalRemoveUser);
+      };
+    }
+
+    if (modalName === Modal.REMOVE_CHAT) {
+      onClick = ():void => {
+        const modalState: IModalConfirm = {
+          ...modalDescription,
+          onConfirm: async () => {
+            await deleteChat();
+            closeConfirmModal();
+          },
+        };
+        openConfirmModal(modalState);
+      };
+    }
+
+    if (modalName === Modal.LEAVE_CHAT) {
+      onClick = ():void => {
+        const modalState: IModalConfirm = {
+          ...modalDescription,
+          onConfirm: async () => {
+            console.log('выход из чата');
+            // TODO добавить выход из чата пользователя который не является админом
+            // await deleteChat();
+            // closeConfirmModal();
+          },
+        };
+        openConfirmModal(modalState);
+      };
+    }
+    return onClick;
+  }
+
+  private addChatUser(id: number): void {
+    const chatId = this.props.selectedChat?.id;
+    if (!chatId || !id) {
+      setGlobalError({}, 'Не возможно добавить пользователя. Ошибка получения идентифкатора.');
+      return;
+    }
+    const newUser: IAddChatUser = {
+      chatId,
+      users: [id],
+    };
+    addChatUser(newUser);
   }
 
   private onPropertiesButtonClick(): void {
     const dropdown = this.children.PropertiesDropdown;
     if (dropdown instanceof DropDownList) {
-      dropdown.show();
+      dropdown.showList();
     }
   }
 
   private onPinButtonClick(): void {
     const dropdown = this.children.PinDropdown;
     if (dropdown instanceof DropDownList) {
-      dropdown.show();
+      dropdown.showList();
     }
   }
 
@@ -151,7 +249,7 @@ class ChatContent extends Block<IChatContentProps> {
     if (!isEqual(selectedChatOldValue, selectedChatnewValue) && hasData) {
       console.log('CREATE WEB_SOCKET');
       createWebSocket();
-      this.children.PropertiesDropdown.setProps({ list: this.mapPropertiesList(propertiesDropdownList) });
+      this.children.PropertiesDropdown.setProps({ list: this.mapPropertiesToList(chatPropertiesDropDown) });
     }
 
     if (socket) {

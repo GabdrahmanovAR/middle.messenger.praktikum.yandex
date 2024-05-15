@@ -1,5 +1,5 @@
 const modalChatTemplate = `
-<div class="container center modal-container{{#if visible}} modal-container_visible{{/if}}">
+<div id="add-user-container" class="container center modal-container{{#if visible}} modal-container_visible{{/if}}">
   <div class="user-window">
     <div class="user-window__header">
       <span class="user-window__title">

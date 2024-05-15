@@ -14,10 +14,9 @@ export const clearGlobalError = (): void => {
 
 export const handleUnhandledErrors = (): void => {
   window.addEventListener('unhandledrejection', (event) => {
-    console.error('Unhandled rejection (promise: ', event.promise, ', reason: ', event.reason, ').');
+    setGlobalError('', event.reason);
   });
   window.addEventListener('error', (event) => {
-    console.error('Unhandled error');
-    console.log(event);
+    setGlobalError('', event.message);
   });
 };

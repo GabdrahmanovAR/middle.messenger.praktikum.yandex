@@ -11,6 +11,7 @@ export default class DropdownList extends Block<IDropdownListProps> {
       onMenuItemSelect: (attr: string) => {
         props.list.forEach((listItem: IDropDownList) => {
           if (listItem.name === attr && listItem.onClick) {
+            console.log('CLICK !!!!!!!');
             listItem.onClick();
           }
         });
@@ -18,19 +19,23 @@ export default class DropdownList extends Block<IDropdownListProps> {
     });
   }
 
-  public show(): void {
+  public showList(container?: string): void {
     this.onElementClickBind = this.onElementClick.bind(this);
-    this.calculateDropDownPosition();
+    this.calculateDropDownPosition(container);
 
     setTimeout(() => {
       document.addEventListener('click', this.onElementClickBind);
     });
   }
 
+  public hideList(): void {
+    document.removeEventListener('click', this.onElementClickBind);
+    this.setProps({ visible: false });
+  }
+
   private onElementClick(event: MouseEvent): void {
     if (!this.element?.contains(event.target as Node)) {
-      document.removeEventListener('click', this.onElementClickBind);
-      this.setProps({ visible: false });
+      this.hideList();
     }
     if (!(event.target instanceof HTMLElement)) {
       return;
@@ -44,16 +49,16 @@ export default class DropdownList extends Block<IDropdownListProps> {
 
   private onMenuItemClick(attr: string): void {
     this.props.list.forEach((listItem: IDropDownList) => {
-      if (listItem.name === attr && listItem.onClick && !listItem.readonly) {
+      if (listItem.name === attr && listItem.onClick) {
         listItem.onClick();
       }
     });
   }
 
-  private calculateDropDownPosition(): void {
+  private calculateDropDownPosition(containerId?: string): void {
     const component = this.props.appednTo;
     const dropdown = this.element;
-    const container = document.getElementById('chatContent');
+    const container = containerId ? document.getElementById(containerId) : document.getElementById('chatContent');
     const indent = 24;
 
     if (component && dropdown && container) {
@@ -120,7 +125,7 @@ export default class DropdownList extends Block<IDropdownListProps> {
               <img src="${list.icon}" alt="Dropdown list item icon">
             </div>
           ` : ''}
-          <span class="dropdown__item-name ${!list.icon ? 'pl-0' : 'pl-1'} ${list.readonly ? 'dropdown__item_readonly' : ''}">
+          <span class="dropdown__item-name ${!list.icon ? 'pl-0' : 'pl-1'}">
             ${list.title}
           </span>
         </div>

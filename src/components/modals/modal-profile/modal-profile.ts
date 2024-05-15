@@ -1,9 +1,9 @@
-import { EMPTY_STRING } from '../../../assets/constants/common';
-import Block from '../../@core/Block';
-import { IInputFile, IModalProfileProps } from '../../@models/components';
-import { updateUserAvatar } from '../../services/user.service';
-import { Button } from '../button';
-import { InputFile } from '../input-file';
+import { EMPTY_STRING } from '../../../../assets/constants/common';
+import Block from '../../../@core/Block';
+import { IInputFile, IModalProfileProps } from '../../../@models/components';
+import { updateUserAvatar } from '../../../services/user.service';
+import { Button } from '../../button';
+import { InputFile } from '../../input-file';
 import ModalProfileTemplate from './modal-profile.template';
 
 export default class ModalProfile extends Block<IModalProfileProps> {

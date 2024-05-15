@@ -1,86 +1,57 @@
-import { IDropDownList, IModalChat, IModalConfirm } from '../../@models/components';
-import { deleteChat } from '../../services/chat.service';
-import { closeConfirmModal, openConfirmModal, openModal } from '../../services/modal.service';
+import { IDropDownItems, IDropDownList } from '../../@models/components';
 
 export enum Modal {
-  ADD_USER = 'add-user',
-  REMOVE_USER = 'remove-user',
-  ADD_CHAT = 'add-chat',
-  REMOVE_CHAT = 'remove-chat',
+  ADD_USER = 'addUser',
+  REMOVE_USER = 'removeUser',
+  ADD_CHAT = 'addChat',
+  REMOVE_CHAT = 'removeChat',
+  LEAVE_CHAT = 'leaveChat',
 }
 
-export const propertiesDropdownList: IDropDownList[] = [
-  {
+export const chatPropertiesDropDown: IDropDownItems = {
+  addUser: {
     icon: '/assets/icons/add.svg',
     title: 'Добавить пользователя',
     name: Modal.ADD_USER,
-    onClick: (): void => {
-      const modalState: IModalChat = {
-        title: 'Добавить пользователя',
-        fieldLabel: 'Логин',
-        fieldName: Modal.ADD_USER,
-        buttonLabel: 'Добавить',
-        name: Modal.ADD_USER,
-        visible: true,
-        onClick: (value: string) => console.log('Add user'),
-      };
-      openModal(modalState);
+    modalDescription: {
+      title: 'Добавить пользователя',
+      fieldLabel: 'Логин',
+      fieldName: Modal.ADD_USER,
+      buttonLabel: 'Добавить',
+      name: Modal.ADD_USER,
+      visible: true,
     },
   },
-  {
+  removeUser: {
     icon: '/assets/icons/delete.svg',
     title: 'Удалить пользователя',
     name: Modal.REMOVE_USER,
-    onClick: (): void => {
-      const modalState: IModalChat = {
-        title: 'Удалить пользователя',
-        fieldLabel: 'Логин',
-        fieldName: Modal.REMOVE_USER,
-        buttonLabel: 'Удалить',
-        name: Modal.ADD_USER,
-        visible: true,
-        onClick: (value: string) => console.log('Remove user'),
-      };
-      openModal(modalState);
+    modalDescription: {
+      title: 'Удалить пользователя',
+      visible: true,
     },
   },
-  {
+  removeChat: {
     icon: '/assets/icons/delete.svg',
     title: 'Удалить чат',
     name: Modal.REMOVE_CHAT,
-    onClick: (): void => {
-      const modalState: IModalConfirm = {
-        title: 'Удаление чата',
-        text: 'Вы собираетесь удалить чат. Все сообщения и история чата будут удалены. Продолжить?',
-        visible: true,
-        onConfirm: async () => {
-          await deleteChat();
-          closeConfirmModal();
-        },
-      };
-      openConfirmModal(modalState);
+    modalDescription: {
+      title: 'Удаление чата',
+      text: 'Вы собираетесь удалить чат. Все сообщения и история чата будут удалены. Продолжить?',
+      visible: true,
     },
   },
-];
-
-export const chatDropdownList: IDropDownList[] = [
-  {
-    icon: '/assets/icons/add.svg',
-    title: 'Добавить чат',
-    name: Modal.ADD_CHAT,
-    onClick: (): void => {
-      const modalState: IModalChat = {
-        title: 'Добавить чат',
-        fieldLabel: 'Наименование чата',
-        fieldName: Modal.ADD_CHAT,
-        buttonLabel: 'Добавить',
-        name: Modal.ADD_CHAT,
-        visible: true,
-      };
-      openModal(modalState);
+  leaveChat: {
+    icon: '/assets/icons/delete.svg',
+    title: 'Покинуть группу',
+    name: Modal.LEAVE_CHAT,
+    modalDescription: {
+      title: 'Выход из группы',
+      text: 'Вы собираетесь выйти из группы. Продолжить?',
+      visible: true,
     },
   },
-];
+};
 
 export const pinDropdownList: IDropDownList[] = [
   {

@@ -1,8 +1,25 @@
-import { IModalChat, IModalConfirm } from '../@models/components';
+import { IModalUser, IModalConfirm, IModalChat, IModalRemoveUser } from '../@models/components';
 
-export const openModal = (state: IModalChat): void => {
+export const openAddUserModal = (state: IModalUser): void => {
   window.store.set({
-    modalState: { ...state },
+    modalAddUser: { ...state },
+  });
+};
+
+export const openRemoveUserModal = (data: IModalRemoveUser): void => {
+  const { store } = window;
+  const state = store.getState();
+  const { selectedChatUsers } = state;
+  data.chatUsers = [...selectedChatUsers];
+
+  window.store.set({
+    modalRemoveUser: { ...data },
+  });
+};
+
+export const openAddChatModal = (state: IModalChat): void => {
+  window.store.set({
+    modalAddChat: { ...state },
   });
 };
 
@@ -14,9 +31,17 @@ export const openConfirmModal = (state: IModalConfirm): void => {
 
 export const closeModal = (): void => {
   window.store.set({
-    modalState: { visible: false } as IModalChat,
+    modalAddUser: { visible: false } as IModalUser,
     findedUsers: [],
   });
+};
+
+export const closeAddChatModal = (): void => {
+  window.store.set({ modalAddChat: { visible: false } });
+};
+
+export const closeRemoveUserModal = (): void => {
+  window.store.set({ modalRemoveUser: { visible: false } });
 };
 
 export const closeConfirmModal = (): void => {

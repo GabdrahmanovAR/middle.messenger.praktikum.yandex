@@ -1,19 +1,22 @@
-import Block from '../../@core/Block';
-import { Button } from '../button';
-import { InputDropdown } from '../input-dropdown';
+import Block from '../../../@core/Block';
+import { Button } from '../../button';
+import { InputDropdown } from '../../input-dropdown';
 import ModalChatTemplate from './modal-chat.template';
-import { IDropDownList, IModalChat } from '../../@models/components';
-import { connect } from '../../utils/connect';
-import { closeModal } from '../../services/modal.service';
-import { DefaultAppState } from '../../@models/store';
-import isEqual from '../../utils/isEqual';
-import { findUser } from '../../services/user.service';
-import { IUserInfo } from '../../api/model';
-import { EMPTY_STRING } from '../../../assets/constants/common';
-import * as validate from '../../utils/validate';
+import { IDropDownList, IModalUser } from '../../../@models/components';
+import { connect } from '../../../utils/connect';
+import { closeModal } from '../../../services/modal.service';
+import { DefaultAppState } from '../../../@models/store';
+import isEqual from '../../../utils/isEqual';
+import { findUser } from '../../../services/user.service';
+import { IUserInfo } from '../../../api/model';
+import { EMPTY_STRING } from '../../../../assets/constants/common';
+import * as validate from '../../../utils/validate';
+import { setGlobalError } from '../../../services/global-error.service';
 
-class ModalChat extends Block<IModalChat> {
-  constructor(props: IModalChat) {
+class ModalChat extends Block<IModalUser> {
+  private userId: number | null = null;
+
+  constructor(props: IModalUser) {
     super({
       ...props,
       events: {
@@ -40,7 +43,6 @@ class ModalChat extends Block<IModalChat> {
       valueField: 'id',
       onInput: onInputBind,
       validate: validate.empty,
-      onMenuItemSelect: (data) => console.log('CLICK'),
     });
     const ButtonComponent = new Button({
       type: 'submit',
@@ -67,13 +69,12 @@ class ModalChat extends Block<IModalChat> {
 
   private onClick(event: Event): void {
     event.preventDefault();
-    const field = this.children.DropdownInput;
-    const value = (field instanceof InputDropdown) && field.getValue();
 
-    if (value && this.props.onClick) {
-      this.props.onClick(value);
-      field.clear();
+    if (this.userId) {
+      this.props.onClick(this.userId);
       closeModal();
+    } else {
+      setGlobalError({}, 'Необходимо выбрать из существующих пользователей');
     }
   }
 
@@ -85,13 +86,16 @@ class ModalChat extends Block<IModalChat> {
         icon: EMPTY_STRING,
         name: user.login,
         title: user.login,
-        onClick: () => console.log('user click'),
+        onClick: () => {
+          this.userId = user.id;
+          (this.children.DropdownInput as InputDropdown).updateValue(user.login);
+        },
       });
     });
     return list;
   }
 
-  protected componentDidUpdate(_oldProps: IModalChat, _newProps: IModalChat): boolean {
+  protected componentDidUpdate(_oldProps: IModalUser, _newProps: IModalUser): boolean {
     if (!isEqual(_oldProps, _newProps)) {
       this.children.DropdownInput.setProps({
         label: _newProps.fieldLabel,
@@ -99,7 +103,7 @@ class ModalChat extends Block<IModalChat> {
       });
       this.children.ButtonComponent.setProps({ label: _newProps.buttonLabel });
 
-      this.children.DropdownInput.setProps({ listItems: this.findedUsersToDropdownList(_newProps.findedUsers ?? []) });
+      this.children.DropdownInput.setProps({ visible: true, listItems: this.findedUsersToDropdownList(_newProps.findedUsers ?? []) });
     }
     return true;
   }
@@ -109,6 +113,6 @@ class ModalChat extends Block<IModalChat> {
   }
 }
 
-const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({ findedUsers: state.findedUsers, ...state.modalState });
+const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({ findedUsers: state.findedUsers, ...state.modalAddUser });
 
 export default connect(mapStateToProps)(ModalChat);

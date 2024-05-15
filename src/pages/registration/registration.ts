@@ -22,6 +22,7 @@ export default class RegistrationPage extends Block<IRegistrationPageProps> {
       return acc;
     }, {});
 
+    // TODO Переделать под новую логику отрисовки массива
     super({
       ...props,
       fieldKeys: Object.keys(registrationFields),

@@ -8,7 +8,10 @@ import { EMPTY_STRING } from '../assets/constants/common';
 import { GlobalError } from './components';
 import { canActivate } from './services/auth.service';
 import { DefaultAppState } from './@models/store';
-import { IModalChat, IModalConfirm, ISelectedChat } from './@models/components';
+import {
+  IModalUser, IModalConfirm, ISelectedChat, IModalChat,
+  IModalRemoveUser,
+} from './@models/components';
 import { handleUnhandledErrors } from './services/global-error.service';
 
 declare global {
@@ -25,8 +28,10 @@ export const defaultState: DefaultAppState = {
   globalError: EMPTY_STRING,
   avatar: EMPTY_STRING,
   authorized: null,
-  modalState: {} as IModalChat,
+  modalAddUser: {} as IModalUser,
   modalConfirm: {} as IModalConfirm,
+  modalAddChat: {} as IModalChat,
+  modalRemoveUser: {} as IModalRemoveUser,
   chats: [],
   selectedChat: {} as ISelectedChat,
   selectedChatUsers: [],

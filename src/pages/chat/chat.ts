@@ -6,12 +6,14 @@ import { DefaultAppState } from '../../@models/store';
 import { IChatInfo } from '../../api/model';
 import Routes from '../../api/routes';
 import {
+  AddChat,
   Button, ChatCard, ChatContent, ChatList, InputText, ModalChat,
   ModalConfirm,
 } from '../../components';
 import { Modal } from '../../components/dropdown-list/dropdown-list.const';
+import { RemoveUser } from '../../components/modals';
 import { createChat, getChats, setCardLastMessageUserName } from '../../services/chat.service';
-import { openModal } from '../../services/modal.service';
+import { openAddChatModal } from '../../services/modal.service';
 import { connect } from '../../utils/connect';
 import { getDate } from '../../utils/time';
 import ChatTemplate from './chat.template';
@@ -50,8 +52,12 @@ class ChatPage extends Block<IChatPageProps> {
       showList: false,
     });
     const ChatContentComponent = new ChatContent({});
+
+    // Модальные окна
     const ChatModal = new ModalChat({});
+    const RemoveUserModal = new RemoveUser({});
     const ConfirmModal = new ModalConfirm({});
+    const AddChatModal = new AddChat({});
 
     this.children = {
       ...this.children,
@@ -61,21 +67,22 @@ class ChatPage extends Block<IChatPageProps> {
       ChatListComponent,
       ChatContentComponent,
       ChatModal,
+      RemoveUserModal,
       ConfirmModal,
+      AddChatModal,
     };
   }
 
   private onChatPropertiesButtonClick(): void {
-    const modalState: IModalChat = {
+    const modalChat: IModalChat = {
       title: 'Добавить чат',
       fieldLabel: 'Наименование чата',
       fieldName: Modal.ADD_CHAT,
       buttonLabel: 'Добавить',
-      name: Modal.ADD_CHAT,
       visible: true,
       onClick: this.onAddChat,
     };
-    openModal(modalState);
+    openAddChatModal(modalChat);
   }
 
   private onAddChat(title: string): void {

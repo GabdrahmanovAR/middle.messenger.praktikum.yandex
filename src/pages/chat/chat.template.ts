@@ -17,7 +17,9 @@ const chatTemplate = `
     {{{ ChatContentComponent }}}
   </div>
   {{{ ChatModal }}}
+  {{{ RemoveUserModal }}}
   {{{ ConfirmModal }}}
+  {{{ AddChatModal }}}
   {{{ ChatDropdown }}}
 </div>
 `;

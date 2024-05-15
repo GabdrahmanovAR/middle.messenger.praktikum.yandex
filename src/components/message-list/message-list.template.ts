@@ -1,7 +1,7 @@
 const messageListTemplate = `
 <div class="message-list">
   {{#if empty}}
-    <div>Нет сообщений</div>
+    <div class="message-list__empty">Нет сообщений</div>
   {{else}}
     {{{ messageList }}}
   {{/if}}
