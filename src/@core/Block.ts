@@ -147,7 +147,8 @@ class Block<Props extends IProps = IProps> {
     });
     const fragment = document.createElement('template');
 
-    fragment.innerHTML = Handlebars.compile(this.render())(propsAndStubs);
+    const template = this.render();
+    fragment.innerHTML = Handlebars.compile(template)(propsAndStubs);
     const newElement = fragment.content.firstElementChild as HTMLElement;
 
     [...Object.values(this.children), ...childrenProps].forEach((child) => {

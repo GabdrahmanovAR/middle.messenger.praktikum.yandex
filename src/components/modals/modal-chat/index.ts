@@ -1,3 +1,3 @@
-import './modal-chat.scss';
+import './add-user.scss';
 
-export { default as ModalChat } from './modal-chat';
+export { default as AddUser } from './add-user';

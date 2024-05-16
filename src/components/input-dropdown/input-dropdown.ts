@@ -19,7 +19,7 @@ export default class InputDropdown extends Block<IInputDropDownProps> {
       placeholder: this.props.label,
       classes: 'input-dropdown__input',
       required: this.props.required,
-      onBlur: validateBind,
+      // onBlur: validateBind,
       onInput: onInputBind,
     });
     const Error = new ErrorLine({
@@ -28,6 +28,8 @@ export default class InputDropdown extends Block<IInputDropDownProps> {
     const DropDown = new DropDownList({
       appednTo: InputField.element,
       list: this.props.listItems ?? [],
+      top: '0',
+      left: '0',
     });
 
     this.children = {
@@ -100,7 +102,8 @@ export default class InputDropdown extends Block<IInputDropDownProps> {
     const { listItems } = _newProps;
     if (listItems && listItems.length > 0) {
       // TODO тут ли передавать айди контейнера для долбанного дропдауна добавления пользователей
-      this.children.DropDown.showList('add-user-container');
+      // this.children.DropDown.showList('add-user-container');
+      this.children.DropDown.showList('app');
       this.children.DropDown.setProps({ list: listItems });
     } else {
       this.children.DropDown.hideList();

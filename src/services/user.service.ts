@@ -1,10 +1,20 @@
-import { EMPTY_STRING } from '../../assets/constants/common';
-import { IAddChatUser, IUpdatePassword, IUserInfo } from '../api/model';
+import { IUpdatePassword, IUserInfo } from '../api/model';
 import UserApi from '../api/user.api';
+import { empty } from '../utils/empty';
 import { isApiError } from '../utils/type-check';
 import { setGlobalError } from './global-error.service';
 
 const userApi = new UserApi();
+
+export const getCurrentUserId = (): number | null => {
+  const state = window.store.getState();
+  const { user } = state;
+
+  if (!empty(user)) {
+    return user.id;
+  }
+  return null;
+};
 
 export const updateUserInfo = async (data: Partial<IUserInfo>): Promise<void> => {
   window.store.set({ isLoading: true });

@@ -47,6 +47,7 @@
     "@typescript-eslint/no-unused-vars": "off",
     "no-param-reassign": "off",
     "no-console": "off",
-    "prefer-promise-reject-errors": "off"
+    "prefer-promise-reject-errors": "off",
+    "no-plusplus": "off"
   }
 }

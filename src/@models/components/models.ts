@@ -128,7 +128,7 @@ export interface IModalUser extends IProps {
 
 export interface IModalRemoveUser extends IProps {
   title?: string;
-  chatUsers?: IChatUser[];
+  selectedChatUsers?: IChatUser[];
   chatId?: number;
   visible?: boolean;
   onClick?: () => void;
@@ -194,10 +194,15 @@ export interface IMessage {
 
 export interface IMessageListProps extends IProps {
   messages?: IMessageType[];
-  messageList?: Block[];
+  messageList?: Block<IMessageGroupProps>[];
   user?: IUserInfo;
   selectedChatUsers: IChatUser[];
   empty?: boolean;
+}
+
+export interface IMessageGroupProps extends IProps {
+  date: string;
+  messageGroup: Block<IMessageProps>[];
 }
 
 export interface IMessageProps extends IProps {
@@ -230,7 +235,7 @@ export interface IChatCardProps extends IProps {
   active?: boolean;
   avatar?: string;
   message?: string;
-  userMessage?: string;
+  userName?: string;
   date?: string;
   count?: number;
   createdBy: number;
@@ -243,7 +248,7 @@ export interface ISelectedChat {
   title: string;
   avatar: string;
   createdBy: number;
-  userMessage?: string;
+  userName?: string;
   message?: string;
 }
 

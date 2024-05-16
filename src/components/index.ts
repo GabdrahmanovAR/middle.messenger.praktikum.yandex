@@ -8,6 +8,7 @@ export { ChatList } from './chat-list';
 export { InputText } from './input-text';
 export { ChatContent } from './chat-content';
 export { MessageList } from './message-list';
+export { MessageGroup } from './message-group';
 export { Message } from './message';
 export { InputFile } from './input-file';
 export { InputDropdown } from './input-dropdown';
@@ -15,5 +16,5 @@ export { DataField } from './data-field';
 export { DropDownList } from './dropdown-list';
 export { GlobalError } from './global-error';
 export {
-  ModalChat, ModalConfirm, ModalProfile, AddChat,
+  AddUser, ModalConfirm, ModalProfile, AddChat, RemoveUser,
 } from './modals';

@@ -4,6 +4,7 @@ import {
   ICreateUser, ILoginRequestData, IUserInfo,
 } from '../api/model';
 import Routes from '../api/routes';
+import { GlobalError } from '../components';
 import { RESOURCE_HOST } from '../constants';
 import { isApiError } from '../utils/type-check';
 import { setGlobalError } from './global-error.service';
@@ -99,6 +100,20 @@ export const canActivate = async (pathname: string): Promise<boolean> => {
   return true;
 };
 
+const reInitGlobalInfoConponent = (): void => {
+  const globalInfoComponent = document.getElementById('global-info');
+  const main = document.getElementById('app');
+  if (globalInfoComponent && main) {
+    main.removeChild(globalInfoComponent);
+  }
+
+  const GlobalErrorComponent = new GlobalError();
+  const newGlobalInfoComponent = GlobalErrorComponent.getContent();
+  if (main && newGlobalInfoComponent) {
+    main.append(newGlobalInfoComponent);
+  }
+};
+
 export const logout = async (): Promise<void> => {
   await authApi.logout();
 
@@ -111,4 +126,6 @@ export const logout = async (): Promise<void> => {
   window.router.reset();
   store.reset({ authorized: false });
   window.router.go(Routes.LOGIN);
+
+  reInitGlobalInfoConponent();
 };

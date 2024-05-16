@@ -1,4 +1,6 @@
-import { IModalUser, IModalConfirm, IModalChat, IModalRemoveUser } from '../@models/components';
+import {
+  IModalUser, IModalConfirm, IModalChat, IModalRemoveUser,
+} from '../@models/components';
 
 export const openAddUserModal = (state: IModalUser): void => {
   window.store.set({
@@ -10,7 +12,7 @@ export const openRemoveUserModal = (data: IModalRemoveUser): void => {
   const { store } = window;
   const state = store.getState();
   const { selectedChatUsers } = state;
-  data.chatUsers = [...selectedChatUsers];
+  data.selectedChatUsers = [...selectedChatUsers];
 
   window.store.set({
     modalRemoveUser: { ...data },

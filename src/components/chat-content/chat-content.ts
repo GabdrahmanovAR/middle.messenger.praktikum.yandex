@@ -6,7 +6,7 @@ import ChatContentTemplate from './chat-content.template';
 import { DropDownList } from '../dropdown-list';
 import { Modal, pinDropdownList, chatPropertiesDropDown } from '../dropdown-list/dropdown-list.const';
 import {
-  IChatContentProps, IDropDownItem, IDropDownItems, IDropDownList, IModalConfirm, IModalRemoveUser, IModalUser,
+  IChatContentProps, IDropDownItems, IDropDownList, IModalConfirm, IModalRemoveUser, IModalUser,
 } from '../../@models/components';
 import { connect } from '../../utils/connect';
 import { DefaultAppState } from '../../@models/store';
@@ -14,10 +14,15 @@ import { createWebSocket, showMessage } from '../../services/websocket.service';
 import { WSTransportEvent } from '../../@core/WsTransport';
 import isEqual from '../../utils/isEqual';
 import { IMessageType } from '../../@models/websocket';
-import { closeConfirmModal, openConfirmModal, openAddUserModal, openRemoveUserModal } from '../../services/modal.service';
-import { addChatUser, deleteChat } from '../../services/chat.service';
+import {
+  closeConfirmModal, openConfirmModal, openAddUserModal, openRemoveUserModal,
+} from '../../services/modal.service';
+import {
+  addChatUser, deleteChat, getSelectedChatId, leaveChat, removeChatFromList,
+} from '../../services/chat.service';
 import { IAddChatUser } from '../../api/model';
 import { setGlobalError } from '../../services/global-error.service';
+import { getCurrentUserId } from '../../services/user.service';
 
 class ChatContent extends Block<IChatContentProps> {
   constructor(props: IChatContentProps) {
@@ -125,7 +130,6 @@ class ChatContent extends Block<IChatContentProps> {
       onClick = (): void => {
         const modalState: IModalUser = {
           ...modalDescription,
-          // TODO добавление/удаление пользователя в чат по id
           onClick: (value: string) => this.addChatUser(value),
         };
         openAddUserModal(modalState);
@@ -134,20 +138,10 @@ class ChatContent extends Block<IChatContentProps> {
 
     if (modalName === Modal.REMOVE_USER) {
       onClick = (): void => {
+        console.log('open remove user');
         const modalRemoveUser: IModalRemoveUser = {
           ...modalDescription,
           chatId: this.props.selectedChat?.id,
-          onClick: () => {
-            console.log('close remove user');
-            // const modalState: IModalConfirm = {
-            //   ...modalDescription,
-            //   onConfirm: async () => {
-            //     await deleteChat(); // тут должно быть удаление пользователя с чата
-            //     closeConfirmModal();
-            //   },
-            // };
-            // openConfirmModal(modalState);
-          },
         };
         openRemoveUserModal(modalRemoveUser);
       };
@@ -171,10 +165,13 @@ class ChatContent extends Block<IChatContentProps> {
         const modalState: IModalConfirm = {
           ...modalDescription,
           onConfirm: async () => {
-            console.log('выход из чата');
-            // TODO добавить выход из чата пользователя который не является админом
-            // await deleteChat();
-            // closeConfirmModal();
+            const chatId = getSelectedChatId();
+            const userId = getCurrentUserId();
+            if (chatId && userId) {
+              await leaveChat(chatId, userId);
+              removeChatFromList(chatId);
+            }
+            closeConfirmModal();
           },
         };
         openConfirmModal(modalState);
@@ -199,14 +196,14 @@ class ChatContent extends Block<IChatContentProps> {
   private onPropertiesButtonClick(): void {
     const dropdown = this.children.PropertiesDropdown;
     if (dropdown instanceof DropDownList) {
-      dropdown.showList();
+      dropdown.showList('chatContent');
     }
   }
 
   private onPinButtonClick(): void {
     const dropdown = this.children.PinDropdown;
     if (dropdown instanceof DropDownList) {
-      dropdown.showList();
+      dropdown.showList('chatContent');
     }
   }
 
@@ -236,7 +233,8 @@ class ChatContent extends Block<IChatContentProps> {
   }
 
   private onMessage(message: IMessageType | IMessageType[]): void {
-    showMessage(message);
+    const chatId = this.props.selectedChat?.id;
+    showMessage(message, chatId);
     console.log(message);
   }
 
@@ -253,7 +251,8 @@ class ChatContent extends Block<IChatContentProps> {
     }
 
     if (socket) {
-      socket.on(WSTransportEvent.MESSAGE, this.onMessage);
+      console.log('on message recieve register');
+      socket.on(WSTransportEvent.MESSAGE, this.onMessage.bind(this));
     }
     return true;
   }

@@ -14,7 +14,7 @@ const chatCardTemplate = `
       {{name}}
     </div>
     <div class="chat-card__message">
-      {{#if userMessage}}{{userMessage}}: {{/if}}{{message}}
+      {{#if userName}}{{userName}}: {{/if}}{{message}}
     </div>
   </div>
   <div class="chat-card__info">

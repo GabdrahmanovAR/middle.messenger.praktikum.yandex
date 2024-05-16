@@ -7,14 +7,15 @@ import { IChatInfo } from '../../api/model';
 import Routes from '../../api/routes';
 import {
   AddChat,
-  Button, ChatCard, ChatContent, ChatList, InputText, ModalChat,
+  Button, ChatCard, ChatContent, ChatList, InputText, AddUser,
   ModalConfirm,
+  RemoveUser,
 } from '../../components';
 import { Modal } from '../../components/dropdown-list/dropdown-list.const';
-import { RemoveUser } from '../../components/modals';
 import { createChat, getChats, setCardLastMessageUserName } from '../../services/chat.service';
 import { openAddChatModal } from '../../services/modal.service';
 import { connect } from '../../utils/connect';
+import isEqual from '../../utils/isEqual';
 import { getDate } from '../../utils/time';
 import ChatTemplate from './chat.template';
 
@@ -50,11 +51,12 @@ class ChatPage extends Block<IChatPageProps> {
     const ChatListComponent = new ChatList({
       chats: [],
       showList: false,
+      chatList: [],
     });
     const ChatContentComponent = new ChatContent({});
 
     // Модальные окна
-    const ChatModal = new ModalChat({});
+    const AddUserModal = new AddUser({});
     const RemoveUserModal = new RemoveUser({});
     const ConfirmModal = new ModalConfirm({});
     const AddChatModal = new AddChat({});
@@ -66,7 +68,7 @@ class ChatPage extends Block<IChatPageProps> {
       SearchField,
       ChatListComponent,
       ChatContentComponent,
-      ChatModal,
+      AddUserModal,
       RemoveUserModal,
       ConfirmModal,
       AddChatModal,
@@ -101,7 +103,7 @@ class ChatPage extends Block<IChatPageProps> {
       count: chat.unread_count,
       date: getDate(chat.last_message?.time ?? EMPTY_STRING),
       message: chat.last_message?.content ?? 'Нет сообщений',
-      userMessage: setCardLastMessageUserName(chat),
+      userName: setCardLastMessageUserName(chat),
       createdBy: chat.created_by,
     }));
   }
@@ -112,7 +114,7 @@ class ChatPage extends Block<IChatPageProps> {
 
   protected componentDidUpdate(_oldProps: IChatPageProps, _newProps: IChatPageProps): boolean {
     const { chats } = _newProps;
-    if (chats && chats.length > 0) {
+    if (!isEqual(_oldProps.chats, _newProps.chats)) {
       const chatList = this.createChatCardsList(chats) || [];
       const showList = chatList.length > 0;
       this.children.ChatListComponent.setProps({

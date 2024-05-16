@@ -19,7 +19,7 @@ export default class DropdownList extends Block<IDropdownListProps> {
     });
   }
 
-  public showList(container?: string): void {
+  public showList(container: string): void {
     this.onElementClickBind = this.onElementClick.bind(this);
     this.calculateDropDownPosition(container);
 
@@ -34,6 +34,8 @@ export default class DropdownList extends Block<IDropdownListProps> {
   }
 
   private onElementClick(event: MouseEvent): void {
+    // TODO возможно нужно добавить props который будет содержать элемент/ы? для исключения срабатывания
+    // закрытия dropdown, например, когда кликаешь на инпут, чтобы ввести новое значение сейчас dropdown закрывается
     if (!this.element?.contains(event.target as Node)) {
       this.hideList();
     }
@@ -55,10 +57,12 @@ export default class DropdownList extends Block<IDropdownListProps> {
     });
   }
 
-  private calculateDropDownPosition(containerId?: string): void {
+  private calculateDropDownPosition(containerId: string): void {
+    console.log(this.props.appednTo);
     const component = this.props.appednTo;
     const dropdown = this.element;
-    const container = containerId ? document.getElementById(containerId) : document.getElementById('chatContent');
+    // const container = containerId ? document.getElementById(containerId) : document.getElementById('chatContent');
+    const container = document.getElementById(containerId);
     const indent = 24;
 
     if (component && dropdown && container) {

@@ -1,7 +1,7 @@
 import Block from '../../../@core/Block';
 import { Button } from '../../button';
 import { InputDropdown } from '../../input-dropdown';
-import ModalChatTemplate from './modal-chat.template';
+import AddUserTemplate from './add-user.template';
 import { IDropDownList, IModalUser } from '../../../@models/components';
 import { connect } from '../../../utils/connect';
 import { closeModal } from '../../../services/modal.service';
@@ -13,7 +13,7 @@ import { EMPTY_STRING } from '../../../../assets/constants/common';
 import * as validate from '../../../utils/validate';
 import { setGlobalError } from '../../../services/global-error.service';
 
-class ModalChat extends Block<IModalUser> {
+class AddUser extends Block<IModalUser> {
   private userId: number | null = null;
 
   constructor(props: IModalUser) {
@@ -109,10 +109,10 @@ class ModalChat extends Block<IModalUser> {
   }
 
   protected render(): string {
-    return ModalChatTemplate;
+    return AddUserTemplate;
   }
 }
 
 const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({ findedUsers: state.findedUsers, ...state.modalAddUser });
 
-export default connect(mapStateToProps)(ModalChat);
+export default connect(mapStateToProps)(AddUser);

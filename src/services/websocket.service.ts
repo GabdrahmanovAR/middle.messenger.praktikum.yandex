@@ -1,11 +1,11 @@
 import { EMPTY_STRING } from '../../assets/constants/common';
 import WSTransport from '../@core/WsTransport';
 import { IMessageType } from '../@models/websocket';
-import { IChatUser } from '../api/model';
 import { WEBSOCKET_HOST } from '../constants';
-import { getChatToken } from './chat.service';
+import { getChatToken, updateChatCardLastMessage } from './chat.service';
 import { setGlobalError } from './global-error.service';
 
+// TODO перенести в chatService
 export const createWebSocket = async (): Promise<WSTransport | null> => {
   const { store } = window;
   const state = store.getState();
@@ -52,36 +52,26 @@ export const sendMessage = (data: string): void => {
   }
 };
 
-export const showMessage = (messageContent: IMessageType | IMessageType[]): void => {
+export const showMessage = (messageContent: IMessageType | IMessageType[], chatId?: number): void => {
+  console.log('up');
   const { store } = window;
   const state = store.getState();
   const { messages } = state;
   const newMessages = [];
 
+  let userId = null;
   let chatLastMessage = EMPTY_STRING;
-  let chatLastMessageUser = EMPTY_STRING;
 
   if (Array.isArray(messageContent)) {
     newMessages.push(...messageContent);
   } else {
     newMessages.push(messageContent);
     chatLastMessage = messageContent.content;
-
-    const { selectedChatUsers, user } = state;
-    const chatUser = selectedChatUsers.find((currentChatUser: IChatUser) => currentChatUser.id === messageContent.user_id);
-    if (chatUser) {
-      chatLastMessageUser = user.id === chatUser.id ? 'Вы' : chatUser.first_name;
-    }
+    userId = messageContent.user_id;
   }
 
-  const needUpdateCardMessage = chatLastMessage !== EMPTY_STRING && chatLastMessageUser !== EMPTY_STRING;
-
-  if (needUpdateCardMessage) {
-    store.set({
-      messages: [...newMessages, ...messages],
-      selectedChat: { ...state.selectedChat, userMessage: chatLastMessageUser, message: chatLastMessage },
-    });
-  } else {
-    store.set({ messages: [...newMessages, ...messages] });
+  if (chatLastMessage !== EMPTY_STRING && chatId && userId) {
+    updateChatCardLastMessage(chatId, userId, chatLastMessage);
   }
+  store.set({ messages: [...newMessages, ...messages] });
 };

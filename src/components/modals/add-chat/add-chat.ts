@@ -72,6 +72,7 @@ class AddChat extends Block<IModalChat> {
   }
 
   protected render(): string {
+    console.log('render add chat');
     return AddChatTemplate;
   }
 }

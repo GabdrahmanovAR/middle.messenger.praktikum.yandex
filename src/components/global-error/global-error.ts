@@ -34,6 +34,12 @@ class GlobalError extends Block<IGlobalErrorProps> {
     clearGlobalError();
   }
 
+  protected componentDidUpdate(_oldProps: IGlobalErrorProps, _newProps: IGlobalErrorProps): boolean {
+    console.log('old', _oldProps);
+    console.log('new', _newProps);
+    return true;
+  }
+
   protected render(): string {
     return GlobalErrorTemplate;
   }

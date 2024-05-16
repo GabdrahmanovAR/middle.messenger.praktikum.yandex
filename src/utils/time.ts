@@ -18,10 +18,10 @@ export const getLocaleTime = (isoDate: string): string => {
   return EMPTY_STRING;
 };
 
-function isSameDay(nowDate: Date, date: Date): boolean {
-  return nowDate.getFullYear() === date.getFullYear()
-    && nowDate.getMonth() === date.getMonth()
-    && nowDate.getDate() === date.getDate();
+export function isSameDay(firstDate: Date, secondDate: Date): boolean {
+  return firstDate.getFullYear() === secondDate.getFullYear()
+    && firstDate.getMonth() === secondDate.getMonth()
+    && firstDate.getDate() === secondDate.getDate();
 }
 
 /**

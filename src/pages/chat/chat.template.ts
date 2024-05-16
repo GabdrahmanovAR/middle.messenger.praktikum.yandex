@@ -16,7 +16,7 @@ const chatTemplate = `
   <div class="chat-section">
     {{{ ChatContentComponent }}}
   </div>
-  {{{ ChatModal }}}
+  {{{ AddUserModal }}}
   {{{ RemoveUserModal }}}
   {{{ ConfirmModal }}}
   {{{ AddChatModal }}}

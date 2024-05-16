@@ -4,9 +4,20 @@ import ChatApi from '../api/chat.api';
 import {
   IAddChatUser, IChatInfo, IChatToken, IChatUser,
 } from '../api/model';
+import { empty } from '../utils/empty';
 import { setGlobalError } from './global-error.service';
 
 const chatApi = new ChatApi();
+
+export const getSelectedChatId = (): number | null => {
+  const state = window.store.getState();
+  const { selectedChat } = state;
+
+  if (!empty(selectedChat)) {
+    return selectedChat.id;
+  }
+  return null;
+};
 
 export const getChats = async (): Promise<void> => {
   try {
@@ -44,12 +55,36 @@ export const deleteChat = async (): Promise<void> => {
     await getChats();
 
     if (selectedChat.id === response.result.id) {
-      store.set({ selectedChat: {} as ISelectedChat });
+      store.set({ selectedChat: {} as ISelectedChat, selectedChatUsers: [] });
     }
   } catch (error) {
     setGlobalError(error, 'Ошибка удаления чата');
   }
 };
+
+export const removeChatFromList = (chatId: number): void => {
+  const { store } = window;
+  const state = store.getState();
+  const { selectedChat, chats } = state;
+  const updatedChats = [...chats];
+
+  if (!empty(selectedChat) && selectedChat.id === chatId) {
+    store.set({ selectedChat: {} as ISelectedChat, selectedChatUsers: [] });
+  }
+
+  if (empty(updatedChats)) {
+    return;
+  }
+  const chatIndex = updatedChats.findIndex((chat: IChatInfo) => chat.id === chatId);
+
+  if (chatIndex !== -1) {
+    updatedChats.splice(chatIndex, 1);
+
+    store.set({ chats: updatedChats });
+  }
+};
+
+export const getChatUsers = async (chatId: number): Promise<IChatUser[]> => chatApi.getChatUsers(chatId);
 
 export const addChatUser = async (data: IAddChatUser): Promise<void> => {
   const { store } = window;
@@ -62,10 +97,16 @@ export const addChatUser = async (data: IAddChatUser): Promise<void> => {
     setGlobalError({}, 'Пользователь уже добавлен в чат');
     return;
   }
-  await chatApi.addChatUser(data);
+
+  try {
+    await chatApi.addChatUser(data);
+    const users = await getChatUsers(data.chatId);
+    store.set({ selectedChatUsers: users });
+  } catch (error) {
+    setGlobalError(error, 'Во время добавления пользователя в чат,  произошла неизвестная ошибка');
+  }
 };
 
-// TODO добавить обновление списка пользователей чата
 export const removeChatUser = async (chatId: number | undefined, userId: number | undefined): Promise<void> => {
   if (!chatId || !userId) {
     const idError = 'Отсутствует идентификатор чата/пользователя. Удаление пользователя остановлено.';
@@ -79,12 +120,29 @@ export const removeChatUser = async (chatId: number | undefined, userId: number 
   };
   try {
     await chatApi.removeChatUser(data);
+
+    const selectedChatUsers = await getChatUsers(chatId);
+    const { store } = window;
+
+    if (selectedChatUsers) {
+      store.set({ selectedChatUsers });
+    }
   } catch (error) {
     setGlobalError(error, 'Ошибка удаления пользователя из чата');
   }
 };
 
-export const getChatUsers = async (chatId: number): Promise<IChatUser[]> => chatApi.getChatUsers(chatId);
+export const leaveChat = async (chatId: number, userId: number): Promise<void> => {
+  try {
+    const data: IAddChatUser = {
+      chatId,
+      users: [userId],
+    };
+    await chatApi.removeChatUser(data);
+  } catch (error) {
+    setGlobalError(error, 'При выходе из чата произошла неизвестная ошибка');
+  }
+};
 
 export const getChatToken = async (chatId: number): Promise<IChatToken> => chatApi.getChatToken(chatId);
 
@@ -97,11 +155,11 @@ export const selectChat = async (chat: ISelectedChat): Promise<void> => {
     return;
   }
 
-  store.set({ isLoading: true });
+  store.set({ isLoading: true, selectedChat: chat });
 
   try {
     const users = await getChatUsers(chat.id);
-    store.set({ selectedChat: chat, selectedChatUsers: users });
+    store.set({ selectedChatUsers: users });
   } catch (error) {
     setGlobalError(error);
   } finally {
@@ -121,4 +179,25 @@ export const setCardLastMessageUserName = (chat: IChatInfo): string => {
   }
 
   return chatLastMessageUserName === user.first_name ? 'Вы' : chatLastMessageUserName;
+};
+
+export const updateChatCardLastMessage = (chatId: number, userId: number, content: string): void => {
+  const { store } = window;
+  const { chats, selectedChatUsers } = store.getState();
+  const copyChats = [...JSON.parse(JSON.stringify(chats))];
+  const chatIndex = copyChats.findIndex((chat: IChatInfo) => chat.id === chatId);
+  const contentUser = selectedChatUsers.find((user: IChatUser) => user.id === userId);
+
+  if (chatIndex !== -1 && contentUser) {
+    const updatedObject: IChatInfo = {
+      ...chats[chatIndex],
+      last_message: {
+        ...chats[chatIndex].last_message,
+        user: { ...contentUser },
+        content,
+      },
+    };
+    copyChats.splice(chatIndex, 1, updatedObject);
+    store.set({ chats: [...copyChats] });
+  }
 };

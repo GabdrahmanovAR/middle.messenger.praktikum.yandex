@@ -1,10 +1,9 @@
 import Block from '../../../@core/Block';
-import RemoveUserTemplate from './remove-user.template';
 import { IModalConfirm, IModalRemoveUser } from '../../../@models/components';
 import { connect } from '../../../utils/connect';
 import { closeConfirmModal, closeRemoveUserModal, openConfirmModal } from '../../../services/modal.service';
 import { DefaultAppState } from '../../../@models/store';
-import { IAddChatUser, IChatUser } from '../../../api/model';
+import { IChatUser } from '../../../api/model';
 import { removeChatUser } from '../../../services/chat.service';
 
 class RemoveUser extends Block<IModalRemoveUser> {
@@ -20,6 +19,10 @@ class RemoveUser extends Block<IModalRemoveUser> {
         },
       },
     });
+  }
+
+  protected init(): void {
+    console.log('REMOVE MODAL INIT');
   }
 
   private onUserClick(event: MouseEvent): void {
@@ -45,6 +48,8 @@ class RemoveUser extends Block<IModalRemoveUser> {
   }
 
   protected componentAfterUpdate(): void {
+    console.log('REMOVE MODAL UPDATED', this.props);
+    console.log(this.getContent());
     const userListContainer = document.getElementById('remove-user');
     if (!userListContainer) {
       return;
@@ -55,20 +60,44 @@ class RemoveUser extends Block<IModalRemoveUser> {
   }
 
   protected render(): string {
-    const userList = (this.props.chatUsers && this.props.chatUsers.length > 0)
-      ? this.props.chatUsers?.map((user: IChatUser) => `
-        <div name="${user.id}" class="remove-user-window__user-item">
-          <span class="remove-user-window__user-name">Имя: ${user.first_name}</span>
-          <span>Роль: ${user.role}</span>
+    // const userList = (this.props.selectedChatUsers && this.props.selectedChatUsers.length > 0)
+    //   ? this.props.selectedChatUsers?.map((user: IChatUser) => `
+    //     <div name="${user.id}" class="remove-user-window__user-item">
+    //       <span class="remove-user-window__user-name">Имя: ${user.first_name}</span>
+    //       <span>Роль: ${user.role}</span>
+    //     </div>
+    //     `).join('')
+    //   : 'Пользователи не добавлены';
+    // return RemoveUserTemplate.replace('#userList', userList);
+    return `
+    <div class="container center modal-container{{#if visible}} modal-container_visible{{/if}}">
+      <div class="remove-user-window">
+        <div class="remove-user-window__header">
+          <span class="remove-user-window__title">
+            Удаление пользователя
+          </span>
         </div>
-        `).join('')
-      : 'Пользователи не добавлены';
-    return RemoveUserTemplate.replace('#userList', userList);
+        <div action="" class="remove-user-window__form">
+          <div id="remove-user" class="remove-user-window__content">
+          ${(this.props.selectedChatUsers && this.props.selectedChatUsers.length > 0)
+            ? this.props.selectedChatUsers?.map((user: IChatUser) => `
+              <div name="${user.id}" class="remove-user-window__user-item">
+                <span class="remove-user-window__user-name">Имя: ${user.first_name}</span>
+                <span>Роль: ${user.role}</span>
+              </div>
+              `).join('')
+            : 'Пользователи не добавлены'}
+          </div>
+        </div>
+      </div>
+    </div>
+    `;
   }
 }
 
 const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({
   ...state.modalRemoveUser,
+  selectedChatUsers: state.selectedChatUsers,
   selectedChat: state.selectedChat,
 });
 
