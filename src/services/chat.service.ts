@@ -31,7 +31,7 @@ export const getChats = async (): Promise<void> => {
 
 export const createChat = async (title: string): Promise<void> => {
   try {
-    const response = await chatApi.createChat({ title });
+    await chatApi.createChat({ title });
     await getChats();
   } catch (error) {
     setGlobalError(error, 'Ошибка создания чата');
@@ -234,4 +234,23 @@ export const showMessage = (messageContent: IMessageType | IMessageType[], chatI
     updateChatCardLastMessage(chatId, userId, chatLastMessage);
   }
   store.set({ messages: [...newMessages, ...messages] });
+};
+
+export const checkActive = (chatId: number): boolean => {
+  if (Number.isNaN(chatId)) {
+    return false;
+  }
+
+  const { store } = window;
+  const { selectedChat } = store.getState();
+
+  if (empty(selectedChat)) {
+    return false;
+  }
+
+  if (selectedChat.id === chatId) {
+    return true;
+  }
+
+  return false;
 };

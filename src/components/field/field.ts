@@ -1,6 +1,7 @@
 import { EMPTY_STRING } from '../../../assets/constants/common';
 import Block from '../../@core/Block';
 import { IFieldProps } from '../../@models/components';
+import { escapeHtml } from '../../utils/escapeHtml';
 import { ErrorLine } from '../error-line';
 import { Input } from '../input';
 import FieldTemplate from './field.template';
@@ -44,7 +45,8 @@ export default class Field extends Block<IFieldProps> {
     }
     this._timer = setTimeout(() => {
       if (this.props.onInput) {
-        this.props.onInput(input.value);
+        const escapedValue = escapeHtml(input.value);
+        this.props.onInput(escapedValue);
       }
     }, 500);
   }

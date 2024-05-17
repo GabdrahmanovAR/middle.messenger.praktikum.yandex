@@ -1,8 +1,8 @@
 enum Routes {
   LOGIN = '/',
   SIGN_UP = '/sign-up',
-  PROFILE = '/profile',
-  CHATS = '/chats',
+  PROFILE = '/settings',
+  CHATS = '/messenger',
 }
 
 export default Routes;

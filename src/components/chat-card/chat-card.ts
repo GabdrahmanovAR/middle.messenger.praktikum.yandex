@@ -2,7 +2,7 @@ import { EMPTY_STRING } from '../../../assets/constants/common';
 import Block from '../../@core/Block';
 import { IChatCardProps, ISelectedChat } from '../../@models/components';
 import { DefaultAppState } from '../../@models/store';
-import { selectChat } from '../../services/chat.service';
+import { checkActive, selectChat } from '../../services/chat.service';
 import { connect } from '../../utils/connect';
 import isEqual from '../../utils/isEqual';
 import ChatCardTemplate from './chat-card.template';
@@ -25,6 +25,13 @@ class ChatCatd extends Block<IChatCardProps> {
     });
   }
 
+  protected init(): void {
+    const isActive = checkActive(this.props.id);
+    if (isActive) {
+      this.setProps({ active: true });
+    }
+  }
+
   protected componentDidUpdate(_oldProps: IChatCardProps, _newProps: IChatCardProps): boolean {
     const { selectedChat } = _newProps;
     const hasData = selectedChat && Object.keys(selectedChat).length > 0;
@@ -33,7 +40,7 @@ class ChatCatd extends Block<IChatCardProps> {
     if (hasData && notEqual && this.props.id === selectedChat.id) {
       this.setProps({ active: true, ...selectedChat });
     }
-    if (this.props.id !== selectedChat?.id) {
+    if (hasData && this.props.id !== selectedChat?.id) {
       this.setProps({ active: false });
     }
     return true;
