@@ -57,7 +57,6 @@ class LoginPage extends Block<ILoginPageProps> {
     const passwordValue = (passwordComponent instanceof Field) && passwordComponent.getValue();
 
     if (loginValue && passwordValue) {
-      console.log({ login: loginValue, password: passwordValue });
       login({ login: loginValue, password: passwordValue });
     }
   }

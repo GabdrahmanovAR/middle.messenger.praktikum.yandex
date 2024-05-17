@@ -61,13 +61,17 @@ class AddChat extends Block<IModalChat> {
   }
 
   protected componentDidUpdate(_oldProps: IModalChat, _newProps: IModalChat): boolean {
-    if (!isEqual(_oldProps, _newProps)) {
-      this.children.FieldInput.setProps({
-        label: _newProps.fieldLabel,
-        name: _newProps.fieldName,
-      });
-      this.children.ButtonComponent.setProps({ label: _newProps.buttonLabel });
+    const prevModalState = _oldProps.modalAddChat ?? {};
+    const nextModalState = _newProps.modalAddChat ?? {};
+
+    if (!isEqual(prevModalState, nextModalState)) {
+      this.setProps({ ...nextModalState as IModalChat });
     }
+    this.children.FieldInput.setProps({
+      label: _newProps.fieldLabel,
+      name: _newProps.fieldName,
+    });
+    this.children.ButtonComponent.setProps({ label: _newProps.buttonLabel });
     return true;
   }
 
@@ -76,6 +80,6 @@ class AddChat extends Block<IModalChat> {
   }
 }
 
-const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({ ...state.modalAddChat });
+const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({ modalAddChat: state.modalAddChat });
 
 export default connect(mapStateToProps)(AddChat);

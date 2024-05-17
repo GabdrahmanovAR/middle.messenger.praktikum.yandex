@@ -1,6 +1,6 @@
 import Block from '../../@core/Block';
-import { DefaultAppState } from '../../@models/common';
 import { IGlobalErrorProps } from '../../@models/components';
+import { DefaultAppState } from '../../@models/store';
 import { clearGlobalError } from '../../services/global-error.service';
 import { connect } from '../../utils/connect';
 import { Button } from '../button';
@@ -32,12 +32,6 @@ class GlobalError extends Block<IGlobalErrorProps> {
 
   private onClose(): void {
     clearGlobalError();
-  }
-
-  protected componentDidUpdate(_oldProps: IGlobalErrorProps, _newProps: IGlobalErrorProps): boolean {
-    console.log('old', _oldProps);
-    console.log('new', _newProps);
-    return true;
   }
 
   protected render(): string {

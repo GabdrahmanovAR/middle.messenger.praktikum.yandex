@@ -11,7 +11,6 @@ export default class DropdownList extends Block<IDropdownListProps> {
       onMenuItemSelect: (attr: string) => {
         props.list.forEach((listItem: IDropDownList) => {
           if (listItem.name === attr && listItem.onClick) {
-            console.log('CLICK !!!!!!!');
             listItem.onClick();
           }
         });
@@ -34,10 +33,15 @@ export default class DropdownList extends Block<IDropdownListProps> {
   }
 
   private onElementClick(event: MouseEvent): void {
-    if (!this.element?.contains(event.target as Node) && event.target.tagName !== 'INPUT') {
+    const target = event.target instanceof HTMLElement && event.target;
+    if (!target) {
+      return;
+    }
+
+    if (!this.element?.contains(target) && target.tagName !== 'INPUT') {
       this.hideList();
     }
-    if (!(event.target instanceof HTMLElement) || event.target.tagName === 'INPUT') {
+    if (target.tagName === 'INPUT') {
       return;
     }
     const attribute = event.target.getAttribute('name');

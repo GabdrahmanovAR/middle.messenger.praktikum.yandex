@@ -81,18 +81,3 @@ export default class HTTPTransport {
     });
   }
 }
-
-function fetchWithRetry(url: string, options: Record<string, unknown>): Promise<void | Response> {
-  const { retries = 1 } = options;
-
-  function onError(err: unknown): Promise<void | Response> {
-    const attemptsLeft = typeof retries === 'number' ? retries - 1 : 0;
-    if (!attemptsLeft) {
-      throw err;
-    }
-
-    return fetchWithRetry(url, { ...options, retries: attemptsLeft });
-  }
-
-  return fetch(url, options).catch(onError);
-}

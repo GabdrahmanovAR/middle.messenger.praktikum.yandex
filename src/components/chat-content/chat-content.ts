@@ -6,11 +6,11 @@ import ChatContentTemplate from './chat-content.template';
 import { DropDownList } from '../dropdown-list';
 import { Modal, pinDropdownList, chatPropertiesDropDown } from '../dropdown-list/dropdown-list.const';
 import {
-  IChatContentProps, IDropDownItems, IDropDownList, IModalConfirm, IModalRemoveUser, IModalUser,
+  IChatContentProps, IDropDownItems, IDropDownList, IModalConfirm, IModalRemoveUser, IModalAddUser,
 } from '../../@models/components';
 import { connect } from '../../utils/connect';
 import { DefaultAppState } from '../../@models/store';
-import { createWebSocket, showMessage } from '../../services/websocket.service';
+import { createWebSocket } from '../../services/websocket.service';
 import { WSTransportEvent } from '../../@core/WsTransport';
 import isEqual from '../../utils/isEqual';
 import { IMessageType } from '../../@models/websocket';
@@ -19,6 +19,7 @@ import {
 } from '../../services/modal.service';
 import {
   addChatUser, deleteChat, getSelectedChatId, leaveChat, removeChatFromList,
+  showMessage,
 } from '../../services/chat.service';
 import { IAddChatUser } from '../../api/model';
 import { setGlobalError } from '../../services/global-error.service';
@@ -127,7 +128,7 @@ class ChatContent extends Block<IChatContentProps> {
 
     if (modalName === Modal.ADD_USER) {
       onClick = (): void => {
-        const modalState: IModalUser = {
+        const modalState: IModalAddUser = {
           ...modalDescription,
           onClick: (value: number) => this.addChatUser(value),
         };
@@ -137,7 +138,6 @@ class ChatContent extends Block<IChatContentProps> {
 
     if (modalName === Modal.REMOVE_USER) {
       onClick = (): void => {
-        console.log('open remove user');
         const modalRemoveUser: IModalRemoveUser = {
           ...modalDescription,
           chatId: this.props.selectedChat?.id,
@@ -207,7 +207,6 @@ class ChatContent extends Block<IChatContentProps> {
   }
 
   private onSendButtonClick(): void {
-    console.log('content');
     const inputText = (this.children.InputTextComponent as InputText);
     const message = inputText.getValue();
 
@@ -234,7 +233,6 @@ class ChatContent extends Block<IChatContentProps> {
   private onMessage(message: IMessageType | IMessageType[]): void {
     const chatId = this.props.selectedChat?.id;
     showMessage(message, chatId);
-    console.log(message);
   }
 
   protected componentDidUpdate(_oldProps: IChatContentProps, _newProps: IChatContentProps): boolean {
@@ -244,7 +242,6 @@ class ChatContent extends Block<IChatContentProps> {
     const { socket } = _newProps;
 
     if (!isEqual(selectedChatOldValue, selectedChatnewValue) && hasData) {
-      console.log('CREATE WEB_SOCKET');
       createWebSocket();
       this.children.PropertiesDropdown.setProps({ list: this.mapPropertiesToList(chatPropertiesDropDown) });
     }

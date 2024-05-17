@@ -9,6 +9,4 @@ export const getFile = async (path: string): Promise<void> => {
   if (isApiError(response)) {
     throw new Error(response.reason);
   }
-
-  console.log(response);
 };

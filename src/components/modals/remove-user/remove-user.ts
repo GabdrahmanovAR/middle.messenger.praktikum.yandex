@@ -28,7 +28,6 @@ class RemoveUser extends Block<IModalRemoveUser> {
     }
     const userId = Number(target.getAttribute('name'));
     if (userId) {
-      console.log(userId);
       const modalState: IModalConfirm = {
         title: 'Подтверждение удаления пользователя',
         text: 'Вы уверены что хотите удалить пользователя из чата?',

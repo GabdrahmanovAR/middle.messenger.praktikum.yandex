@@ -22,14 +22,12 @@ function isEqual(lhs: PlainObject, rhs: PlainObject): boolean {
     return false;
   }
 
-  // TODO исправить ошибку типизации
   for (const [key, value] of Object.entries(lhs)) {
     const rightValue = rhs[key];
     if (isArrayOrObject(value) && isArrayOrObject(rightValue)) {
-      if (isEqual(value, rightValue)) {
-        continue;
+      if (!isEqual(value, rightValue)) {
+        return false;
       }
-      return false;
     }
 
     if (value !== rightValue) {

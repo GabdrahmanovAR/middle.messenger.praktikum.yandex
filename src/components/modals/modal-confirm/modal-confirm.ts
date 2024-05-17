@@ -5,6 +5,7 @@ import { IModalConfirm } from '../../../@models/components';
 import { connect } from '../../../utils/connect';
 import { closeConfirmModal } from '../../../services/modal.service';
 import { DefaultAppState } from '../../../@models/store';
+import isEqual from '../../../utils/isEqual';
 
 class ModalConfirm extends Block<IModalConfirm> {
   constructor(props: IModalConfirm) {
@@ -56,11 +57,21 @@ class ModalConfirm extends Block<IModalConfirm> {
     closeConfirmModal();
   }
 
+  protected componentDidUpdate(_oldProps: IModalConfirm, _newProps: IModalConfirm): boolean {
+    const prevModalState = _oldProps.modalConfirm ?? {};
+    const nextModalState = _newProps.modalConfirm ?? {};
+
+    if (!isEqual(prevModalState, nextModalState)) {
+      this.setProps({ ...nextModalState as IModalConfirm });
+    }
+    return true;
+  }
+
   protected render(): string {
     return ModalConfirmTemplate;
   }
 }
 
-const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({ ...state.modalConfirm });
+const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({ modalConfirm: state.modalConfirm });
 
 export default connect(mapStateToProps)(ModalConfirm);

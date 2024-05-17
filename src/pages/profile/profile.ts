@@ -108,7 +108,6 @@ class ProfilePage extends Block<IProfilePageProps> {
       ButtonExit,
       ProfileModal,
     };
-    console.log(this.props);
   }
 
   private setValidateForRepeatPassword(validatefunc: (value: string) => string): void {

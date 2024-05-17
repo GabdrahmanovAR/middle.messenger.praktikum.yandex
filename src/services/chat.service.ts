@@ -1,8 +1,9 @@
 import { EMPTY_STRING } from '../../assets/constants/common';
 import { ISelectedChat } from '../@models/components';
+import { IMessageType } from '../@models/websocket';
 import ChatApi from '../api/chat.api';
 import {
-  IAddChatUser, IChatInfo, IChatToken, IChatUser,
+  IAddChatUser, IChatInfo, IChatLastMessageUser, IChatToken, IChatUser,
 } from '../api/model';
 import { empty } from '../utils/empty';
 import { setGlobalError } from './global-error.service';
@@ -31,7 +32,6 @@ export const getChats = async (): Promise<void> => {
 export const createChat = async (title: string): Promise<void> => {
   try {
     const response = await chatApi.createChat({ title });
-    console.log(response);
     await getChats();
   } catch (error) {
     setGlobalError(error, 'Ошибка создания чата');
@@ -50,8 +50,6 @@ export const deleteChat = async (): Promise<void> => {
 
   try {
     const response = await chatApi.deleteChat({ chatId: selectedChat.id });
-    console.log(response);
-
     await getChats();
 
     if (selectedChat.id === response.result.id) {
@@ -188,16 +186,52 @@ export const updateChatCardLastMessage = (chatId: number, userId: number, conten
   const chatIndex = copyChats.findIndex((chat: IChatInfo) => chat.id === chatId);
   const contentUser = selectedChatUsers.find((user: IChatUser) => user.id === userId);
 
-  if (chatIndex !== -1 && contentUser) {
+  if (chatIndex === -1 || !contentUser) {
+    return;
+  }
+
+  const lastMessage = chats[chatIndex].last_message;
+  if (lastMessage) {
+    const user: IChatLastMessageUser = {
+      phone: EMPTY_STRING,
+      email: EMPTY_STRING,
+      login: contentUser.login,
+      first_name: contentUser.first_name,
+      second_name: contentUser.second_name,
+      avatar: contentUser.avatar,
+    };
     const updatedObject: IChatInfo = {
       ...chats[chatIndex],
       last_message: {
-        ...chats[chatIndex].last_message,
-        user: { ...contentUser },
+        ...lastMessage,
+        user,
         content,
       },
     };
     copyChats.splice(chatIndex, 1, updatedObject);
     store.set({ chats: [...copyChats] });
   }
+};
+
+export const showMessage = (messageContent: IMessageType | IMessageType[], chatId?: number): void => {
+  const { store } = window;
+  const state = store.getState();
+  const { messages } = state;
+  const newMessages = [];
+
+  let userId = null;
+  let chatLastMessage = EMPTY_STRING;
+
+  if (Array.isArray(messageContent)) {
+    newMessages.push(...messageContent);
+  } else {
+    newMessages.push(messageContent);
+    chatLastMessage = messageContent.content;
+    userId = messageContent.user_id;
+  }
+
+  if (chatLastMessage !== EMPTY_STRING && chatId && userId) {
+    updateChatCardLastMessage(chatId, userId, chatLastMessage);
+  }
+  store.set({ messages: [...newMessages, ...messages] });
 };

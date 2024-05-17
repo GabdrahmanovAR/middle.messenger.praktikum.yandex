@@ -1,10 +1,6 @@
 import { IProps } from '../@models/common';
-import isEqual from '../utils/isEqual';
+import { IRouteProps } from '../@models/route';
 import Block from './Block';
-
-interface IRouteProps {
-  rootQuery: string;
-}
 
 export default class Route<T extends IProps = IProps> {
   private _pathname: string;
@@ -36,7 +32,7 @@ export default class Route<T extends IProps = IProps> {
   }
 
   match(pathname: string): boolean {
-    return isEqual(pathname, this._pathname);
+    return pathname === this._pathname;
   }
 
   render(): void {

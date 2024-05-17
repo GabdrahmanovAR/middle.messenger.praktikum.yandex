@@ -12,14 +12,17 @@ import {
   RemoveUser,
 } from '../../components';
 import { Modal } from '../../components/dropdown-list/dropdown-list.const';
-import { createChat, getChats, setCardLastMessageUserName } from '../../services/chat.service';
+import {
+  createChat, getChats, setCardLastMessageUserName,
+} from '../../services/chat.service';
 import { openAddChatModal } from '../../services/modal.service';
 import { connect } from '../../utils/connect';
-import isEqual from '../../utils/isEqual';
 import { getDate } from '../../utils/time';
 import ChatTemplate from './chat.template';
 
 class ChatPage extends Block<IChatPageProps> {
+  private initialChats: IChatInfo[] = [];
+
   protected init(): void {
     getChats();
     const onProfileButtonClickBind = this.onProfileButtonClick.bind(this);
@@ -55,7 +58,6 @@ class ChatPage extends Block<IChatPageProps> {
     });
     const ChatContentComponent = new ChatContent({});
 
-    // Модальные окна
     const AddUserModal = new AddUser({});
     const RemoveUserModal = new RemoveUser({});
     const ConfirmModal = new ModalConfirm({});
@@ -108,20 +110,31 @@ class ChatPage extends Block<IChatPageProps> {
     }));
   }
 
+  // Поиск не доработан. При добавлении сообщения в чате, список восстанавливается до изначального.
   private onSearch(value: string): void {
-    // TODO запуск фильтрации массива в списке chat-list
+    if (value) {
+      const findedChats = this.initialChats.filter((chat: IChatInfo) => chat.title.startsWith(value));
+      this.updateChatList(findedChats);
+    } else {
+      this.updateChatList(this.initialChats);
+    }
+  }
+
+  private updateChatList(chats: IChatInfo[]): void {
+    const chatList = this.createChatCardsList(chats) || [];
+    const showList = chatList.length > 0;
+
+    this.children.ChatListComponent.setProps({
+      chatList,
+      showList,
+    });
   }
 
   protected componentDidUpdate(_oldProps: IChatPageProps, _newProps: IChatPageProps): boolean {
     const { chats } = _newProps;
-    if (!isEqual(_oldProps.chats, _newProps.chats)) {
-      const chatList = this.createChatCardsList(chats) || [];
-      const showList = chatList.length > 0;
-      this.children.ChatListComponent.setProps({
-        chatList,
-        showList,
-      });
-    }
+
+    this.updateChatList(chats);
+    this.initialChats = [...chats];
     return true;
   }
 

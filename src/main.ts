@@ -9,7 +9,7 @@ import { GlobalError } from './components';
 import { canActivate } from './services/auth.service';
 import { DefaultAppState } from './@models/store';
 import {
-  IModalUser, IModalConfirm, ISelectedChat, IModalChat,
+  IModalAddUser, IModalConfirm, ISelectedChat, IModalChat,
   IModalRemoveUser,
 } from './@models/components';
 import { handleUnhandledErrors } from './services/global-error.service';
@@ -28,7 +28,7 @@ export const defaultState: DefaultAppState = {
   globalError: EMPTY_STRING,
   avatar: EMPTY_STRING,
   authorized: null,
-  modalAddUser: {} as IModalUser,
+  modalAddUser: {} as IModalAddUser,
   modalConfirm: {} as IModalConfirm,
   modalAddChat: {} as IModalChat,
   modalRemoveUser: {} as IModalRemoveUser,

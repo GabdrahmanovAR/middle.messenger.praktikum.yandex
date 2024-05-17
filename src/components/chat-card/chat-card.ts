@@ -20,21 +20,6 @@ class ChatCatd extends Block<IChatCardProps> {
             createdBy: props.createdBy,
           };
           selectChat(selectedChatProps);
-          if (props.onClick) {
-            props.onClick(props.id);
-          }
-        },
-      },
-    });
-  }
-
-  public updateOnClick(): void {
-    this.setProps({
-      events: {
-        click: (): void => {
-          if (this.props.onClick) {
-            this.props.onClick(this.props.id);
-          }
         },
       },
     });
@@ -44,6 +29,7 @@ class ChatCatd extends Block<IChatCardProps> {
     const { selectedChat } = _newProps;
     const hasData = selectedChat && Object.keys(selectedChat).length > 0;
     const notEqual = !isEqual((_oldProps.selectedChat ?? {}), selectedChat ?? {});
+
     if (hasData && notEqual && this.props.id === selectedChat.id) {
       this.setProps({ active: true, ...selectedChat });
     }

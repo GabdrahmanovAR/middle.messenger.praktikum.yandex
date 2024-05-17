@@ -64,7 +64,7 @@ export interface IChatInfo {
   title: string;
   avatar: string | null;
   unread_count: number;
-  last_message: ILastMessage | null
+  last_message: ILastMessage | null;
   created_by: number;
 }
 

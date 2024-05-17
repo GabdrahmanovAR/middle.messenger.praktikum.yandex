@@ -74,7 +74,7 @@ export interface IInputTextProps extends IProps {
 }
 
 export interface IChatListProps extends IProps {
-  chatList: Block[];
+  chatList: Block<IChatCardProps>[];
   showList: boolean;
   isLoading?: boolean;
   currentActive?: string;
@@ -116,7 +116,7 @@ export interface IDropdownListProps extends IProps {
   onMenuItemSelect?: (value: string) => void;
 }
 
-export interface IModalUser extends IProps {
+export interface IModalAddUser extends IProps {
   title?: string;
   fieldLabel?: string;
   fieldName?: string;
@@ -239,7 +239,7 @@ export interface IChatCardProps extends IProps {
   count?: number;
   createdBy: number;
   selectedChat?: ISelectedChat;
-  onClick?: (value: number | null) => void;
+  // onClick?: (value: number | null) => void;
 }
 
 export interface ISelectedChat {

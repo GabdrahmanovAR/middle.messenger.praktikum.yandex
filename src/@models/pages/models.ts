@@ -3,8 +3,7 @@ import { IChatInfo, IUserInfo } from '../../api/model';
 import { IProps } from '../common';
 import { IFieldProps } from '../components';
 
-export interface ILoginPageProps extends IProps {
-}
+export interface ILoginPageProps extends IProps {}
 
 export interface IField {
   label: string;
@@ -15,8 +14,6 @@ export interface IField {
 }
 export interface IRegistrationPageProps extends IProps {
   inputFields: Block<IFieldProps>[];
-  // fields: IField[],
-  // fieldKeys: string[];
 }
 
 export interface IChatPageProps extends IProps {
@@ -35,9 +32,7 @@ export interface IProfileField {
 export interface IProfilePageProps extends IProps {
   user: IUserInfo;
   dataFields: Block[];
-  // dataFieldKeys: string[];
   passwordFields: Block[];
-  // passwordFieldKeys: string[];
   edit?: boolean;
   editPassword?: boolean;
 }

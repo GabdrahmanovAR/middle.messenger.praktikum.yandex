@@ -1,7 +1,7 @@
 import Block from '../../../@core/Block';
 import { Button } from '../../button';
 import AddUserTemplate from './add-user.template';
-import { IDropDownList, IModalUser } from '../../../@models/components';
+import { IDropDownList, IModalAddUser } from '../../../@models/components';
 import { connect } from '../../../utils/connect';
 import { closeModal } from '../../../services/modal.service';
 import { DefaultAppState } from '../../../@models/store';
@@ -12,11 +12,12 @@ import * as validate from '../../../utils/validate';
 import { setGlobalError } from '../../../services/global-error.service';
 import { DropDownList } from '../../dropdown-list';
 import { Field } from '../../field';
+import isEqual from '../../../utils/isEqual';
 
-class AddUser extends Block<IModalUser> {
+class AddUser extends Block<IModalAddUser> {
   private userId: number | null = null;
 
-  constructor(props: IModalUser) {
+  constructor(props: IModalAddUser) {
     super({
       ...props,
       events: {
@@ -106,7 +107,14 @@ class AddUser extends Block<IModalUser> {
     return list;
   }
 
-  protected componentDidUpdate(_oldProps: IModalUser, _newProps: IModalUser): boolean {
+  protected componentDidUpdate(_oldProps: IModalAddUser, _newProps: IModalAddUser): boolean {
+    const prevModalState = _oldProps.modalAddUser ?? {};
+    const nextModalState = _newProps.modalAddUser ?? {};
+
+    if (!isEqual(prevModalState, nextModalState)) {
+      this.setProps({ ...nextModalState as IModalAddUser });
+    }
+
     this.children.FieldInput.setProps({
       label: _newProps.fieldLabel,
       name: _newProps.fieldName,
@@ -120,6 +128,6 @@ class AddUser extends Block<IModalUser> {
   }
 }
 
-const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({ ...state.modalAddUser });
+const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({ modalAddUser: state.modalAddUser });
 
 export default connect(mapStateToProps)(AddUser);

@@ -1,7 +1,7 @@
 import WSTransport from '../@core/WsTransport';
 import { IChatInfo, IChatUser, IUserInfo } from '../api/model';
 import {
-  IModalUser, IModalConfirm, ISelectedChat, IModalChat,
+  IModalAddUser, IModalConfirm, ISelectedChat, IModalChat,
   IModalRemoveUser,
 } from './components';
 import { IMessageType } from './websocket';
@@ -13,7 +13,7 @@ export interface DefaultAppState {
   globalError: string;
   avatar: string;
   authorized: boolean | null;
-  modalAddUser: IModalUser;
+  modalAddUser: IModalAddUser;
   modalRemoveUser: IModalRemoveUser;
   modalAddChat: IModalChat;
   modalConfirm: IModalConfirm;

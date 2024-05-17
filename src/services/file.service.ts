@@ -4,7 +4,6 @@ export const readFile = (file: File): void => {
     const avatar = readerEvent.target?.result;
 
     if (avatar && typeof avatar === 'string') {
-      console.log(avatar);
       window.store.set({ avatar });
     }
   };

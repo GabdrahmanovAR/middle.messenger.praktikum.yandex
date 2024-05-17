@@ -70,7 +70,6 @@ export default class WSTransport extends EventBus {
     });
 
     socket.addEventListener('close', () => {
-      console.log('socket closed');
       this.emit(WSTransportEvent.CLOSE);
     });
 

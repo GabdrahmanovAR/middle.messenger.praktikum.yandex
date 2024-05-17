@@ -1,3 +1,5 @@
+// если импортировать шаблон из этого файла, то по какой-то не выясненной причине
+// вставляется шаблон модального окна "добавить пользователя". до конца 3го спринта не хватает времени выяснить причину.
 const removeUserTemplate = `
 <div class="container center modal-container{{#if visible}} modal-container_visible{{/if}}">
   <div class="remove-user-window">
