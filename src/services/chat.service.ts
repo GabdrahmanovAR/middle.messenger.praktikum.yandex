@@ -235,3 +235,22 @@ export const showMessage = (messageContent: IMessageType | IMessageType[], chatI
   }
   store.set({ messages: [...newMessages, ...messages] });
 };
+
+export const checkActive = (chatId: number): boolean => {
+  if (Number.isNaN(chatId)) {
+    return false;
+  }
+
+  const { store } = window;
+  const { selectedChat } = store.getState();
+
+  if (empty(selectedChat)) {
+    return false;
+  }
+
+  if (selectedChat.id === chatId) {
+    return true;
+  }
+
+  return false;
+};

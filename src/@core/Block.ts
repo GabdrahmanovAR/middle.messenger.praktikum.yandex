@@ -2,6 +2,7 @@ import { v4 as uuid } from 'uuid';
 import Handlebars from 'handlebars';
 import EventBus from './EventBus';
 import { IProps, TEvents } from '../@models/common';
+import { sanitizeHtml } from '../utils/sanitizeHtml';
 
 interface IPropsNChildren {
   children: Record<string, Block<IProps>>,
@@ -148,7 +149,8 @@ class Block<Props extends IProps = IProps> {
     const fragment = document.createElement('template');
     const template = this.render();
 
-    fragment.innerHTML = Handlebars.compile(template)(propsAndStubs);
+    const html = sanitizeHtml(Handlebars.compile(template)(propsAndStubs));
+    fragment.innerHTML = html;
     const newElement = fragment.content.firstElementChild as HTMLElement;
 
     [...Object.values(this.children), ...childrenProps].forEach((child) => {
