@@ -49,6 +49,7 @@
     "no-console": "off",
     "prefer-promise-reject-errors": "off",
     "no-plusplus": "off",
-    "no-restricted-syntax": "off"
+    "no-restricted-syntax": "off",
+    "eol-last": "error"
   }
 }
