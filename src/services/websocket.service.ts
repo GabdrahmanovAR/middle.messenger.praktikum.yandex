@@ -53,7 +53,6 @@ export const sendMessage = (data: string): void => {
 };
 
 export const showMessage = (messageContent: IMessageType | IMessageType[], chatId?: number): void => {
-  console.log('up');
   const { store } = window;
   const state = store.getState();
   const { messages } = state;

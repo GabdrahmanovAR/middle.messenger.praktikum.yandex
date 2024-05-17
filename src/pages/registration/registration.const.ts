@@ -21,6 +21,6 @@ export const fields: IField[] = [
     label: 'Пароль', type: 'password', name: 'password', required: true, validate: validate.password,
   },
   {
-    label: 'Пароль (еще раз)', name: 'repeat_password', type: 'password', required: true,
+    label: 'Пароль (еще раз)', name: 'repeatPassword', type: 'password', required: true,
   },
 ];

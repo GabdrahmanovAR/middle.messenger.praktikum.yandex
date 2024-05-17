@@ -11,7 +11,6 @@ export { MessageList } from './message-list';
 export { MessageGroup } from './message-group';
 export { Message } from './message';
 export { InputFile } from './input-file';
-export { InputDropdown } from './input-dropdown';
 export { DataField } from './data-field';
 export { DropDownList } from './dropdown-list';
 export { GlobalError } from './global-error';

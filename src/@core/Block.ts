@@ -126,13 +126,13 @@ class Block<Props extends IProps = IProps> {
   private _render(): void {
     this.removeEvents();
 
-    const propsAndStubs = { ...this.props };
+    const propsAndStubs: Record<string, unknown> = { ...this.props };
 
     Object.entries(this.children).forEach(([key, child]) => {
       propsAndStubs[key] = `<div data-id="${child.id}"></div>`;
     });
 
-    const childrenProps = [];
+    const childrenProps: Block[] = [];
     Object.entries(propsAndStubs).forEach(([key, value]) => {
       if (Array.isArray(value)) {
         propsAndStubs[key] = value.map((item) => {
@@ -146,15 +146,18 @@ class Block<Props extends IProps = IProps> {
       }
     });
     const fragment = document.createElement('template');
-
     const template = this.render();
+
     fragment.innerHTML = Handlebars.compile(template)(propsAndStubs);
     const newElement = fragment.content.firstElementChild as HTMLElement;
 
     [...Object.values(this.children), ...childrenProps].forEach((child) => {
       const stub = fragment.content.querySelector(`[data-id="${child.id}"]`);
 
-      stub?.replaceWith(child.getContent());
+      const content = child.getContent();
+      if (content) {
+        stub?.replaceWith(content);
+      }
     });
 
     if (this._element && newElement) {

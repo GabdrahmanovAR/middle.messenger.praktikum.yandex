@@ -18,16 +18,6 @@ type Options = {
 
 type OptionsWithoutMethod = Omit<Options, 'method'>;
 
-// function queryStringify(data: Record<string, string | Record<string, unknown>>): string {
-//   // Можно делать трансформацию GET-параметров в отдельной функции
-//   if (typeof data !== 'object') {
-//     throw new Error('Данные должны быть объектом');
-//   }
-
-//   const keys = Object.keys(data);
-//   return keys.reduce((acc, key, index) => `${acc + key}=${data[key].toString()}${index !== keys.length - 1 ? '&' : ''}`, '?');
-// }
-
 export default class HTTPTransport {
   private readonly preffix: string = HOST;
 

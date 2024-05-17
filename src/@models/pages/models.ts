@@ -1,6 +1,7 @@
 import Block from '../../@core/Block';
 import { IChatInfo, IUserInfo } from '../../api/model';
 import { IProps } from '../common';
+import { IFieldProps } from '../components';
 
 export interface ILoginPageProps extends IProps {
 }
@@ -13,8 +14,9 @@ export interface IField {
   validate?: (value: string) => string,
 }
 export interface IRegistrationPageProps extends IProps {
-  fields: IField[],
-  fieldKeys: string[];
+  inputFields: Block<IFieldProps>[];
+  // fields: IField[],
+  // fieldKeys: string[];
 }
 
 export interface IChatPageProps extends IProps {

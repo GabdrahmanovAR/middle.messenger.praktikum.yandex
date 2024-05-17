@@ -21,10 +21,6 @@ class RemoveUser extends Block<IModalRemoveUser> {
     });
   }
 
-  protected init(): void {
-    console.log('REMOVE MODAL INIT');
-  }
-
   private onUserClick(event: MouseEvent): void {
     const { target } = event;
     if (!target || !(target instanceof HTMLElement)) {
@@ -48,8 +44,6 @@ class RemoveUser extends Block<IModalRemoveUser> {
   }
 
   protected componentAfterUpdate(): void {
-    console.log('REMOVE MODAL UPDATED', this.props);
-    console.log(this.getContent());
     const userListContainer = document.getElementById('remove-user');
     if (!userListContainer) {
       return;
@@ -60,15 +54,6 @@ class RemoveUser extends Block<IModalRemoveUser> {
   }
 
   protected render(): string {
-    // const userList = (this.props.selectedChatUsers && this.props.selectedChatUsers.length > 0)
-    //   ? this.props.selectedChatUsers?.map((user: IChatUser) => `
-    //     <div name="${user.id}" class="remove-user-window__user-item">
-    //       <span class="remove-user-window__user-name">Имя: ${user.first_name}</span>
-    //       <span>Роль: ${user.role}</span>
-    //     </div>
-    //     `).join('')
-    //   : 'Пользователи не добавлены';
-    // return RemoveUserTemplate.replace('#userList', userList);
     return `
     <div class="container center modal-container{{#if visible}} modal-container_visible{{/if}}">
       <div class="remove-user-window">
@@ -80,13 +65,13 @@ class RemoveUser extends Block<IModalRemoveUser> {
         <div action="" class="remove-user-window__form">
           <div id="remove-user" class="remove-user-window__content">
           ${(this.props.selectedChatUsers && this.props.selectedChatUsers.length > 0)
-            ? this.props.selectedChatUsers?.map((user: IChatUser) => `
+    ? this.props.selectedChatUsers?.map((user: IChatUser) => `
               <div name="${user.id}" class="remove-user-window__user-item">
                 <span class="remove-user-window__user-name">Имя: ${user.first_name}</span>
                 <span>Роль: ${user.role}</span>
               </div>
               `).join('')
-            : 'Пользователи не добавлены'}
+    : 'Пользователи не добавлены'}
           </div>
         </div>
       </div>

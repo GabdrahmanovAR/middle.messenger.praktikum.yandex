@@ -1,4 +1,6 @@
-import { IAPIError, ICreateUser, IUpdatePassword, IUpdateUser } from '../api/model';
+import {
+  IAPIError, ICreateUser, IUpdatePassword, IUpdateUser,
+} from '../api/model';
 
 export function isApiError(data: any): data is IAPIError {
   return data?.reason;

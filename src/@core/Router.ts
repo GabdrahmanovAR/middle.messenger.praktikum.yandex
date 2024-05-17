@@ -2,7 +2,6 @@ import { IProps } from '../@models/common';
 import Block from './Block';
 import Route from './Route';
 
-// TODO !!!!!!! исправить ошибки роутера
 export default class Router {
   private static __instance: ThisType<Router>;
 
@@ -10,7 +9,7 @@ export default class Router {
 
   protected routes: Route[];
 
-  private _currentRoute: Route;
+  private _currentRoute: Route | null;
 
   private _rootQuery: string;
 
@@ -18,7 +17,7 @@ export default class Router {
 
   constructor(rootQuery: string, canActivate = async (_pathname: string): Promise<boolean> => true) {
     if (Router.__instance) {
-      return Router.__instance;
+      throw new Error('Router не может быть инициализирован более одного раза');
     }
 
     this.routes = [];
@@ -45,8 +44,9 @@ export default class Router {
   }
 
   public async start(): Promise<void> {
-    window.onpopstate = ((event: PopStateEvent): void => {
-      this._onRoute(event.currentTarget.location.pathname);
+    window.onpopstate = ((): void => {
+      const pathName = window.location.pathname;
+      this._onRoute(pathName);
     });
 
     await this._onRoute(window.location.pathname);

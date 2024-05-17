@@ -1,17 +1,17 @@
 import Block from '../../../@core/Block';
 import { Button } from '../../button';
-import { InputDropdown } from '../../input-dropdown';
 import AddUserTemplate from './add-user.template';
 import { IDropDownList, IModalUser } from '../../../@models/components';
 import { connect } from '../../../utils/connect';
 import { closeModal } from '../../../services/modal.service';
 import { DefaultAppState } from '../../../@models/store';
-import isEqual from '../../../utils/isEqual';
 import { findUser } from '../../../services/user.service';
 import { IUserInfo } from '../../../api/model';
 import { EMPTY_STRING } from '../../../../assets/constants/common';
 import * as validate from '../../../utils/validate';
 import { setGlobalError } from '../../../services/global-error.service';
+import { DropDownList } from '../../dropdown-list';
+import { Field } from '../../field';
 
 class AddUser extends Block<IModalUser> {
   private userId: number | null = null;
@@ -23,7 +23,7 @@ class AddUser extends Block<IModalUser> {
         click: (event: Event) => {
           const classNames = (event.target as HTMLElement).className;
           if (classNames.includes('modal-container')) {
-            (this.children.DropdownInput as InputDropdown).clear();
+            (this.children.FieldInput as Field).clear();
             closeModal();
           }
         },
@@ -35,7 +35,7 @@ class AddUser extends Block<IModalUser> {
     const onClickBind = this.onClick.bind(this);
     const onInputBind = this.onInput.bind(this);
 
-    const DropdownInput = new InputDropdown({
+    const FieldInput = new Field({
       label: this.props?.fieldLabel ?? 'Введите текст',
       type: 'text',
       name: this.props?.fieldName ?? 'modal-field',
@@ -51,26 +51,37 @@ class AddUser extends Block<IModalUser> {
       onClick: onClickBind,
     });
 
+    const DropDown = new DropDownList({
+      appednTo: FieldInput.element,
+      list: [],
+    });
+
     this.children = {
       ...this.children,
-      DropdownInput,
+      FieldInput,
+      DropDown,
       ButtonComponent,
     };
   }
 
   private async onInput(value: string): Promise<void> {
+    const dropDown = this.children.DropDown instanceof DropDownList ? this.children.DropDown : undefined;
     if (value) {
       const user = await findUser(value);
-      console.log(user);
+      const listOfFindedUsers = this.findedUsersToDropdownList(user ?? []);
+
+      dropDown?.showList('app', 135);
+      this.children.DropDown.setProps({ list: listOfFindedUsers });
     } else {
-      this.children.DropdownInput.setProps({ listItems: [] });
+      dropDown?.hideList();
+      dropDown?.setProps({ list: [] });
     }
   }
 
   private onClick(event: Event): void {
     event.preventDefault();
 
-    if (this.userId) {
+    if (this.userId && this.props.onClick) {
       this.props.onClick(this.userId);
       closeModal();
     } else {
@@ -88,7 +99,7 @@ class AddUser extends Block<IModalUser> {
         title: user.login,
         onClick: () => {
           this.userId = user.id;
-          (this.children.DropdownInput as InputDropdown).updateValue(user.login);
+          (this.children.FieldInput as Field).updateValue(user.login);
         },
       });
     });
@@ -96,15 +107,11 @@ class AddUser extends Block<IModalUser> {
   }
 
   protected componentDidUpdate(_oldProps: IModalUser, _newProps: IModalUser): boolean {
-    if (!isEqual(_oldProps, _newProps)) {
-      this.children.DropdownInput.setProps({
-        label: _newProps.fieldLabel,
-        name: _newProps.fieldName,
-      });
-      this.children.ButtonComponent.setProps({ label: _newProps.buttonLabel });
-
-      this.children.DropdownInput.setProps({ visible: true, listItems: this.findedUsersToDropdownList(_newProps.findedUsers ?? []) });
-    }
+    this.children.FieldInput.setProps({
+      label: _newProps.fieldLabel,
+      name: _newProps.fieldName,
+    });
+    this.children.ButtonComponent.setProps({ label: _newProps.buttonLabel });
     return true;
   }
 
@@ -113,6 +120,6 @@ class AddUser extends Block<IModalUser> {
   }
 }
 
-const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({ findedUsers: state.findedUsers, ...state.modalAddUser });
+const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({ ...state.modalAddUser });
 
 export default connect(mapStateToProps)(AddUser);

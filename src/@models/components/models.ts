@@ -122,8 +122,7 @@ export interface IModalUser extends IProps {
   fieldName?: string;
   buttonLabel?: string;
   visible?: boolean;
-  findedUsers?: IUserInfo[];
-  onClick?: (value: string) => void;
+  onClick?: (value: number) => void;
 }
 
 export interface IModalRemoveUser extends IProps {

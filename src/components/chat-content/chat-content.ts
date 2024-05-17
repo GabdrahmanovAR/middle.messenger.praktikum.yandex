@@ -70,7 +70,6 @@ class ChatContent extends Block<IChatContentProps> {
       rounded: true,
       onEnter: onEnterbind,
     });
-    // TODO для не админа, добавить вместо удалить чат - выйти из группы и удалять себя из группы по запросу delete /chats/users, для админов только удалить чат
     const PropertiesDropdown = new DropDownList({
       list: [],
       appednTo: PropertiesButton.element,
@@ -130,7 +129,7 @@ class ChatContent extends Block<IChatContentProps> {
       onClick = (): void => {
         const modalState: IModalUser = {
           ...modalDescription,
-          onClick: (value: string) => this.addChatUser(value),
+          onClick: (value: number) => this.addChatUser(value),
         };
         openAddUserModal(modalState);
       };
@@ -251,7 +250,6 @@ class ChatContent extends Block<IChatContentProps> {
     }
 
     if (socket) {
-      console.log('on message recieve register');
       socket.on(WSTransportEvent.MESSAGE, this.onMessage.bind(this));
     }
     return true;

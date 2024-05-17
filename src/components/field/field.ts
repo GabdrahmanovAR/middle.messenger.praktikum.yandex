@@ -61,6 +61,13 @@ export default class Field extends Block<IFieldProps> {
     return null;
   }
 
+  public updateValue(value: string): void {
+    const input = this.children.InputField.element;
+    if (input instanceof HTMLInputElement) {
+      input.value = value;
+    }
+  }
+
   private validate(): boolean {
     const inputValue = ((this.children.InputField as Input)?.element as HTMLInputElement).value;
     const validateMessage = this._props.validate?.(inputValue);
