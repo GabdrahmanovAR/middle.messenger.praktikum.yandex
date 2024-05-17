@@ -1,6 +1,7 @@
 import { EMPTY_STRING } from '../../../assets/constants/common';
 import Block from '../../@core/Block';
 import { IInputTextProps } from '../../@models/components';
+import { escapeHtml } from '../../utils/escapeHtml';
 import Input from '../input/input';
 import InputTextTemplate from './input-text.template';
 
@@ -50,7 +51,8 @@ export default class InputText extends Block<IInputTextProps> {
     }
     this._timer = setTimeout(() => {
       if (this.props.onSearch) {
-        this.props.onSearch(input.value);
+        const escapedValue = escapeHtml(input.value);
+        this.props.onSearch(escapedValue);
       }
     }, 500);
   }
@@ -58,7 +60,8 @@ export default class InputText extends Block<IInputTextProps> {
   private onEnter(event: Event): void {
     const inputValue = (event.target as HTMLInputElement).value;
     if (inputValue && this.props.onEnter) {
-      this.props.onEnter(inputValue);
+      const escapedValue = escapeHtml(inputValue);
+      this.props.onEnter(escapedValue);
     }
   }
 
