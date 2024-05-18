@@ -4,7 +4,7 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background-image: url(/assets/img/chat-background.png);
+  background-image: url("/assets/img/chat-background.png");
 
   &__header {
     display: inherit;
@@ -13,7 +13,7 @@
     border-bottom: 1px solid var(--border-color-light);
     padding: 1rem;
     background-color: var(--background-color-white);
-    box-shadow: 0 0 6px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 6px 3px rgb(0 0 0 / 10%);
   }
 
   &__loading {
@@ -70,7 +70,7 @@
   border-top: 1px solid var(--border-color-light);
   padding: 1rem;
   background-color: var(--background-color-white);
-  box-shadow: 0 0 6px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 6px 3px rgb(0 0 0 / 10%);
 
   &__container {
     display: flex;
