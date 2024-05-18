@@ -113,6 +113,8 @@ a {
   z-index: var(--modal-z-index);
   background-color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
+  top: 0;
+  left: 0;
 
   &_visible {
     display: inherit;

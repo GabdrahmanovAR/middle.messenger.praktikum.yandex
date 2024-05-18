@@ -44,6 +44,8 @@ const chatContentTemplate = `
       <h3>Выберите чат, чтобы написать сообщение</h3>
     </div>
   {{/if}}
+
+  {{{ AddFileModal }}}
 </div>
 `;
 

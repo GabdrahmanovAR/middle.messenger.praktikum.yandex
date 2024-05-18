@@ -5,7 +5,9 @@ import ChatApi from '../api/chat.api';
 import {
   IAddChatUser, IChatInfo, IChatLastMessageUser, IChatToken, IChatUser,
 } from '../api/model';
+import { RESOURCE_HOST } from '../constants';
 import { empty } from '../utils/empty';
+import { isApiError } from '../utils/type-check';
 import { setGlobalError } from './global-error.service';
 
 const chatApi = new ChatApi();
@@ -23,6 +25,11 @@ export const getSelectedChatId = (): number | null => {
 export const getChats = async (): Promise<void> => {
   try {
     const chats = await chatApi.getChats();
+    chats.forEach((chat: IChatInfo) => {
+      if (chat.avatar) {
+        chat.avatar = `${RESOURCE_HOST}${chat.avatar}`;
+      }
+    });
     window.store.set({ chats });
   } catch (error) {
     setGlobalError(error, 'Ошибка получения списка чатов');
@@ -253,4 +260,30 @@ export const checkActive = (chatId: number): boolean => {
   }
 
   return false;
+};
+
+export const updateChatAvatar = async (file: File): Promise<void> => {
+  const { store } = window;
+  const { selectedChat } = store.getState();
+
+  if (!selectedChat.id) {
+    return;
+  }
+  const data = new FormData();
+  data.append('chatId', JSON.stringify(selectedChat.id));
+  data.append('avatar', file);
+
+  try {
+    const updatedChat = await chatApi.updateAvatar(data);
+    if (!isApiError(updatedChat)) {
+      await getChats();
+      const updateSelectedChat: ISelectedChat = {
+        ...selectedChat,
+        avatar: `${RESOURCE_HOST}${updatedChat.avatar}`,
+      };
+      store.set({ selectedChat: updateSelectedChat });
+    }
+  } catch (error) {
+    setGlobalError(error);
+  }
 };

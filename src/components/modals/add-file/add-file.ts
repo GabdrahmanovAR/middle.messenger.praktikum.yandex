@@ -1,20 +1,19 @@
 import { EMPTY_STRING } from '../../../../assets/constants/common';
 import Block from '../../../@core/Block';
-import { IInputFile, IModalProfileProps } from '../../../@models/components';
-import { updateUserAvatar } from '../../../services/user.service';
+import { IInputFile, IModalAddFileProps } from '../../../@models/components';
 import { Button } from '../../button';
 import { InputFile } from '../../input-file';
-import ModalProfileTemplate from './modal-profile.template';
+import ModalProfileTemplate from './add-file.template';
 
-export default class ModalProfile extends Block<IModalProfileProps> {
-  constructor(props: IModalProfileProps) {
+export default class AddFile extends Block<IModalAddFileProps> {
+  constructor(props: IModalAddFileProps) {
     super({
       ...props,
       events: {
         click: (event: Event) => {
           const classNames = (event.target as HTMLElement).className;
           if (classNames.includes('modal-container')) {
-            this.setProps({ visible: false });
+            this.setProps({ visible: false, error: false });
           }
         },
       },
@@ -46,8 +45,8 @@ export default class ModalProfile extends Block<IModalProfileProps> {
     const input = this.children.InputComponent instanceof InputFile ? this.children.InputComponent : undefined;
     const file = input && (input.props as IInputFile)?.file;
 
-    if (file) {
-      await updateUserAvatar(file);
+    if (this.props.onChoose && file) {
+      this.props.onChoose(file);
       input.setProps({ fileName: EMPTY_STRING, file: undefined });
       this.setProps({ visible: false, error: false });
     } else {

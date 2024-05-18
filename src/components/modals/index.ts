@@ -1,4 +1,4 @@
-export { ModalProfile } from './modal-profile';
+export { AddFile } from './add-file';
 export { AddUser } from './add-user';
 export { ModalConfirm } from './modal-confirm';
 export { AddChat } from './add-chat';

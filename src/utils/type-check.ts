@@ -2,8 +2,12 @@ import {
   IAPIError, ICreateUser, IUpdatePassword, IUpdateUser,
 } from '../api/model';
 
-export function isApiError(data: any): data is IAPIError {
-  return data?.reason;
+export function isApiError(data: unknown): data is IAPIError {
+  if (!data || typeof data !== 'object') {
+    return false;
+  }
+
+  return 'reason' in data;
 }
 
 export function isUpdateUser(data: unknown): data is IUpdateUser {

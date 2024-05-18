@@ -48,7 +48,7 @@ const profilePageTemplate = `
     </form>
   </div>
 
-  {{{ ProfileModal }}}
+  {{{ AddFileModal }}}
 </div>
 `;
 

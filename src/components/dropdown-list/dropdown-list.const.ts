@@ -6,6 +6,7 @@ export enum Modal {
   ADD_CHAT = 'addChat',
   REMOVE_CHAT = 'removeChat',
   LEAVE_CHAT = 'leaveChat',
+  CHANGE_AVATAR = 'changeAvatar',
 }
 
 export const chatPropertiesDropDown: IDropDownItems = {
@@ -30,6 +31,12 @@ export const chatPropertiesDropDown: IDropDownItems = {
       title: 'Удалить пользователя',
       visible: true,
     },
+  },
+  changeAvatar: {
+    icon: '/assets/icons/add.svg',
+    title: 'Изменить аватар',
+    name: Modal.CHANGE_AVATAR,
+    modalDescription: {},
   },
   removeChat: {
     icon: '/assets/icons/delete.svg',
