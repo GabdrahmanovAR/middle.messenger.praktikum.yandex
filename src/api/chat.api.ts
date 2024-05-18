@@ -30,6 +30,10 @@ export default class ChatApi {
     return chatApi.put('/chats/users', { data });
   }
 
+  async updateAvatar(data: FormData): Promise<IChatInfo | IAPIError> {
+    return chatApi.put('/chats/avatar', { data });
+  }
+
   async removeChatUser(data: IAddChatUser): Promise<void | IAPIError> {
     return chatApi.delete('/chats/users', { data });
   }

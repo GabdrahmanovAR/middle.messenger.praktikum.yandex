@@ -17,6 +17,7 @@ import {
 } from '../../services/chat.service';
 import { openAddChatModal } from '../../services/modal.service';
 import { connect } from '../../utils/connect';
+import isEqual from '../../utils/isEqual';
 import { getDate } from '../../utils/time';
 import ChatTemplate from './chat.template';
 
@@ -131,10 +132,14 @@ class ChatPage extends Block<IChatPageProps> {
   }
 
   protected componentDidUpdate(_oldProps: IChatPageProps, _newProps: IChatPageProps): boolean {
-    const { chats } = _newProps;
+    const prevChats = _oldProps.chats;
+    const nextChats = _newProps.chats;
 
-    this.updateChatList(chats);
-    this.initialChats = [...chats];
+    if (!isEqual(prevChats, nextChats)) {
+      this.updateChatList(nextChats);
+      this.initialChats = [...nextChats];
+    }
+
     return true;
   }
 

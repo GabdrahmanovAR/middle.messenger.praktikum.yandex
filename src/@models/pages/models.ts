@@ -18,6 +18,7 @@ export interface IRegistrationPageProps extends IProps {
 
 export interface IChatPageProps extends IProps {
   chats: IChatInfo[];
+  changeChatAvatar: boolean;
 }
 
 export interface IProfileField {

@@ -1,4 +1,4 @@
-@mixin buttonTheme($mainColor, $hoverColor, $activeColor, $isLink: false) {
+@mixin button-theme($mainColor, $hoverColor, $activeColor, $isLink: false) {
   @if $isLink {
     color: $mainColor;
   } @else {
@@ -36,28 +36,28 @@
   background-color: transparent;
 
   &_primary {
-    @include buttonTheme(
+    @include button-theme(
       var(--main-color),
       var(--main-color-hover),
       var(--main-color-active)
     );
   }
   &_second {
-    @include buttonTheme(
+    @include button-theme(
       var(--second-color),
       var(--second-color-hover),
       var(--second-color-active)
     );
   }
   &_danger {
-    @include buttonTheme(
+    @include button-theme(
       var(--text-color-red),
       var(--text-color-red-hover),
       var(--text-color-red-active)
     );
   }
   &_text {
-    @include buttonTheme(
+    @include button-theme(
       transparent,
       var(--background-color-light-grey),
       var(--background-color-light)
@@ -78,7 +78,7 @@
   color: initial;
 
   &_primary {
-    @include buttonTheme(
+    @include button-theme(
       var(--main-color),
       var(--main-color-hover),
       var(--main-color-active),
@@ -86,7 +86,7 @@
     );
   }
   &_second {
-    @include buttonTheme(
+    @include button-theme(
       var(--second-color),
       var(--second-color-hover),
       var(--second-color-active),
@@ -94,7 +94,7 @@
     );
   }
   &_danger {
-    @include buttonTheme(
+    @include button-theme(
       var(--text-color-red),
       var(--text-color-red-hover),
       var(--text-color-red-active),

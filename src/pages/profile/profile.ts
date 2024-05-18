@@ -4,10 +4,10 @@ import { DefaultAppState } from '../../@models/store';
 import { IUserInfo } from '../../api/model';
 import Routes from '../../api/routes';
 import {
-  Button, DataField, InputFile, ModalProfile,
+  Button, DataField, InputFile, AddFile,
 } from '../../components';
 import { logout } from '../../services/auth.service';
-import { updateUserInfo, updateUserPassword } from '../../services/user.service';
+import { updateUserAvatar, updateUserInfo, updateUserPassword } from '../../services/user.service';
 import { connect } from '../../utils/connect';
 import isEqual from '../../utils/isEqual';
 import { isUpdatePassword, isUpdateUser } from '../../utils/type-check';
@@ -55,6 +55,7 @@ class ProfilePage extends Block<IProfilePageProps> {
     const onExitBind = this.onExit.bind(this);
     const onAvatarChangeBind = this.onAvatarChange.bind(this);
     const repeatPasswordBind = this.repeatPassword.bind(this);
+    const onChooseBind = this.onChoose.bind(this);
 
     const ButtonReturn = new Button({
       type: 'button',
@@ -92,8 +93,9 @@ class ProfilePage extends Block<IProfilePageProps> {
       isFile: true,
       onClick: onAvatarChangeBind,
     });
-    const ProfileModal = new ModalProfile({
-      title: 'Загрузите файл',
+    const AddFileModal = new AddFile({
+      title: 'Загрузите аватар',
+      onChoose: onChooseBind,
     });
 
     this.setValidateForRepeatPassword(repeatPasswordBind);
@@ -106,8 +108,13 @@ class ProfilePage extends Block<IProfilePageProps> {
       ButtonEditData,
       ButtonEditPassword,
       ButtonExit,
-      ProfileModal,
+      AddFileModal,
     };
+  }
+
+  private async onChoose(file: File): Promise<void> {
+    console.log(file);
+    await updateUserAvatar(file);
   }
 
   private setValidateForRepeatPassword(validatefunc: (value: string) => string): void {
@@ -120,7 +127,7 @@ class ProfilePage extends Block<IProfilePageProps> {
 
   private onAvatarChange(event: Event): void {
     event.preventDefault();
-    this.children.ProfileModal?.setProps({ visible: true });
+    this.children.AddFileModal?.setProps({ visible: true });
   }
 
   private onReturn(): void {

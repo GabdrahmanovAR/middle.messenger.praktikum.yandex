@@ -3,7 +3,7 @@
   flex-direction: column;
   width: max-content;
   border-radius: 12px;
-  box-shadow: rgba(60, 64, 67, 0.15) 0px 1px 2px 0px, rgba(60, 64, 67, 0.1) 0px 2px 6px 2px;
+  box-shadow: rgb(60 64 67 / 15%) 0 1px 2px 0, rgb(60 64 67 / 10%) 0 2px 6px 2px;
   background-color: var(--background-color-white);
   position: absolute;
   z-index: var(--dropdown-z-index);

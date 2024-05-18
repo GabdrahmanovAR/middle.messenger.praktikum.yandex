@@ -1,4 +1,4 @@
-@mixin textWithDots($lineClamp) {
+@mixin text-with-dots($lineClamp) {
   -webkit-line-clamp: $lineClamp;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -25,12 +25,14 @@
   &__img {
     
     img {
-      @include avatar();
+      @include avatar;
+
       object-fit: cover;
     }
 
     &_default {
-      @include avatar();
+      @include avatar;
+
       background-color: var(--background-color-light);
     }
   }
@@ -44,12 +46,15 @@
 
   &__name {
     font-weight: bold;
-    @include textWithDots(1);
+
+    @include text-with-dots(1);
   }
 
   &__message {
     color: var(--text-color-label);
-    @include textWithDots(2);
+
+    @include text-with-dots(2);
+
     margin-top: 0.25rem;
   }
 
@@ -78,7 +83,6 @@
     line-height: var(--size);
     padding: 0 var(--padding);
     margin-top: 0.25rem;
-
     background-color: var(--main-color);
     color: white;
     display: flex;

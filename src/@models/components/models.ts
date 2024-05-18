@@ -92,6 +92,7 @@ export interface IDropDownItems {
   removeUser: IDropDownItem,
   removeChat: IDropDownItem,
   leaveChat: IDropDownItem,
+  changeAvatar: IDropDownItem,
 }
 
 export interface IDropDownItem {
@@ -159,11 +160,12 @@ export interface IInputFile extends IProps {
   onClick?: (event: Event) => void;
 }
 
-export interface IModalProfileProps extends IProps {
+export interface IModalAddFileProps extends IProps {
   error?: boolean;
   success?: boolean;
   visible?: boolean;
   title: string;
+  onChoose?: (file: File) => void,
 }
 
 export interface IErrorInfoProps extends IProps {

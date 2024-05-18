@@ -9,37 +9,39 @@ enum METHOD {
 
 type Options = {
   method: METHOD;
-  headers?: any;
+  headers?: Record<string, string>;
   withCredentials?: boolean;
   timeout?: number;
   responseType?: XMLHttpRequestResponseType;
-  data?: any;
+  data?: unknown;
 };
 
 type OptionsWithoutMethod = Omit<Options, 'method'>;
 
+type HTTPMethod = <R = unknown>(url: string, options?: OptionsWithoutMethod) => Promise<R>;
+
 export default class HTTPTransport {
   private readonly preffix: string = HOST;
 
-  public get<TResponse>(url: string, options: OptionsWithoutMethod = {}): Promise<TResponse> {
-    return this.request<TResponse>(url, { ...options, method: METHOD.GET });
-  }
+  public get: HTTPMethod = (url, options = {}) => (
+    this.request(url, { ...options, method: METHOD.GET })
+  );
 
-  public post<TResponse>(url: string, options: OptionsWithoutMethod = {}): Promise<TResponse> {
-    return this.request<TResponse>(url, { ...options, method: METHOD.POST });
-  }
+  public post: HTTPMethod = (url, options = {}) => (
+    this.request(url, { ...options, method: METHOD.POST })
+  );
 
-  public put<TResponse>(url: string, options: OptionsWithoutMethod = {}): Promise<TResponse> {
-    return this.request<TResponse>(url, { ...options, method: METHOD.PUT });
-  }
+  public put: HTTPMethod = (url: string, options: OptionsWithoutMethod = {}) => (
+    this.request(url, { ...options, method: METHOD.PUT })
+  );
 
-  public delete<TResponse>(url: string, options: OptionsWithoutMethod = {}): Promise<TResponse> {
-    return this.request<TResponse>(url, { ...options, method: METHOD.DELETE });
-  }
+  public delete: HTTPMethod = (url: string, options: OptionsWithoutMethod = {}) => (
+    this.request(url, { ...options, method: METHOD.DELETE })
+  );
 
-  request<TResponse>(url: string, options: Options = { method: METHOD.GET }): Promise<TResponse> {
+  request<T>(url: string, options: Options = { method: METHOD.GET }): Promise<T> {
     const {
-      headers,
+      headers = {},
       method,
       data,
       withCredentials = true,
@@ -51,7 +53,7 @@ export default class HTTPTransport {
       const xhr = new XMLHttpRequest();
       xhr.open(method, `${this.preffix}${url}`);
 
-      Object.keys(headers ?? {}).forEach((key: string) => xhr.setRequestHeader(key, headers[key]));
+      Object.keys(headers).forEach((key: string) => xhr.setRequestHeader(key, headers[key]));
       xhr.withCredentials = withCredentials;
       xhr.timeout = timeout ?? 10000;
       xhr.responseType = responseType;

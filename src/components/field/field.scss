@@ -1,4 +1,4 @@
-@mixin fieldState($borderColor) {
+@mixin field-state($borderColor) {
   border-color: $borderColor;
 
   + .field__label {
@@ -31,7 +31,7 @@
     }
 
     &:focus, &:valid:not(:placeholder-shown) {
-      @include fieldState(var(--border-color-active));
+      @include field-state(var(--border-color-active));
     }
   }
 

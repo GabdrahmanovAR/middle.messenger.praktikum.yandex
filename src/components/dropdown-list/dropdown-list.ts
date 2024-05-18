@@ -1,6 +1,7 @@
 import { EMPTY_STRING } from '../../../assets/constants/common';
 import Block from '../../@core/Block';
 import { IDropDownList, IDropdownListProps } from '../../@models/components';
+import isEqual from '../../utils/isEqual';
 
 export default class DropdownList extends Block<IDropdownListProps> {
   private onElementClickBind!: (event: MouseEvent) => void;
@@ -117,6 +118,16 @@ export default class DropdownList extends Block<IDropdownListProps> {
     }
 
     return style;
+  }
+
+  protected componentDidUpdate(_oldProps: IDropdownListProps, _newProps: IDropdownListProps): boolean {
+    const prevList = _oldProps.list;
+    const nextList = _newProps.list;
+
+    if (!isEqual(prevList, nextList)) {
+      this.setProps({ list: nextList });
+    }
+    return true;
   }
 
   protected render(): string {

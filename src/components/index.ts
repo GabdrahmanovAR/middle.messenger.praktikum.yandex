@@ -15,5 +15,5 @@ export { DataField } from './data-field';
 export { DropDownList } from './dropdown-list';
 export { GlobalError } from './global-error';
 export {
-  AddUser, ModalConfirm, ModalProfile, AddChat, RemoveUser,
+  AddUser, ModalConfirm, AddFile, AddChat, RemoveUser,
 } from './modals';

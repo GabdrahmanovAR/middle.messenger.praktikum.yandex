@@ -20,10 +20,12 @@ import {
 import {
   addChatUser, deleteChat, getSelectedChatId, leaveChat, removeChatFromList,
   showMessage,
+  updateChatAvatar,
 } from '../../services/chat.service';
 import { IAddChatUser } from '../../api/model';
 import { setGlobalError } from '../../services/global-error.service';
 import { getCurrentUserId } from '../../services/user.service';
+import { AddFile } from '../modals';
 
 class ChatContent extends Block<IChatContentProps> {
   constructor(props: IChatContentProps) {
@@ -35,6 +37,12 @@ class ChatContent extends Block<IChatContentProps> {
 
   protected init(): void {
     this.setProps({ onModalOpen: this.props.onModalOpen });
+    const onChooseBind = this.onChoose.bind(this);
+
+    const AddFileModal = new AddFile({
+      title: 'Загрузите аватар',
+      onChoose: onChooseBind,
+    });
 
     const onSendButtonClickBind = this.onSendButtonClick.bind(this);
     const onPropertiesButtonClickBind = this.onPropertiesButtonClick.bind(this);
@@ -89,7 +97,13 @@ class ChatContent extends Block<IChatContentProps> {
       SendButton,
       PropertiesDropdown,
       PinDropdown,
+      AddFileModal,
     };
+  }
+
+  private async onChoose(file: File): Promise<void> {
+    console.log(file);
+    await updateChatAvatar(file);
   }
 
   private mapPropertiesToList(list: IDropDownItems): IDropDownList[] {
@@ -146,6 +160,17 @@ class ChatContent extends Block<IChatContentProps> {
       };
     }
 
+    if (modalName === Modal.CHANGE_AVATAR) {
+      onClick = (): void => {
+        this.children.AddFileModal.setProps({ visible: true });
+        // const modalRemoveUser: IModalRemoveUser = {
+        //   ...modalDescription,
+        //   chatId: this.props.selectedChat?.id,
+        // };
+        // openRemoveUserModal(modalRemoveUser);
+      };
+    }
+
     if (modalName === Modal.REMOVE_CHAT) {
       onClick = ():void => {
         const modalState: IModalConfirm = {
@@ -193,6 +218,7 @@ class ChatContent extends Block<IChatContentProps> {
   }
 
   private onPropertiesButtonClick(): void {
+    console.log('Открыть список настроек чата');
     const dropdown = this.children.PropertiesDropdown;
     if (dropdown instanceof DropDownList) {
       dropdown.showList('chatContent');
