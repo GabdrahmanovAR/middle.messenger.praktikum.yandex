@@ -102,7 +102,6 @@ class ChatContent extends Block<IChatContentProps> {
   }
 
   private async onChoose(file: File): Promise<void> {
-    console.log(file);
     await updateChatAvatar(file);
   }
 
@@ -218,7 +217,6 @@ class ChatContent extends Block<IChatContentProps> {
   }
 
   private onPropertiesButtonClick(): void {
-    console.log('Открыть список настроек чата');
     const dropdown = this.children.PropertiesDropdown;
     if (dropdown instanceof DropDownList) {
       dropdown.showList('chatContent');

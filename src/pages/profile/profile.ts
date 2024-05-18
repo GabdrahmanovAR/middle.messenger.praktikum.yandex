@@ -113,7 +113,6 @@ class ProfilePage extends Block<IProfilePageProps> {
   }
 
   private async onChoose(file: File): Promise<void> {
-    console.log(file);
     await updateUserAvatar(file);
   }
 
