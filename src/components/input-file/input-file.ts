@@ -1,9 +1,11 @@
 import Block from '../../@core/Block';
 import { IInputFile } from '../../@models/components';
+import { DefaultAppState } from '../../@models/store';
+import { connect } from '../../utils/connect';
 import { Input } from '../input';
 import InputFileTemplate from './input-file.template';
 
-export default class InputFile extends Block<IInputFile> {
+class InputFile extends Block<IInputFile> {
   protected init(): void {
     const onAvatarChangeBind = this.props.onClick?.bind(this);
     const onChooseFileBind = this.onChooseFile.bind(this);
@@ -42,3 +44,7 @@ export default class InputFile extends Block<IInputFile> {
     return InputFileTemplate;
   }
 }
+
+const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({ avatar: state.avatar });
+
+export default connect(mapStateToProps)(InputFile);

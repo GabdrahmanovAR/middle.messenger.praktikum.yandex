@@ -7,4 +7,10 @@
       border-bottom: 1px solid var(--border-color-light);
     }
   }
+
+  &__info {
+    text-align: center;
+    padding: 1rem 0;
+    color: var(--text-color-main);
+  }
 }

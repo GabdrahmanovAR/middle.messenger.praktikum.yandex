@@ -3,25 +3,24 @@ import Block from '../../@core/Block';
 import { IField, IRegistrationPageProps } from '../../@models/pages';
 import RegistrationPageTemplate from './registration.template';
 import { Button, Field } from '../../components';
+import Routes from '../../api/routes';
+import { createUser } from '../../services/auth.service';
+import { isCreateUser } from '../../utils/type-check';
+import { fields } from './registration.const';
 
 export default class RegistrationPage extends Block<IRegistrationPageProps> {
   constructor(props: IRegistrationPageProps) {
-    const registrationFields = props.fields.reduce((acc: Record<string, Field>, data: IField) => {
-      const component = new Field({
-        label: data.label,
-        name: data.name,
-        type: data.type,
-        required: data.required,
-        validate: data.validate,
-      });
-      acc[data.name] = component;
-      return acc;
-    }, {});
+    const inputFields = fields.map((data: IField) => new Field({
+      label: data.label,
+      name: data.name,
+      type: data.type,
+      required: data.required,
+      validate: data.validate,
+    }));
 
     super({
       ...props,
-      fieldKeys: Object.keys(registrationFields),
-      ...registrationFields,
+      inputFields,
     });
   }
 
@@ -43,7 +42,7 @@ export default class RegistrationPage extends Block<IRegistrationPageProps> {
       onClick: onLoginBind,
     });
 
-    this.children.repeat_password?.setProps({ validate: repeatPasswordBind });
+    this.setValidateForRepeatPassword(repeatPasswordBind);
 
     this.children = {
       ...this.children,
@@ -52,17 +51,23 @@ export default class RegistrationPage extends Block<IRegistrationPageProps> {
     };
   }
 
+  private setValidateForRepeatPassword(validatefunc: (value: string) => string): void {
+    this.props.inputFields.forEach((passField) => {
+      if (passField instanceof Field && passField.props?.name === 'repeatPassword') {
+        passField.setProps({ validate: validatefunc });
+      }
+    });
+  }
+
   private onSubmit(event: Event): void {
     event.preventDefault();
     let allValid = true;
 
     const formValues: Record<string, unknown> = {};
-    const formKeys = Object.keys(this.children);
-
-    formKeys.forEach((key: string) => {
-      if (this.children[key] instanceof Field) {
-        const fieldComponent = this.children[key] as Field;
-        formValues[fieldComponent.props.name] = (fieldComponent)?.getValue();
+    this.props.inputFields.forEach((field: Block) => {
+      if (field instanceof Field) {
+        const key = field.props.name;
+        formValues[key] = field.getValue();
 
         if (!formValues[key]) {
           allValid = false;
@@ -70,25 +75,29 @@ export default class RegistrationPage extends Block<IRegistrationPageProps> {
       }
     });
 
-    if (allValid) {
-      console.log(formValues);
-    } else {
-      console.log('form not valid');
+    const { repeatPassword, ...rest } = formValues;
+    if (allValid && isCreateUser(rest)) {
+      createUser(rest);
     }
   }
 
   private onLogin(event: Event): void {
     event.preventDefault();
+    window.router.go(Routes.LOGIN);
   }
 
   private repeatPassword(repeatPasswordValue: string): string {
-    const passwordValue = (this.children.password as Field).getValue(false);
+    let newPasswordValue = null;
+    this.props.inputFields.forEach((field) => {
+      if (field instanceof Field && field.props?.name === 'password') {
+        newPasswordValue = field.getValue(false);
+      }
+    });
 
-    return validate.repeatPassword(passwordValue, repeatPasswordValue);
+    return validate.repeatPassword(newPasswordValue, repeatPasswordValue);
   }
 
   protected render(): string {
-    const fieldsComponents = this.props.fieldKeys.map((key: string) => `{{{ ${key} }}}`).join('');
-    return RegistrationPageTemplate.replace('#fields', fieldsComponents);
+    return RegistrationPageTemplate;
   }
 }

@@ -1,16 +1,34 @@
+import { EMPTY_STRING } from '../../../assets/constants/common';
 import Block from '../../@core/Block';
-import { IModalUser } from '../../@models/components';
+import { IModalChat } from '../../@models/components';
 import { IChatPageProps } from '../../@models/pages';
+import { DefaultAppState } from '../../@models/store';
+import { IChatInfo } from '../../api/model';
+import Routes from '../../api/routes';
 import {
-  Button, ChatContent, ChatList, InputText, ModalUser,
+  AddChat,
+  Button, ChatCard, ChatContent, ChatList, InputText, AddUser,
+  ModalConfirm,
+  RemoveUser,
 } from '../../components';
-import { chatInfo, chatList } from './chat-list.const';
+import { Modal } from '../../components/dropdown-list/dropdown-list.const';
+import {
+  createChat, getChats, setCardLastMessageUserName,
+} from '../../services/chat.service';
+import { openAddChatModal } from '../../services/modal.service';
+import { connect } from '../../utils/connect';
+import isEqual from '../../utils/isEqual';
+import { getDate } from '../../utils/time';
 import ChatTemplate from './chat.template';
 
-export default class ChatPage extends Block<IChatPageProps> {
+class ChatPage extends Block<IChatPageProps> {
+  private initialChats: IChatInfo[] = [];
+
   protected init(): void {
+    getChats();
     const onProfileButtonClickBind = this.onProfileButtonClick.bind(this);
-    const onPropertiesItemClickBind = this.onPropertiesItemClick.bind(this);
+    const onChatPropertiesButtonClickBind = this.onChatPropertiesButtonClick.bind(this);
+    const onSearchBind = this.onSearch.bind(this);
 
     const ProfileButton = new Button({
       label: 'Профиль',
@@ -20,68 +38,116 @@ export default class ChatPage extends Block<IChatPageProps> {
       icon: '/assets/icons/chevron.svg',
       onClick: onProfileButtonClickBind,
     });
-    const InputTextField = new InputText({
+    const AddChatButton = new Button({
+      isRound: true,
+      theme: 'text',
+      icon: '/assets/icons/add-chat.svg',
+      type: 'button',
+      onClick: onChatPropertiesButtonClickBind,
+    });
+    const SearchField = new InputText({
       name: 'profile-button',
       center: true,
       placeholder: 'Поиск',
       icon: '/assets/icons/search.svg',
+      onSearch: onSearchBind,
     });
     const ChatListComponent = new ChatList({
-      chatList,
+      chats: [],
+      showList: false,
+      chatList: [],
     });
-    const ChatContentComponent = new ChatContent({
-      chatInfo,
-      onModalOpen: (itemName: string): void => {
-        onPropertiesItemClickBind(itemName);
-      },
-    });
-    const UserModal = new ModalUser({
-      title: 'Управление пользователем',
-    });
+    const ChatContentComponent = new ChatContent({});
+
+    const AddUserModal = new AddUser({});
+    const RemoveUserModal = new RemoveUser({});
+    const ConfirmModal = new ModalConfirm({});
+    const AddChatModal = new AddChat({});
 
     this.children = {
       ...this.children,
+      AddChatButton,
       ProfileButton,
-      InputTextField,
+      SearchField,
       ChatListComponent,
       ChatContentComponent,
-      UserModal,
+      AddUserModal,
+      RemoveUserModal,
+      ConfirmModal,
+      AddChatModal,
     };
+  }
+
+  private onChatPropertiesButtonClick(): void {
+    const modalChat: IModalChat = {
+      title: 'Добавить чат',
+      fieldLabel: 'Наименование чата',
+      fieldName: Modal.ADD_CHAT,
+      buttonLabel: 'Добавить',
+      visible: true,
+      onClick: this.onAddChat,
+    };
+    openAddChatModal(modalChat);
+  }
+
+  private onAddChat(title: string): void {
+    createChat(title);
   }
 
   private onProfileButtonClick(): void {
+    window.router.go(Routes.PROFILE);
   }
 
-  private onPropertiesItemClick(itemName: string): void {
-    if (!itemName || (itemName !== 'add' && itemName !== 'remove')) {
-      return;
-    }
+  private createChatCardsList(chats: IChatInfo[]): Block[] {
+    return chats.map((chat: IChatInfo) => new ChatCard({
+      id: chat.id,
+      name: chat.title,
+      avatar: chat.avatar ?? EMPTY_STRING,
+      count: chat.unread_count,
+      date: getDate(chat.last_message?.time ?? EMPTY_STRING),
+      message: chat.last_message?.content ?? 'Нет сообщений',
+      userName: setCardLastMessageUserName(chat),
+      createdBy: chat.created_by,
+    }));
+  }
 
-    const modalUser = this.children.UserModal;
-    const props: IModalUser = {
-      fieldLabel: 'Логин',
-      visible: true,
-    };
-
-    if (itemName === 'add') {
-      props.title = 'Добавить пользователя';
-      props.buttonLabel = 'Добавить';
-    }
-
-    if (itemName === 'remove') {
-      props.title = 'Удалить пользователя';
-      props.buttonLabel = 'Удалить';
-    }
-
-    if (modalUser instanceof ModalUser) {
-      modalUser.setProps({ ...props });
-      modalUser.updateChildrenState();
+  // Поиск не доработан. При добавлении сообщения в чате, список восстанавливается до изначального.
+  private onSearch(value: string): void {
+    if (value) {
+      const findedChats = this.initialChats.filter((chat: IChatInfo) => chat.title.startsWith(value));
+      this.updateChatList(findedChats);
     } else {
-      throw new Error('Ошибка обновления модального окна');
+      this.updateChatList(this.initialChats);
     }
+  }
+
+  private updateChatList(chats: IChatInfo[]): void {
+    const chatList = this.createChatCardsList(chats) || [];
+    const showList = chatList.length > 0;
+
+    this.children.ChatListComponent.setProps({
+      chatList,
+      showList,
+    });
+  }
+
+  protected componentDidUpdate(_oldProps: IChatPageProps, _newProps: IChatPageProps): boolean {
+    const prevChats = _oldProps.chats;
+    const nextChats = _newProps.chats;
+
+    if (!isEqual(prevChats, nextChats)) {
+      this.updateChatList(nextChats);
+      this.initialChats = [...nextChats];
+    }
+
+    return true;
   }
 
   protected render(): string {
     return ChatTemplate;
   }
 }
+
+const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({ chats: state.chats });
+
+export default connect(mapStateToProps)<IChatPageProps>(ChatPage);

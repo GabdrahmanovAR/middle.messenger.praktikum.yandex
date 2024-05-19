@@ -1,45 +1,70 @@
 import { EMPTY_STRING } from '../../../assets/constants/common';
 import Block from '../../@core/Block';
 import { IDropDownList, IDropdownListProps } from '../../@models/components';
+import isEqual from '../../utils/isEqual';
 
 export default class DropdownList extends Block<IDropdownListProps> {
   private onElementClickBind!: (event: MouseEvent) => void;
 
-  protected init(): void {
-    this.setProps({
-      onMenuItemSelect: this.props.onMenuItemSelect,
+  constructor(props: IDropdownListProps) {
+    super({
+      ...props,
+      onMenuItemSelect: (attr: string) => {
+        props.list.forEach((listItem: IDropDownList) => {
+          if (listItem.name === attr && listItem.onClick) {
+            listItem.onClick();
+          }
+        });
+      },
     });
   }
 
-  public show(): void {
+  public showList(container: string, indent?: number): void {
     this.onElementClickBind = this.onElementClick.bind(this);
-    this.calculateDropDownPosition();
+    this.calculateDropDownPosition(container, indent);
 
     setTimeout(() => {
       document.addEventListener('click', this.onElementClickBind);
     });
   }
 
+  public hideList(): void {
+    document.removeEventListener('click', this.onElementClickBind);
+    this.setProps({ visible: false });
+  }
+
   private onElementClick(event: MouseEvent): void {
-    if (!this.element?.contains(event.target as Node)) {
-      document.removeEventListener('click', this.onElementClickBind);
-      this.setProps({ visible: false });
+    const target = event.target instanceof HTMLElement && event.target;
+    if (!target) {
+      return;
     }
-    if (!(event.target instanceof HTMLElement)) {
+
+    if (!this.element?.contains(target) && target.tagName !== 'INPUT') {
+      this.hideList();
+    }
+    if (target.tagName === 'INPUT') {
       return;
     }
     const attribute = event.target.getAttribute('name');
     if (attribute) {
-      this.props.onMenuItemSelect(attribute);
+      this.onMenuItemClick(attribute);
       this.setProps({ visible: false });
     }
   }
 
-  private calculateDropDownPosition(): void {
+  private onMenuItemClick(attr: string): void {
+    this.props.list.forEach((listItem: IDropDownList) => {
+      if (listItem.name === attr && listItem.onClick) {
+        listItem.onClick();
+      }
+    });
+  }
+
+  private calculateDropDownPosition(containerId: string, indent = 24): void {
     const component = this.props.appednTo;
     const dropdown = this.element;
-    const container = document.getElementById('chatContent');
-    const indent = 24;
+    // const container = containerId ? document.getElementById(containerId) : document.getElementById('chatContent');
+    const container = document.getElementById(containerId);
 
     if (component && dropdown && container) {
       const componentRect = component.getBoundingClientRect();
@@ -95,15 +120,27 @@ export default class DropdownList extends Block<IDropdownListProps> {
     return style;
   }
 
+  protected componentDidUpdate(_oldProps: IDropdownListProps, _newProps: IDropdownListProps): boolean {
+    const prevList = _oldProps.list;
+    const nextList = _newProps.list;
+
+    if (!isEqual(prevList, nextList)) {
+      this.setProps({ list: nextList });
+    }
+    return true;
+  }
+
   protected render(): string {
     return `
     <div class="dropdown{{#if visible}} dropdown_visible{{/if}}" style="${this.positionStyle()}">
       ${this.props.list.map((list: IDropDownList) => `
         <div name="${list.name}" class="dropdown__item">
-          <div class="dropdown__item-icon">
-            <img src="${list.icon}" alt="Dropdown list item icon">
-          </div>
-          <span class="dropdown__item-name">
+          ${list.icon ? `
+            <div class="dropdown__item-icon">
+              <img src="${list.icon}" alt="Dropdown list item icon">
+            </div>
+          ` : ''}
+          <span class="dropdown__item-name ${!list.icon ? 'pl-0' : 'pl-1'}">
             ${list.title}
           </span>
         </div>

@@ -28,6 +28,7 @@ export default class DataField extends Block<IDataFieldProps> {
       value: this.props.value,
       classes: 'data-field__input',
       readonly: this.props.readonly,
+      placeholder: '-',
       onBlur: validateBind,
     });
     const Error = new ErrorLine({
@@ -67,6 +68,14 @@ export default class DataField extends Block<IDataFieldProps> {
     }
 
     this.children.Error?.setProps({ error: undefined });
+    return true;
+  }
+
+  protected componentDidUpdate(_oldProps: IDataFieldProps, _newProps: IDataFieldProps): boolean {
+    if (_oldProps.value !== _newProps.value) {
+      const { value } = _newProps;
+      this.children.InputField.setProps({ value });
+    }
     return true;
   }
 

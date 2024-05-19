@@ -1,46 +1,45 @@
 import Block from '../../@core/Block';
 import { IProfilePageProps, IProfileField } from '../../@models/pages';
+import { DefaultAppState } from '../../@models/store';
+import { IUserInfo } from '../../api/model';
+import Routes from '../../api/routes';
 import {
-  Button, DataField, Field, InputFile, ModalProfile,
+  Button, DataField, InputFile, AddFile,
 } from '../../components';
+import { logout } from '../../services/auth.service';
+import { updateUserAvatar, updateUserInfo, updateUserPassword } from '../../services/user.service';
+import { connect } from '../../utils/connect';
+import isEqual from '../../utils/isEqual';
+import { isUpdatePassword, isUpdateUser } from '../../utils/type-check';
 import * as validate from '../../utils/validate';
+import { dataFields, passwordFields } from './profile.const';
 import ProfilePageTemplate from './profile.template';
 
-export default class ProfilePage extends Block<IProfilePageProps> {
+class ProfilePage extends Block<IProfilePageProps> {
   constructor(props: IProfilePageProps) {
-    const dataFields = props.dataFields.reduce((acc: Record<string, DataField>, data: IProfileField) => {
-      const component = new DataField({
-        type: data.type,
-        label: data.label,
-        value: data.value,
-        name: data.name,
-        last: data.last,
-        readonly: data.readonly,
-        validate: data.validate,
-      });
-      acc[data.name] = component;
-      return acc;
-    }, {});
-    const passwordFields = props.passwordFields.reduce((acc: Record<string, DataField>, data: IProfileField) => {
-      const component = new DataField({
-        type: data.type,
-        label: data.label,
-        value: data.value,
-        name: data.name,
-        last: data.last,
-        validate: data.validate,
-      });
-      acc[data.name] = component;
-      return acc;
-    }, {});
+    const dataFieldComponents = dataFields.map((field: IProfileField) => new DataField({
+      type: field.type,
+      label: field.label,
+      value: (props?.user[field.name as keyof IUserInfo] as string) ?? field.value,
+      name: field.name,
+      last: field.last,
+      readonly: field.readonly,
+      validate: field.validate,
+    }));
+    const passwordFieldComponents = passwordFields.map((field: IProfileField) => new DataField({
+      type: field.type,
+      label: field.label,
+      value: field.value,
+      name: field.name,
+      last: field.last,
+      validate: field.validate,
+    }));
 
     super({
       ...props,
-      name: 'Вася',
-      dataFieldKeys: Object.keys(dataFields),
-      passwordFieldKeys: Object.keys(passwordFields),
-      ...dataFields,
-      ...passwordFields,
+      name: '-',
+      passwordFields: passwordFieldComponents,
+      dataFields: dataFieldComponents,
     });
   }
 
@@ -56,6 +55,7 @@ export default class ProfilePage extends Block<IProfilePageProps> {
     const onExitBind = this.onExit.bind(this);
     const onAvatarChangeBind = this.onAvatarChange.bind(this);
     const repeatPasswordBind = this.repeatPassword.bind(this);
+    const onChooseBind = this.onChoose.bind(this);
 
     const ButtonReturn = new Button({
       type: 'button',
@@ -90,43 +90,54 @@ export default class ProfilePage extends Block<IProfilePageProps> {
     });
     const AvatarInput = new InputFile({
       label: 'Поменять аватар',
-      avatar: true,
+      isFile: true,
       onClick: onAvatarChangeBind,
     });
-    const ProfileModal = new ModalProfile({
-      title: 'Загрузите файл',
+    const AddFileModal = new AddFile({
+      title: 'Загрузите аватар',
+      onChoose: onChooseBind,
     });
 
-    this.children.repeatPassword?.setProps({ validate: repeatPasswordBind });
+    this.setValidateForRepeatPassword(repeatPasswordBind);
 
     this.children = {
       ...this.children,
       ButtonReturn,
+      AvatarInput,
       ButtonSave,
       ButtonEditData,
       ButtonEditPassword,
       ButtonExit,
-      AvatarInput,
-      ProfileModal,
+      AddFileModal,
     };
+  }
+
+  private async onChoose(file: File): Promise<void> {
+    await updateUserAvatar(file);
+  }
+
+  private setValidateForRepeatPassword(validatefunc: (value: string) => string): void {
+    this.props.passwordFields.forEach((passField) => {
+      if (passField instanceof DataField && passField.props?.name === 'repeatPassword') {
+        passField.setProps({ validate: validatefunc });
+      }
+    });
   }
 
   private onAvatarChange(event: Event): void {
     event.preventDefault();
-    this.children.ProfileModal?.setProps({ visible: true });
+    this.children.AddFileModal?.setProps({ visible: true });
   }
 
   private onReturn(): void {
     if (!this.editDataActive && !this.ediPasswordActive) {
-      console.log('Возврат к чатам');
+      window.router.go(Routes.CHATS);
     }
 
-    const formKeys = Object.keys(this.children);
-
-    formKeys.forEach((key: string) => {
-      const fieldComponent = this.children[key];
-      if (fieldComponent instanceof DataField && this.fieldsChecker(fieldComponent.props.name)) {
-        fieldComponent.clearError();
+    const allDataFields = [...this.props.dataFields, ...this.props.passwordFields];
+    allDataFields.forEach((field: Block) => {
+      if (field instanceof DataField) {
+        field.clearError();
       }
     });
 
@@ -143,24 +154,22 @@ export default class ProfilePage extends Block<IProfilePageProps> {
     }
   }
 
-  private fieldsChecker(value: string): boolean {
-    if (this.editDataActive) {
-      return !value.toLowerCase().includes('password');
-    }
-    return value.toLowerCase().includes('password');
-  }
-
-  private onSave(event: Event): void {
+  private async onSave(event: Event): Promise<void> {
     event.preventDefault();
     let allValid = true;
+    const fields: Block[] = [];
+
+    if (this.ediPasswordActive) {
+      fields.push(...this.props.passwordFields);
+    } else {
+      fields.push(...this.props.dataFields);
+    }
 
     const formValues: Record<string, unknown> = {};
-    const formKeys = Object.keys(this.children);
-
-    formKeys.forEach((key: string) => {
-      const fieldComponent = this.children[key];
-      if (fieldComponent instanceof DataField && this.fieldsChecker(fieldComponent.props.name)) {
-        formValues[fieldComponent.props.name] = (fieldComponent)?.getValue();
+    fields.forEach((field: Block) => {
+      if (field instanceof DataField) {
+        const key = field.props.name;
+        formValues[key] = field.getValue();
 
         if (!formValues[key]) {
           allValid = false;
@@ -168,19 +177,18 @@ export default class ProfilePage extends Block<IProfilePageProps> {
       }
     });
 
-    if (allValid) {
-      console.log(formValues);
-      formKeys.forEach((key: string) => {
-        const fieldComponent = this.children[key];
-
-        if (fieldComponent instanceof DataField && fieldComponent.props.onValueChange) {
-          fieldComponent.props.onValueChange();
-        }
-      });
-
+    if (!allValid) {
+      return;
+    }
+    if (isUpdateUser(formValues)) {
+      await updateUserInfo(formValues);
       this.onReturn();
-    } else {
-      console.log('form not valid');
+      return;
+    }
+    if (isUpdatePassword(formValues)) {
+      const { oldPassword, newPassword } = formValues;
+      await updateUserPassword({ oldPassword, newPassword });
+      this.onReturn();
     }
   }
 
@@ -196,35 +204,57 @@ export default class ProfilePage extends Block<IProfilePageProps> {
   }
 
   private onExit(): void {
+    logout();
   }
 
   private repeatPassword(repeatPasswordValue: string): string {
-    const passwordValue = (this.children.newPassword as Field).getValue(false);
+    let newPasswordValue = null;
+    this.props.passwordFields.forEach((field) => {
+      if (field instanceof DataField && field.props?.name === 'newPassword') {
+        newPasswordValue = field.getValue(false);
+      }
+    });
 
-    return validate.repeatPassword(passwordValue, repeatPasswordValue);
+    return validate.repeatPassword(newPasswordValue, repeatPasswordValue);
   }
 
   private fieldsEditState(state: boolean): void {
-    const formKeys = Object.keys(this.children);
+    this.props.dataFields.forEach((dataField) => {
+      if (dataField instanceof DataField && dataField.props.onEditStateChange) {
+        dataField.props.onEditStateChange(state);
+      }
+    });
+  }
 
-    formKeys.forEach((key: string) => {
-      const fieldComponent = this.children[key];
+  protected componentDidUpdate(_oldProps: IProfilePageProps, _newProps: IProfilePageProps): boolean {
+    if (!isEqual(_oldProps.user, _newProps.user)) {
+      const { user } = _newProps;
+      this._updateDataFields(user);
+    }
 
-      if (fieldComponent instanceof DataField
-        && this.fieldsChecker(fieldComponent.props.name)
-        && fieldComponent.props.onEditStateChange
-      ) {
-        fieldComponent.props.onEditStateChange(state);
+    if (_oldProps.isLoading !== _newProps.isLoading) {
+      this.children.ButtonSave.setProps({ isLoading: _newProps.isLoading });
+    }
+    return true;
+  }
+
+  private _updateDataFields(user: IUserInfo): void {
+    this.props.dataFields.forEach((field) => {
+      if (field instanceof DataField) {
+        const value = user[field.props.name as keyof IUserInfo];
+        field.setProps({ value });
       }
     });
   }
 
   protected render(): string {
-    const dataFieldComponents = this.props.dataFieldKeys.map((key: string) => `{{{ ${key} }}}`).join('');
-    const passwordFieldComponents = this.props.passwordFieldKeys.map((key: string) => `{{{ ${key} }}}`).join('');
-
-    return ProfilePageTemplate
-      .replace('#dataFields', dataFieldComponents)
-      .replace('#passwordFields', passwordFieldComponents);
+    return ProfilePageTemplate;
   }
 }
+
+const mapStateToProps = (state: DefaultAppState): Partial<DefaultAppState> => ({
+  user: state.user,
+  isLoading: state.isLoading,
+});
+
+export default connect(mapStateToProps)(ProfilePage);

@@ -13,15 +13,20 @@
 
     &__settings {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       align-items: center;
       flex-shrink: 0;
       padding: 1rem 0.5rem;
       height: var(--header-height);
     }
 
+    &__icon-button {
+      height: 2rem;
+      width: 2rem;
+    }
+
     &__search {
-      padding: 0 0.5rem 0.5rem 0.5rem;
+      padding: 0 0.5rem 0.5rem;
     }
 
     &__list {

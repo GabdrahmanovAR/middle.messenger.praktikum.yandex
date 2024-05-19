@@ -1,4 +1,8 @@
+import Block from '../../@core/Block';
+import WSTransport from '../../@core/WsTransport';
+import { IChatUser, IUserInfo } from '../../api/model';
 import { IProps } from '../common';
+import { IMessageType } from '../websocket';
 
 export interface IInputProps extends IProps {
   type: string;
@@ -12,7 +16,10 @@ export interface IInputProps extends IProps {
   onBlur?: () => void;
   onClick?: (event: Event) => void;
   onChange?: (event: Event) => void;
+  onInput?: (event: Event) => void;
+  onEnter?: (event: Event) => void;
   readonly?: boolean;
+  withDelay?: boolean;
 }
 
 export interface IFieldProps extends IProps {
@@ -22,6 +29,21 @@ export interface IFieldProps extends IProps {
   required?: boolean;
   error?: boolean;
   validate?: (value: string) => void;
+  onInput?: (value: string) => void;
+}
+
+export interface IInputDropDownProps extends IProps {
+  type: string;
+  label: string;
+  name: string;
+  titleField: string;
+  valueField: string;
+  required?: boolean;
+  error?: boolean;
+  listItems?: IDropDownList[];
+  validate?: (value: string) => void;
+  onInput?: (value: string) => void;
+  onMenuItemSelect?: (data: unknown) => void;
 }
 
 export interface IErrorLineProps extends IProps {
@@ -37,6 +59,7 @@ export interface IButtonProps extends IProps {
   label?: string;
   icon?: string;
   theme?: string;
+  isLoading?: boolean;
   onClick?: (event: Event) => void;
 }
 
@@ -46,33 +69,43 @@ export interface IInputTextProps extends IProps {
   center?: boolean;
   placeholder?: string;
   icon?: string;
-}
-
-export interface IChatList {
-  id: string;
-  name: string;
-  avatar?: string;
-  message?: string;
-  date?: string;
-  count?: string;
-  active?: boolean;
+  onSearch?: (value: string) => void;
+  onEnter?: (value: string) => void;
 }
 
 export interface IChatListProps extends IProps {
-  chatList: IChatList[];
-  fieldKeys?: string[];
+  chatList: Block<IChatCardProps>[];
+  showList: boolean;
+  isLoading?: boolean;
   currentActive?: string;
 }
 
 export interface IChatContentProps extends IProps {
-  chatInfo: IChatList;
-  onModalOpen: (itemName: string) => void;
+  showChat?: boolean;
+  selectedChat?: ISelectedChat;
+  user?: IUserInfo;
+  socket?: WSTransport | null;
 }
-export interface IDropDownList {
+
+export interface IDropDownItems {
+  addUser: IDropDownItem,
+  removeUser: IDropDownItem,
+  removeChat: IDropDownItem,
+  leaveChat: IDropDownItem,
+  changeAvatar: IDropDownItem,
+}
+
+export interface IDropDownItem {
   icon: string;
   title: string;
   name: string;
+  modalDescription: Record<string, unknown>;
 }
+
+export interface IDropDownList extends Omit<IDropDownItem, 'modalDescription'> {
+  onClick?: () => void;
+}
+
 export interface IDropdownListProps extends IProps {
   list: IDropDownList[];
   appednTo: HTMLElement | null;
@@ -81,18 +114,45 @@ export interface IDropdownListProps extends IProps {
   bottom?: string;
   left?: string;
   right?: string;
-  onMenuItemSelect: (value: string) => void;
+  onMenuItemSelect?: (value: string) => void;
 }
 
-export interface IModalUser extends IProps {
+export interface IModalAddUser extends IProps {
   title?: string;
   fieldLabel?: string;
+  fieldName?: string;
   buttonLabel?: string;
   visible?: boolean;
+  onClick?: (value: number) => void;
+}
+
+export interface IModalRemoveUser extends IProps {
+  title?: string;
+  selectedChatUsers?: IChatUser[];
+  chatId?: number;
+  visible?: boolean;
+  onClick?: () => void;
+}
+
+export interface IModalChat extends IProps {
+  title?: string;
+  fieldLabel?: string;
+  fieldName?: string;
+  buttonLabel?: string;
+  visible?: boolean;
+  onClick?: (value: string) => void;
+}
+
+export interface IModalConfirm extends IProps {
+  title?: string;
+  text?: string;
+  visible?: boolean;
+  onConfirm?: () => void;
 }
 
 export interface IInputFile extends IProps {
-  avatar?: boolean;
+  avatar?: string;
+  isFile?: boolean;
   acceptType?: string;
   label?: string;
   fileName?: string;
@@ -100,11 +160,12 @@ export interface IInputFile extends IProps {
   onClick?: (event: Event) => void;
 }
 
-export interface IModalProfileProps extends IProps {
+export interface IModalAddFileProps extends IProps {
   error?: boolean;
   success?: boolean;
   visible?: boolean;
   title: string;
+  onChoose?: (file: File) => void,
 }
 
 export interface IErrorInfoProps extends IProps {
@@ -122,29 +183,39 @@ export interface IMessage {
   date: string;
 }
 
-export interface IMessageGroup {
-  group: IMessage[];
-}
+// export interface IMessageGroup {
+//   group: IMessage[];
+// }
 
-export interface IMessages {
-  id: string;
-  date: string;
-  messageGroup: IMessageGroup[];
-}
+// export interface IMessages {
+//   id: string;
+//   date: string;
+//   messageGroup: IMessageGroup[];
+// }
 
 export interface IMessageListProps extends IProps {
-  messages?: IMessages[];
+  messages?: IMessageType[];
+  messageList?: Block<IMessageGroupProps>[];
+  user?: IUserInfo;
+  selectedChatUsers: IChatUser[];
+  empty?: boolean;
+}
+
+export interface IMessageGroupProps extends IProps {
+  date: string;
+  messageGroup: Block<IMessageProps>[];
 }
 
 export interface IMessageProps extends IProps {
   own?: boolean;
   first?: boolean;
   image?: string;
-  message?: string;
+  message: string;
   send?: boolean;
   delivered?: boolean;
   read?: boolean;
-  date?: string;
+  date: string;
+  name?: string;
 }
 
 export interface IDataFieldProps extends IProps {
@@ -160,12 +231,29 @@ export interface IDataFieldProps extends IProps {
 }
 
 export interface IChatCardProps extends IProps {
-  id: string;
+  id: number;
   name: string
   active?: boolean;
   avatar?: string;
   message?: string;
+  userName?: string;
   date?: string;
-  count?: string;
-  onClick?: (value: string | null) => void;
+  count?: number;
+  createdBy: number;
+  selectedChat?: ISelectedChat;
+  // onClick?: (value: number | null) => void;
+}
+
+export interface ISelectedChat {
+  id: number;
+  title: string;
+  avatar: string;
+  createdBy: number;
+  userName?: string;
+  message?: string;
+}
+
+export interface IGlobalErrorProps extends IProps {
+  closeIcon?: string;
+  globalError?: string;
 }

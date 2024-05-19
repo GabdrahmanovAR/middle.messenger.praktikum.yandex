@@ -8,9 +8,12 @@ export { ChatList } from './chat-list';
 export { InputText } from './input-text';
 export { ChatContent } from './chat-content';
 export { MessageList } from './message-list';
+export { MessageGroup } from './message-group';
 export { Message } from './message';
 export { InputFile } from './input-file';
 export { DataField } from './data-field';
-export { ModalProfile } from './modal-profile';
-export { ModalUser } from './modal-user';
 export { DropDownList } from './dropdown-list';
+export { GlobalError } from './global-error';
+export {
+  AddUser, ModalConfirm, AddFile, AddChat, RemoveUser,
+} from './modals';

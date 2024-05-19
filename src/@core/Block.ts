@@ -2,12 +2,13 @@ import { v4 as uuid } from 'uuid';
 import Handlebars from 'handlebars';
 import EventBus from './EventBus';
 import { IProps, TEvents } from '../@models/common';
+import { sanitizeHtml } from '../utils/sanitizeHtml';
 
 interface IPropsNChildren {
   children: Record<string, Block<IProps>>,
   props: Record<string, unknown>
 }
-class Block<Props extends IProps> {
+class Block<Props extends IProps = IProps> {
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
@@ -126,38 +127,56 @@ class Block<Props extends IProps> {
   private _render(): void {
     this.removeEvents();
 
-    const fragment = this.compile(this.render(), this._props);
+    const propsAndStubs: Record<string, unknown> = { ...this.props };
 
-    const newElement = fragment.firstElementChild as HTMLElement;
+    Object.entries(this.children).forEach(([key, child]) => {
+      propsAndStubs[key] = `<div data-id="${child.id}"></div>`;
+    });
 
-    if (this._element) {
+    const childrenProps: Block[] = [];
+    Object.entries(propsAndStubs).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        propsAndStubs[key] = value.map((item) => {
+          if (item instanceof Block) {
+            childrenProps.push(item);
+            return `<div data-id="${item.id}"></div>`;
+          }
+
+          return item;
+        }).join('');
+      }
+    });
+    const fragment = document.createElement('template');
+    const template = this.render();
+
+    const html = sanitizeHtml(Handlebars.compile(template)(propsAndStubs));
+    fragment.innerHTML = html;
+    const newElement = fragment.content.firstElementChild as HTMLElement;
+
+    [...Object.values(this.children), ...childrenProps].forEach((child) => {
+      const stub = fragment.content.querySelector(`[data-id="${child.id}"]`);
+
+      const content = child.getContent();
+      if (content) {
+        stub?.replaceWith(content);
+      }
+    });
+
+    if (this._element && newElement) {
+      newElement.style.display = this._element.style.display;
       this._element.replaceWith(newElement);
     }
 
     this._element = newElement;
 
     this.addEvents();
+    this._componentAfterUpdate();
   }
 
-  private compile(template: string, context: any): DocumentFragment {
-    const contextAndStubs = { ...context };
+  protected componentAfterUpdate(): void {}
 
-    Object.entries(this.children).forEach(([key, child]) => {
-      contextAndStubs[key] = `<div data-id="${child.id}"></div>`;
-    });
-
-    const html = Handlebars.compile(template)(contextAndStubs);
-
-    const temp = document.createElement('template');
-
-    temp.innerHTML = html;
-
-    Object.values(this.children).forEach((child) => {
-      const stub = temp.content.querySelector(`[data-id="${child.id}"]`);
-      stub?.replaceWith(child.getContent()!);
-    });
-
-    return temp.content;
+  private _componentAfterUpdate(): void {
+    this.componentAfterUpdate();
   }
 
   protected render(): string {
@@ -216,7 +235,7 @@ class Block<Props extends IProps> {
   show(): void {
     const content = this.getContent();
     if (content) {
-      content.style.display = 'block';
+      content.style.display = 'flex';
     }
   }
 

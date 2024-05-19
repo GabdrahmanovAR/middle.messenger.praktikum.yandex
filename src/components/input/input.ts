@@ -10,6 +10,12 @@ export default class Input extends Block<IInputProps> {
         blur: props.onBlur,
         click: props.onClick,
         change: props.onChange,
+        input: props.onInput,
+        keyup: (event: Event) => {
+          if (((event as KeyboardEvent).key === 'Enter' || (event as KeyboardEvent).keyCode === 13) && props.onEnter) {
+            props.onEnter(event);
+          }
+        },
       },
     });
   }

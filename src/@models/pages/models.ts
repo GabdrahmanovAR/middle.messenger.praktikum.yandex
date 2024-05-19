@@ -1,8 +1,9 @@
+import Block from '../../@core/Block';
+import { IChatInfo, IUserInfo } from '../../api/model';
 import { IProps } from '../common';
-import { IErrorInfoProps } from '../components';
+import { IFieldProps } from '../components';
 
-export interface ILoginPageProps extends IProps {
-}
+export interface ILoginPageProps extends IProps {}
 
 export interface IField {
   label: string;
@@ -12,11 +13,13 @@ export interface IField {
   validate?: (value: string) => string,
 }
 export interface IRegistrationPageProps extends IProps {
-  fields: IField[],
-  fieldKeys: string[];
+  inputFields: Block<IFieldProps>[];
 }
 
-export interface IChatPageProps extends IProps {}
+export interface IChatPageProps extends IProps {
+  chats: IChatInfo[];
+  changeChatAvatar: boolean;
+}
 
 export interface IProfileField {
   label: string;
@@ -28,14 +31,9 @@ export interface IProfileField {
   last?: boolean;
 }
 export interface IProfilePageProps extends IProps {
-  name: string;
-  dataFields: IProfileField[];
-  dataFieldKeys: string[];
-  passwordFields: IProfileField[];
-  passwordFieldKeys: string[];
+  user: IUserInfo;
+  dataFields: Block[];
+  passwordFields: Block[];
   edit?: boolean;
   editPassword?: boolean;
-}
-
-export interface INotfoundPageProps extends IErrorInfoProps, IProps {
 }

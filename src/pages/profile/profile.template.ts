@@ -9,48 +9,47 @@ const profilePageTemplate = `
     <form action="" class="profile-form">
       <div class="profile-form__avatar">
         {{{ AvatarInput }}}
-        <span class="profile-form__user-name">{{name}}</span>
+        <span class="profile-form__user-name">
+          {{#if user.first_name}}
+            {{{user.first_name}}}
+          {{else}}
+            -
+          {{/if}}
+        </span>
       </div>
 
       <div class="profile-from__fields">
         {{#if editPassword}}
-        #passwordFields
+          {{{ passwordFields }}}
         {{else}}
-        #dataFields
+          {{{ dataFields }}}
         {{/if}}
       </div>
 
       <div class="profile-form__buttons">
         {{#if edit}}
-        <div class="profile-form__item profile-form__item_single">
-          <div class="profile-form__save">
-            {{{ ButtonSave }}}
+          <div class="profile-form__item profile-form__item_single">
+            <div class="profile-form__save">
+              {{{ ButtonSave }}}
+            </div>
           </div>
-        </div>
         {{else}}
-        <div class="profile-form__item">
-          {{{ ButtonEditData }}}
-        </div>
-        <div class="profile-form__item">
-          {{{ ButtonEditPassword }}}
-        </div>
-        <div class="profile-form__item profile-form__item_last">
-          {{{ ButtonExit }}}
-        </div>
+          <div class="profile-form__item">
+            {{{ ButtonEditData }}}
+          </div>
+          <div class="profile-form__item">
+            {{{ ButtonEditPassword }}}
+          </div>
+          <div class="profile-form__item profile-form__item_last">
+            {{{ ButtonExit }}}
+          </div>
         {{/if}}
       </div>
     </form>
   </div>
 
-  {{{ ProfileModal }}}
+  {{{ AddFileModal }}}
 </div>
 `;
 
 export default profilePageTemplate;
-
-// {{#each formData}}
-// <div class="profile-form__item{{#if @last}} profile-form__item_last{{/if}}">
-//   <span class="profile-form__label">{{this.label}}</span>
-//   {{{ DataField }}}
-// </div>
-// {{/each}}

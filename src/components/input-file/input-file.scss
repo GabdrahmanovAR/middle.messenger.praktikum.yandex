@@ -2,9 +2,73 @@
   display: none;
 }
 
+.file-input-label {
+  &__avatar {
+    display: block;
+    width: 10rem;
+    height: 10rem;
+    background-color: var(--background-color-light);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 150px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+}
+
 .file-input-container {
   display: flex;
   justify-content: center;
+
+  .file-input-title {
+    width: min-content;
+    text-align: center;
+  
+    &__avatar {
+      opacity: 0;
+      transition: opacity 0.3s;
+  
+      span {
+        font-size: 0.875rem;
+        color: white;
+        user-select: none;
+      }
+    }
+  
+    &__file {
+      max-width: 80%;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      color: var(--text-color-label);
+  
+      span {
+        color: inherit;
+        text-decoration: none;
+      }
+  
+      &:hover {
+        color: inherit;
+      }
+  
+      &:active {
+        color: inherit;
+      }
+    }
+  
+    span {
+      text-decoration: underline;
+      color: var(--main-color);
+  
+      &:hover {
+        color: var(--main-color-hover);
+      }
+  
+      &:active {
+        color: var(--main-color-active);
+      }
+    }
+  }
 
   &__avatar {
     display: inline-block;
@@ -13,7 +77,7 @@
     overflow: hidden;
 
     &:hover .file-input-label__avatar {
-      background-color: rgba(0, 0, 0, 0.35);
+      background-color: rgb(0 0 0 / 35%);
       position: relative;
       z-index: 1;
     }
@@ -31,69 +95,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
 
-.file-input-label {
-  &__avatar {
-    display: block;
-    width: 10rem;
-    height: 10rem;
-    background-color: var(--background-color-light);
-    border-radius: 50%;
-    text-align: center;
-    line-height: 150px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-
-}
-
-.file-input-title {
-  width: min-content;
-  text-align: center;
-
-  span {
-    text-decoration: underline;
-    color: var(--main-color);
-
-    &:hover {
-      color: var(--main-color-hover);
-    }
-
-    &:active {
-      color: var(--main-color-active);
-    }
-  }
-
-  &__avatar {
-    opacity: 0;
-    transition: opacity 0.3s;
-
-    span {
-      font-size: 0.875rem;
-      color: white;
-      user-select: none;
-    }
-  }
-
-  &__file {
-    max-width: 80%;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    color: var(--text-color-label);
-
-    span {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    &:hover {
-      color: inherit;
-    }
-
-    &:active {
-      color: inherit;
-    }
+  &__full {
+    width: 100%;
   }
 }

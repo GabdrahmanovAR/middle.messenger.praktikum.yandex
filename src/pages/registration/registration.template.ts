@@ -5,7 +5,7 @@ const registrationPageTemplate = `
 
     <form action="" class="form-container register-card__form">
       <div class="field-group">
-        #fields
+        {{{ inputFields }}}
       </div>
       <div class="buttons-group">
         {{{ ButtonSubmit }}}

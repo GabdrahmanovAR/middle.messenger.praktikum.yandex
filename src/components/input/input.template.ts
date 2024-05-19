@@ -27,6 +27,7 @@ const inputTemplate = `
   {{#if readonly}}
     readonly
   {{/if}}
+  autocomplete="off"
 />
 `;
 

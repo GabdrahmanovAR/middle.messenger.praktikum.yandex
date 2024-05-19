@@ -33,3 +33,11 @@ npm run lint
 ## Вёрстка
 
 Вёрстка реализована на основании предоставленного готового шаблона. Ссылка на [шаблон в Figma](https://www.figma.com/file/H12WXWboLkN5HtE1AWpHjK/Chat_external_link-(Copy)?type=design&node-id=1%3A537&mode=design&t=Czbjy9qlFry8kB0w-1).
+
+## Доступные переходы
+| Страница | Путь |
+| ------ | ------ |
+| Авторизация | /|
+| Регистрация | /sign-up|
+| Чат | /messenger|
+| Настройки профиля | /settings|
