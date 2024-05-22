@@ -96,7 +96,7 @@ class Block<Props extends IProps = IProps> {
     });
   }
 
-  protected componentDidMount(_oldProps?: Props): void {}
+  public componentDidMount(_oldProps?: Props): void {}
 
   public dispatchComponentDidMount(): void {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);

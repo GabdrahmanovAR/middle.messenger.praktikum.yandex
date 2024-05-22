@@ -11,19 +11,6 @@
     "airbnb-base",
     "airbnb-typescript/base"
   ],
-  "overrides": [
-    {
-      "env": {
-        "node": true
-      },
-      "files": [
-        ".eslintrc.{js,cjs,json}"
-      ],
-      "parserOptions": {
-        "sourceType": "script"
-      }
-    }
-  ],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "parserOptions": {
@@ -51,5 +38,23 @@
     "no-plusplus": "off",
     "no-restricted-syntax": "off",
     "eol-last": "error"
-  }
+  },
+  "overrides": [
+    {
+      "env": {
+        "node": true
+      },
+      "files": [".eslintrc.{js,cjs,json}"],
+      "parserOptions": {
+        "sourceType": "script"
+      }
+    },
+    {
+      "files": ["*.spec.ts"],
+      "rules": {
+        "no-unused-expressions": "off",
+        "@typescript-eslint/no-unused-expressions": "off"
+      }
+    }
+  ]
 }
