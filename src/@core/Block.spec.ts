@@ -38,21 +38,6 @@ describe('Модуль Block', () => {
       expect(componentText).to.be.eq(text);
     });
 
-    it('должен вызвать метод componentDidMount при монтировании компонента в dom дерево', () => {
-      const pageComponent = new PageClass({});
-      const clock = sinon.useFakeTimers();
-      const spyCDM = sinon.spy(pageComponent, 'componentDidMount');
-
-      const element = pageComponent.getContent();
-
-      if (element) {
-        document.body.append(element);
-        clock.next();
-
-        expect(spyCDM.calledOnce).to.be.true;
-      }
-    });
-
     it('должен установить событие клика на компонент', () => {
       const stubFunc = sinon.stub();
       const pageComponent = new PageClass({
@@ -78,6 +63,86 @@ describe('Модуль Block', () => {
       const componentText = pageComponent.element?.querySelector('#mock-page')?.innerHTML;
 
       expect(componentText).to.be.eq(updatedText);
+    });
+
+    it('должен очищать предыдущие события', () => {
+      const stubFunc = sinon.stub();
+      const text = 'Hello';
+      const updatedText = 'World';
+      const pageComponent = new PageClass({
+        text,
+        events: {
+          click: stubFunc,
+        },
+      });
+      pageComponent.setProps({ text: updatedText });
+
+      const click = new MouseEvent('click');
+      pageComponent.element?.dispatchEvent(click);
+
+      expect(stubFunc.calledOnce).to.be.true;
+    });
+  });
+
+  describe('Рендер', () => {
+    let clock!: sinon.SinonFakeTimers;
+
+    before(() => {
+      clock = sinon.useFakeTimers();
+    });
+
+    it('должен вызвать метод componentDidMount при монтировании компонента в dom дерево', () => {
+      const pageComponent = new PageClass({});
+      const spyCDM = sinon.spy(pageComponent, 'componentDidMount');
+
+      const element = pageComponent.getContent();
+
+      if (element) {
+        document.body.append(element);
+        clock.next();
+
+        expect(spyCDM.calledOnce).to.be.true;
+      } else {
+        throw new Error('Ошибка создания компонента');
+      }
+    });
+
+    it('должен вызвать componentAfterUpdate после отрисовки', () => {
+      const pageComponent = new PageClass({});
+      const spyCompAfterUdate = sinon.spy(pageComponent, 'componentAfterUpdate');
+
+      const element = pageComponent.getContent();
+
+      if (element) {
+        document.body.append(element);
+        clock.setTimeout(() => {
+          expect(spyCompAfterUdate.calledOnce).to.be.true;
+        }, 0);
+      } else {
+        throw new Error('Ошибка создания компонента');
+      }
+    });
+
+    it('должен скрывать/отображать компонент при вызове метода hide/show', () => {
+      const pageComponent = new PageClass({});
+
+      const element = pageComponent.getContent();
+
+      if (element) {
+        document.body.append(element);
+
+        clock.setTimeout(() => {
+          pageComponent.hide();
+          const hiddenStyle = element.style.display;
+          expect(hiddenStyle).to.be.eq('none');
+
+          pageComponent.show();
+          const visibleStyle = element.style.display;
+          expect(visibleStyle).to.be.eq('flex');
+        }, 0);
+      } else {
+        throw new Error('Ошибка создания компонента');
+      }
     });
   });
 });

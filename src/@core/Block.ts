@@ -173,7 +173,7 @@ class Block<Props extends IProps = IProps> {
     this._componentAfterUpdate();
   }
 
-  protected componentAfterUpdate(): void {}
+  public componentAfterUpdate(): void {}
 
   private _componentAfterUpdate(): void {
     this.componentAfterUpdate();
