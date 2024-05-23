@@ -32,7 +32,7 @@ class ChatCatd extends Block<IChatCardProps> {
     }
   }
 
-  protected componentDidUpdate(_oldProps: IChatCardProps, _newProps: IChatCardProps): boolean {
+  public componentDidUpdate(_oldProps: IChatCardProps, _newProps: IChatCardProps): boolean {
     const { selectedChat } = _newProps;
     const hasData = selectedChat && Object.keys(selectedChat).length > 0;
     const notEqual = !isEqual((_oldProps.selectedChat ?? {}), selectedChat ?? {});

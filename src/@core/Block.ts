@@ -108,7 +108,7 @@ class Block<Props extends IProps = IProps> {
     }
   }
 
-  protected componentDidUpdate(_oldProps: Props, _newProps: Props): boolean {
+  public componentDidUpdate(_oldProps: Props, _newProps: Props): boolean {
     return true;
   }
 
