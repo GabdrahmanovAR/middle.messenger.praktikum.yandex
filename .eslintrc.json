@@ -37,7 +37,8 @@
     "prefer-promise-reject-errors": "off",
     "no-plusplus": "off",
     "no-restricted-syntax": "off",
-    "eol-last": "error"
+    "eol-last": "error",
+    "linebreak-style": ["error", "unix"]
   },
   "overrides": [
     {

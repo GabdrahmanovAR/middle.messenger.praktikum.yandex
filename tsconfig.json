@@ -26,6 +26,6 @@
     "experimentalSpecifierResolution": "node",
     "transpileOnly": true,
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "./mochaSetup.js"],
   "exclude": ["node_modules"]
 }
