@@ -226,7 +226,7 @@ class ProfilePage extends Block<IProfilePageProps> {
     });
   }
 
-  protected componentDidUpdate(_oldProps: IProfilePageProps, _newProps: IProfilePageProps): boolean {
+  public componentDidUpdate(_oldProps: IProfilePageProps, _newProps: IProfilePageProps): boolean {
     if (!isEqual(_oldProps.user, _newProps.user)) {
       const { user } = _newProps;
       this._updateDataFields(user);

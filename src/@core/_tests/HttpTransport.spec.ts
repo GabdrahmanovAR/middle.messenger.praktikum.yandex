@@ -1,7 +1,7 @@
 import { describe } from 'mocha';
 import sinon from 'sinon';
 import { expect } from 'chai';
-import HTTPTransport, { METHOD } from './HttpTransport';
+import HTTPTransport, { METHOD } from '../HttpTransport';
 
 describe('HttpTransport', () => {
   afterEach(() => {

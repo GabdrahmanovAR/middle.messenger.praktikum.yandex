@@ -259,7 +259,7 @@ class ChatContent extends Block<IChatContentProps> {
     showMessage(message, chatId);
   }
 
-  protected componentDidUpdate(_oldProps: IChatContentProps, _newProps: IChatContentProps): boolean {
+  public componentDidUpdate(_oldProps: IChatContentProps, _newProps: IChatContentProps): boolean {
     const selectedChatOldValue = _oldProps.selectedChat ?? {};
     const selectedChatnewValue = _newProps.selectedChat ?? {};
     const hasData = selectedChatnewValue && Object.keys(selectedChatnewValue).length > 0;

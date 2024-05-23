@@ -42,7 +42,7 @@ class RemoveUser extends Block<IModalRemoveUser> {
     }
   }
 
-  protected componentAfterUpdate(): void {
+  public componentAfterUpdate(): void {
     const userListContainer = document.getElementById('remove-user');
     if (!userListContainer) {
       return;

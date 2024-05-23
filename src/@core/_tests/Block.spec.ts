@@ -1,8 +1,8 @@
 import { describe, it } from 'mocha';
 import sinon from 'sinon';
 import { expect } from 'chai';
-import Block from './Block';
-import { IProps } from '../@models/common';
+import Block from '../Block';
+import { IProps } from '../../@models/common';
 
 interface IMockPage extends IProps {
   text?: string;

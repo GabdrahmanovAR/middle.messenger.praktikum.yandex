@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import { IProps } from '@models/common';
 import sinon from 'sinon';
-import Route from './Route';
-import Block from './Block';
+import Route from '../Route';
+import Block from '../Block';
 
 describe('Route', () => {
   let route: Route;

@@ -2,8 +2,8 @@ import { describe, it } from 'mocha';
 import { IProps } from '@models/common';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import Router from './Router';
-import Block from './Block';
+import Router from '../Router';
+import Block from '../Block';
 
 const canActivate = async (path: string): Promise<boolean> => true;
 
