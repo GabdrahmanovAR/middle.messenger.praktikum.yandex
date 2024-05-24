@@ -71,7 +71,7 @@ export default class DataField extends Block<IDataFieldProps> {
     return true;
   }
 
-  protected componentDidUpdate(_oldProps: IDataFieldProps, _newProps: IDataFieldProps): boolean {
+  public componentDidUpdate(_oldProps: IDataFieldProps, _newProps: IDataFieldProps): boolean {
     if (_oldProps.value !== _newProps.value) {
       const { value } = _newProps;
       this.children.InputField.setProps({ value });

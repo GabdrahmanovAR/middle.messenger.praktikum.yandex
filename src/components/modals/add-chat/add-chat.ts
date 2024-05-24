@@ -60,7 +60,7 @@ class AddChat extends Block<IModalChat> {
     }
   }
 
-  protected componentDidUpdate(_oldProps: IModalChat, _newProps: IModalChat): boolean {
+  public componentDidUpdate(_oldProps: IModalChat, _newProps: IModalChat): boolean {
     const prevModalState = _oldProps.modalAddChat ?? {};
     const nextModalState = _newProps.modalAddChat ?? {};
 

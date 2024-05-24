@@ -66,7 +66,7 @@ class LoginPage extends Block<ILoginPageProps> {
     window.router.go(Routes.SIGN_UP);
   }
 
-  protected componentDidUpdate(_oldProps: ILoginPageProps, _newProps: ILoginPageProps): boolean {
+  public componentDidUpdate(_oldProps: ILoginPageProps, _newProps: ILoginPageProps): boolean {
     if (_oldProps.isLoading !== _newProps.isLoading) {
       this.children.ButtonSubmit.setProps({ isLoading: _newProps.isLoading });
     }
