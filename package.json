@@ -13,7 +13,8 @@
     "lint:code": "eslint . --ext .js,.ts",
     "lint:style": "stylelint **/*.scss",
     "lint": "run-p lint:*",
-    "test": "mocha"
+    "test": "mocha",
+    "prepare": "husky"
   },
   "husky": {
     "hooks": {
