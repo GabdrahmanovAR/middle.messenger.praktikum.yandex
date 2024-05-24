@@ -110,6 +110,11 @@ describe('Модуль Block', () => {
     it('должен вызвать componentAfterUpdate после формирования HTML', () => {
       const spyCompAfterUdate = sinon.spy(PageClass.prototype, 'componentAfterUpdate');
       const pageComponent = new PageClass({});
+      const element = pageComponent.getContent();
+
+      if (element) {
+        document.body.append(element);
+      }
 
       expect(spyCompAfterUdate.called).to.be.true;
     });

@@ -7,7 +7,7 @@ import { Input } from '../input';
 import FieldTemplate from './field.template';
 
 export default class Field extends Block<IFieldProps> {
-  private _timer: number | null = null;
+  private _timer: NodeJS.Timeout | null = null;
 
   protected init(): void {
     const validateBind = this.validate.bind(this);

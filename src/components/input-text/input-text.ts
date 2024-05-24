@@ -6,7 +6,7 @@ import Input from '../input/input';
 import InputTextTemplate from './input-text.template';
 
 export default class InputText extends Block<IInputTextProps> {
-  private _timer: number | null = null;
+  private _timer: NodeJS.Timeout | null = null;
 
   constructor(props: IInputTextProps) {
     super({
