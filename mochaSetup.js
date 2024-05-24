@@ -1,6 +1,6 @@
 import { JSDOM } from 'jsdom';
 
-const jsdom = new JSDOM('<body></body>');
+const jsdom = new JSDOM('<body><main id="app"></div></body>');
 
 global.window = jsdom.window;
 global.document = jsdom.window.document;

@@ -107,20 +107,11 @@ describe('Модуль Block', () => {
       }
     });
 
-    it('должен вызвать componentAfterUpdate после отрисовки', () => {
+    it('должен вызвать componentAfterUpdate после формирования HTML', () => {
+      const spyCompAfterUdate = sinon.spy(PageClass.prototype, 'componentAfterUpdate');
       const pageComponent = new PageClass({});
-      const spyCompAfterUdate = sinon.spy(pageComponent, 'componentAfterUpdate');
 
-      const element = pageComponent.getContent();
-
-      if (element) {
-        document.body.append(element);
-        clock.setTimeout(() => {
-          expect(spyCompAfterUdate.calledOnce).to.be.true;
-        }, 0);
-      } else {
-        throw new Error('Ошибка создания компонента');
-      }
+      expect(spyCompAfterUdate.called).to.be.true;
     });
 
     it('должен скрывать/отображать компонент при вызове метода hide/show', () => {

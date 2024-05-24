@@ -22,6 +22,34 @@ describe('Route', () => {
     route = new Route(path, PageClass, { rootQuery: 'main#app' });
   });
 
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  it('должен удалять элемент из dom дерева после вызова метода clear', () => {
+    route.navigate(path);
+    const elementBeforeClear = document.querySelector('#route-test');
+    const attrBeforeClear = (elementBeforeClear as HTMLDivElement).getAttribute('id');
+
+    route.clear();
+    const elementAfterClear = document.querySelector('#route-test');
+    const attrAfterClear = (elementAfterClear as HTMLDivElement)?.getAttribute('id') ?? '';
+
+    expect(attrBeforeClear).to.be.eq('route-test');
+    expect(attrAfterClear).to.be.eq('');
+  });
+
+  it('должен скрыть компонент после вызова метода leave', () => {
+    const clock = sinon.useFakeTimers();
+    route.render();
+    clock.next();
+    route.leave();
+
+    const element = document.querySelector('#route-test');
+    const displayValue = (element as HTMLDivElement).style.display;
+    expect(displayValue).to.be.eq('none');
+  });
+
   it('должен совпадать маршрут', () => {
     expect(route.match(path)).to.be.true;
   });

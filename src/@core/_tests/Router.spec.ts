@@ -5,62 +5,75 @@ import sinon from 'sinon';
 import Router from '../Router';
 import Block from '../Block';
 
-const canActivate = async (path: string): Promise<boolean> => true;
-
 describe('Router', () => {
   let router: Router;
   let PageClass!: typeof Block<IProps>;
+  let canActivateStub: sinon.SinonStub<any[], Promise<boolean>>;
+  const path = '/test';
 
   before(() => {
     class MockPage extends Block {}
     PageClass = MockPage;
 
-    router = new Router('main#app', canActivate);
+    canActivateStub = sinon.stub().returns(Promise.resolve(true));
+    router = new Router('main#app', canActivateStub);
   });
 
   it('должен регистрировать указанный маршрут', () => {
-    const path = '/test';
-
     router.use(path, PageClass);
 
     expect(router.routes.length).to.be.eq(1);
   });
 
   it('должен возвращать объект Route по зарегистрированному маршруту', () => {
-    const path = '/test';
-
     const route = router.getRoute(path);
 
     expect(route).to.be.not.undefined;
   });
 
-  it('должен осуществлять переход по указанному маршруту', () => {
-    const path = '/test';
-    const historyStub = sinon.stub(router.history, 'pushState');
+  it('должен очищать дом дерево при вызове метода reset', () => {
+    const routeTestStub = sinon.stub(router.routes[0], 'clear');
 
-    router.go(path);
+    router.reset();
 
-    expect(historyStub.args[0][2]).to.be.eq(path);
-    historyStub.restore();
+    expect(routeTestStub.calledOnce).to.be.true;
   });
 
-  it('должен осуществлять переход назад в history', () => {
-    const historyStub = sinon.stub(router.history, 'back');
+  describe('Переходы', () => {
+    it('должен проверять маршрут перед переходом', () => {
+      const historyStub = sinon.stub(router.history, 'pushState');
 
-    router.back();
+      router.go(path);
 
-    expect(historyStub.called).to.be.true;
-    historyStub.restore();
-  });
+      expect(canActivateStub.calledOnce).to.be.true;
+      historyStub.restore();
+    });
 
-  it('должен осуществлять переход вперед в history', () => {
-    const historyStub = sinon.stub(router.history, 'forward');
+    it('должен осуществлять переход по указанному маршруту', () => {
+      const historyStub = sinon.stub(router.history, 'pushState');
 
-    router.forward();
+      router.go(path);
 
-    expect(historyStub.called).to.be.true;
-    historyStub.restore();
+      expect(historyStub.args[0][2]).to.be.eq(path);
+      historyStub.restore();
+    });
+
+    it('должен осуществлять переход назад в history', () => {
+      const historyStub = sinon.stub(router.history, 'back');
+
+      router.back();
+
+      expect(historyStub.called).to.be.true;
+      historyStub.restore();
+    });
+
+    it('должен осуществлять переход вперед в history', () => {
+      const historyStub = sinon.stub(router.history, 'forward');
+
+      router.forward();
+
+      expect(historyStub.called).to.be.true;
+      historyStub.restore();
+    });
   });
 });
-
-describe.skip('Route', () => {});
