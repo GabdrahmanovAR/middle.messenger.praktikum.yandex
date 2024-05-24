@@ -13,8 +13,12 @@
     "lint:code": "eslint . --ext .js,.ts",
     "lint:style": "stylelint **/*.scss",
     "lint": "run-p lint:*",
-    "test": "mocha",
-    "prepare": "husky"
+    "test": "mocha"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run test"
+    }
   },
   "devDependencies": {
     "@types/chai": "^4.3.9",
