@@ -14,7 +14,7 @@
     "lint:style": "stylelint **/*.scss",
     "lint": "run-p lint:*",
     "test": "mocha",
-    "prepare": "hooks"
+    "prepare": "pre-commit"
   },
   "husky": {
     "hooks": {
