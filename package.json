@@ -13,12 +13,11 @@
     "lint:code": "eslint . --ext .js,.ts",
     "lint:style": "stylelint **/*.scss",
     "lint": "run-p lint:*",
-    "test": "mocha",
-    "prepare": "install husky"
+    "test": "mocha"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "echo \"[Husky] pre-commit !!!!!!!!\""
+      "pre-commit": "npm run lint && npm run test"
     }
   },
   "devDependencies": {
