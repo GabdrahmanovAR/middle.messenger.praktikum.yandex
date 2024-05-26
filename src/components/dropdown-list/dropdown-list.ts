@@ -120,7 +120,7 @@ export default class DropdownList extends Block<IDropdownListProps> {
     return style;
   }
 
-  protected componentDidUpdate(_oldProps: IDropdownListProps, _newProps: IDropdownListProps): boolean {
+  public componentDidUpdate(_oldProps: IDropdownListProps, _newProps: IDropdownListProps): boolean {
     const prevList = _oldProps.list;
     const nextList = _newProps.list;
 

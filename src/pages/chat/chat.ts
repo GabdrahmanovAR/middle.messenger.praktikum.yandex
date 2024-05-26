@@ -131,7 +131,7 @@ class ChatPage extends Block<IChatPageProps> {
     });
   }
 
-  protected componentDidUpdate(_oldProps: IChatPageProps, _newProps: IChatPageProps): boolean {
+  public componentDidUpdate(_oldProps: IChatPageProps, _newProps: IChatPageProps): boolean {
     const prevChats = _oldProps.chats;
     const nextChats = _newProps.chats;
 

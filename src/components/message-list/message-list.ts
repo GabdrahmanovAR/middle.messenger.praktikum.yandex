@@ -69,7 +69,7 @@ class MessageList extends Block<IMessageListProps> {
     return EMPTY_STRING;
   }
 
-  protected componentDidUpdate(_oldProps: IMessageListProps, _newProps: IMessageListProps): boolean {
+  public componentDidUpdate(_oldProps: IMessageListProps, _newProps: IMessageListProps): boolean {
     const oldMessages = _oldProps.messages ?? [];
     const newMessages = _newProps.messages ?? [];
 
@@ -83,7 +83,7 @@ class MessageList extends Block<IMessageListProps> {
     return true;
   }
 
-  protected componentAfterUpdate(): void {
+  public componentAfterUpdate(): void {
     const msgList = document.getElementById('message-list');
     if (msgList) {
       msgList.scrollTop = msgList.scrollHeight;

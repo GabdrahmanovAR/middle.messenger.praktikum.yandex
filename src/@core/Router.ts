@@ -5,9 +5,9 @@ import Route from './Route';
 export default class Router {
   private static __instance: ThisType<Router>;
 
-  protected history: History;
+  public history: History;
 
-  protected routes: Route[];
+  public routes: Route[];
 
   private _currentRoute: Route | null;
 

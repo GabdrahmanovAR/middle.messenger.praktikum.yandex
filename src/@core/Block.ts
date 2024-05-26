@@ -96,7 +96,7 @@ class Block<Props extends IProps = IProps> {
     });
   }
 
-  protected componentDidMount(_oldProps?: Props): void {}
+  public componentDidMount(_oldProps?: Props): void {}
 
   public dispatchComponentDidMount(): void {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
@@ -108,7 +108,7 @@ class Block<Props extends IProps = IProps> {
     }
   }
 
-  protected componentDidUpdate(_oldProps: Props, _newProps: Props): boolean {
+  public componentDidUpdate(_oldProps: Props, _newProps: Props): boolean {
     return true;
   }
 
@@ -173,7 +173,7 @@ class Block<Props extends IProps = IProps> {
     this._componentAfterUpdate();
   }
 
-  protected componentAfterUpdate(): void {}
+  public componentAfterUpdate(): void {}
 
   private _componentAfterUpdate(): void {
     this.componentAfterUpdate();

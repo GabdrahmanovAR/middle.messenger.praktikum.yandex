@@ -7,7 +7,7 @@ import { Input } from '../input';
 import FieldTemplate from './field.template';
 
 export default class Field extends Block<IFieldProps> {
-  private _timer: number | null = null;
+  private _timer: NodeJS.Timeout | null = null;
 
   protected init(): void {
     const validateBind = this.validate.bind(this);
@@ -91,7 +91,7 @@ export default class Field extends Block<IFieldProps> {
     this.children.Error.setProps({ error: undefined });
   }
 
-  protected componentDidUpdate(_oldProps: IFieldProps, _newProps: IFieldProps): boolean {
+  public componentDidUpdate(_oldProps: IFieldProps, _newProps: IFieldProps): boolean {
     if (_oldProps.name !== _newProps.name) {
       this.children.InputField.setProps({ name: _newProps.name });
     }

@@ -57,7 +57,7 @@ class ModalConfirm extends Block<IModalConfirm> {
     closeConfirmModal();
   }
 
-  protected componentDidUpdate(_oldProps: IModalConfirm, _newProps: IModalConfirm): boolean {
+  public componentDidUpdate(_oldProps: IModalConfirm, _newProps: IModalConfirm): boolean {
     const prevModalState = _oldProps.modalConfirm ?? {};
     const nextModalState = _newProps.modalConfirm ?? {};
 

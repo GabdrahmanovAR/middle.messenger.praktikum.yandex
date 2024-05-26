@@ -107,7 +107,7 @@ class AddUser extends Block<IModalAddUser> {
     return list;
   }
 
-  protected componentDidUpdate(_oldProps: IModalAddUser, _newProps: IModalAddUser): boolean {
+  public componentDidUpdate(_oldProps: IModalAddUser, _newProps: IModalAddUser): boolean {
     const prevModalState = _oldProps.modalAddUser ?? {};
     const nextModalState = _newProps.modalAddUser ?? {};
 
