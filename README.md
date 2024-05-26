@@ -11,6 +11,7 @@
 - [**Линтинг и тестирование кода**](#check)
 
 <a name="stack"></a>
+
 ## Стек технологий
 - Разработка
 [express](https://expressjs.com/ru/) + [typescript](https://www.typescriptlang.org/) + [sass](https://sass-lang.com/) + [vite](https://vitejs.dev/) + [handlebars](https://handlebarsjs.com/)
@@ -18,6 +19,7 @@
 [mocha](https://mochajs.org/) + [chai](https://www.chaijs.com/) + [sinon](https://sinonjs.org/)
 
 <a name="install"></a>
+
 ## Установка
 
 Проекту необходим [Node.js](https://nodejs.org/) v18.18 || >=v20 для запуска.
@@ -36,6 +38,7 @@ npm run build
 ```
 
 <a name="deploy"></a>
+
 ## Деплой
 
 Настроен автодеплой приложения на ресурсе [Netlify](https://app.netlify.com/). Процесс деплоя запускается при изменении ветки deploy.
@@ -43,11 +46,13 @@ npm run build
 [https://ornate-churros-e697b5.netlify.app/](https://ornate-churros-e697b5.netlify.app/)
 
 <a name="maket"></a>
+
 ## Макет
 
 Вёрстка реализована на основании предоставленного готового шаблона. Ссылка на [шаблон в Figma](https://www.figma.com/file/H12WXWboLkN5HtE1AWpHjK/Chat_external_link-(Copy)?type=design&node-id=1%3A537&mode=design&t=Czbjy9qlFry8kB0w-1).
 
 <a name="routes"></a>
+
 ## Маршруты приложения
 | Страница | Путь |
 | ------ | ------ |
@@ -57,6 +62,7 @@ npm run build
 | Настройки профиля | /settings|
 
 <a name="check"></a>
+
 ## Линтинг и тестирование кода
 В приложении настроен [pre-commit (husky)](https://typicode.github.io/husky/) запускающий линтеры и тесты перед коммитом.
 Ручную проверку кода можна запустить через скрипты:
